@@ -1,0 +1,13 @@
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\EmbUI.exe.config
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\EmbUI.exe
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\EmbUI.pdb
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\EmbUI.xml
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.vbprojResolveAssemblyReference.cache
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.MainForm.resources
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.Resources.resources
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.vbproj.GenerateResource.Cache
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.exe
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.xml
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\obj\Debug\EmbUI.pdb
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\Newtonsoft.Json.dll
+C:\Users\206434924\Documents\Visual Studio 2015\Projects\EmbUI\EmbUI\bin\Debug\Newtonsoft.Json.xml

@@ -26,6 +26,9 @@ Partial Class MainForm
         Me.sfpMgmtIPLabel = New System.Windows.Forms.Label()
         Me.sfpMgmtIpTextBox = New System.Windows.Forms.TextBox()
         Me.detailPanel = New System.Windows.Forms.Panel()
+        Me.sfpFlowPortTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpFlowIPTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpNameTextBox = New System.Windows.Forms.TextBox()
         Me.sfpFormattingPanel = New System.Windows.Forms.Panel()
         Me.sfpFormatCodeSamplingLabel = New System.Windows.Forms.Label()
         Me.sfpFormatCodeSamplingLabelLabel = New System.Windows.Forms.Label()
@@ -46,16 +49,14 @@ Partial Class MainForm
         Me.sfpFormatClkRateLabelLabel = New System.Windows.Forms.Label()
         Me.sfpFormatLabel = New System.Windows.Forms.Label()
         Me.sfpFormatButton = New System.Windows.Forms.Button()
-        Me.sfpFlowPortMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
-        Me.sfpFlowIPMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
         Me.sfpAdvancedPanel = New System.Windows.Forms.Panel()
-        Me.sfpFlowSsrcMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
+        Me.sfpFlowVlanTagTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpFlowSrcPortTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpFlowSsrcTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpFlowDstMacTextBox = New System.Windows.Forms.TextBox()
+        Me.sfpFlowSrcIpTextBox = New System.Windows.Forms.TextBox()
         Me.sfpFlowSsrcLabel = New System.Windows.Forms.Label()
-        Me.sfpVlanTagMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
-        Me.sfpVlanTagLabel = New System.Windows.Forms.Label()
-        Me.sfpFlowSrcPortMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
-        Me.sfpFlowSrcIpMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
-        Me.sfpFlowDstMacMaskedTextBox = New System.Windows.Forms.MaskedTextBox()
+        Me.sfpFlowVlanTagLabel = New System.Windows.Forms.Label()
         Me.sfpFlowDstMacLabel = New System.Windows.Forms.Label()
         Me.sfpFlowSrcPortLabel = New System.Windows.Forms.Label()
         Me.sfpFlowSrcIpLabel = New System.Windows.Forms.Label()
@@ -66,7 +67,6 @@ Partial Class MainForm
         Me.sfpFlowIpLabelLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabelLabel = New System.Windows.Forms.Label()
-        Me.sfpNameLabel = New System.Windows.Forms.Label()
         Me.sfpNameLabelLabel = New System.Windows.Forms.Label()
         Me.statusPanel = New System.Windows.Forms.Panel()
         Me.flow1SeenCounterLabel = New System.Windows.Forms.Label()
@@ -78,6 +78,7 @@ Partial Class MainForm
         Me.flow1Label = New System.Windows.Forms.Label()
         Me.sfpFlowDetailToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.sfpConnectButton = New System.Windows.Forms.Button()
+        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
         Me.detailPanel.SuspendLayout()
         Me.sfpFormattingPanel.SuspendLayout()
         Me.sfpAdvancedPanel.SuspendLayout()
@@ -105,20 +106,44 @@ Partial Class MainForm
         Me.detailPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.detailPanel.AutoScroll = True
+        Me.detailPanel.Controls.Add(Me.sfpFlowPortTextBox)
+        Me.detailPanel.Controls.Add(Me.sfpFlowIPTextBox)
+        Me.detailPanel.Controls.Add(Me.sfpNameTextBox)
         Me.detailPanel.Controls.Add(Me.sfpFormattingPanel)
-        Me.detailPanel.Controls.Add(Me.sfpFlowPortMaskedTextBox)
-        Me.detailPanel.Controls.Add(Me.sfpFlowIPMaskedTextBox)
         Me.detailPanel.Controls.Add(Me.sfpAdvancedPanel)
         Me.detailPanel.Controls.Add(Me.sfpFlowPortLabelLabel)
         Me.detailPanel.Controls.Add(Me.sfpFlowIpLabelLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabelLabel)
-        Me.detailPanel.Controls.Add(Me.sfpNameLabel)
         Me.detailPanel.Controls.Add(Me.sfpNameLabelLabel)
         Me.detailPanel.Location = New System.Drawing.Point(12, 38)
         Me.detailPanel.Name = "detailPanel"
         Me.detailPanel.Size = New System.Drawing.Size(346, 294)
         Me.detailPanel.TabIndex = 3
+        '
+        'sfpFlowPortTextBox
+        '
+        Me.sfpFlowPortTextBox.Enabled = False
+        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(238, 31)
+        Me.sfpFlowPortTextBox.Name = "sfpFlowPortTextBox"
+        Me.sfpFlowPortTextBox.Size = New System.Drawing.Size(50, 20)
+        Me.sfpFlowPortTextBox.TabIndex = 25
+        '
+        'sfpFlowIPTextBox
+        '
+        Me.sfpFlowIPTextBox.Enabled = False
+        Me.sfpFlowIPTextBox.Location = New System.Drawing.Point(92, 34)
+        Me.sfpFlowIPTextBox.Name = "sfpFlowIPTextBox"
+        Me.sfpFlowIPTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpFlowIPTextBox.TabIndex = 24
+        '
+        'sfpNameTextBox
+        '
+        Me.sfpNameTextBox.Enabled = False
+        Me.sfpNameTextBox.Location = New System.Drawing.Point(92, 4)
+        Me.sfpNameTextBox.Name = "sfpNameTextBox"
+        Me.sfpNameTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpNameTextBox.TabIndex = 6
         '
         'sfpFormattingPanel
         '
@@ -143,9 +168,9 @@ Partial Class MainForm
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatClkRateLabelLabel)
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatLabel)
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatButton)
-        Me.sfpFormattingPanel.Location = New System.Drawing.Point(7, 109)
+        Me.sfpFormattingPanel.Location = New System.Drawing.Point(7, 112)
         Me.sfpFormattingPanel.Name = "sfpFormattingPanel"
-        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 31)
+        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 26)
         Me.sfpFormattingPanel.TabIndex = 23
         '
         'sfpFormatCodeSamplingLabel
@@ -334,35 +359,17 @@ Partial Class MainForm
         Me.sfpFormatButton.Text = "v"
         Me.sfpFormatButton.UseVisualStyleBackColor = True
         '
-        'sfpFlowPortMaskedTextBox
-        '
-        Me.sfpFlowPortMaskedTextBox.Enabled = False
-        Me.sfpFlowPortMaskedTextBox.Location = New System.Drawing.Point(233, 26)
-        Me.sfpFlowPortMaskedTextBox.Mask = "99990"
-        Me.sfpFlowPortMaskedTextBox.Name = "sfpFlowPortMaskedTextBox"
-        Me.sfpFlowPortMaskedTextBox.Size = New System.Drawing.Size(50, 20)
-        Me.sfpFlowPortMaskedTextBox.TabIndex = 19
-        '
-        'sfpFlowIPMaskedTextBox
-        '
-        Me.sfpFlowIPMaskedTextBox.Enabled = False
-        Me.sfpFlowIPMaskedTextBox.Location = New System.Drawing.Point(93, 26)
-        Me.sfpFlowIPMaskedTextBox.Mask = "990.990.990.990"
-        Me.sfpFlowIPMaskedTextBox.Name = "sfpFlowIPMaskedTextBox"
-        Me.sfpFlowIPMaskedTextBox.Size = New System.Drawing.Size(100, 20)
-        Me.sfpFlowIPMaskedTextBox.TabIndex = 11
-        '
         'sfpAdvancedPanel
         '
         Me.sfpAdvancedPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSsrcMaskedTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowVlanTagTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcPortTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSsrcTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowDstMacTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcIpTextBox)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSsrcLabel)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpVlanTagMaskedTextBox)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpVlanTagLabel)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcPortMaskedTextBox)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcIpMaskedTextBox)
-        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowDstMacMaskedTextBox)
+        Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowVlanTagLabel)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowDstMacLabel)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcPortLabel)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpFlowSrcIpLabel)
@@ -371,17 +378,48 @@ Partial Class MainForm
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpAdvancedButton)
         Me.sfpAdvancedPanel.Location = New System.Drawing.Point(7, 72)
         Me.sfpAdvancedPanel.Name = "sfpAdvancedPanel"
-        Me.sfpAdvancedPanel.Size = New System.Drawing.Size(333, 31)
+        Me.sfpAdvancedPanel.Size = New System.Drawing.Size(333, 34)
         Me.sfpAdvancedPanel.TabIndex = 10
         '
-        'sfpFlowSsrcMaskedTextBox
+        'sfpFlowVlanTagTextBox
         '
-        Me.sfpFlowSsrcMaskedTextBox.Enabled = False
-        Me.sfpFlowSsrcMaskedTextBox.Location = New System.Drawing.Point(85, 88)
-        Me.sfpFlowSsrcMaskedTextBox.Mask = "\0x>AAAAAAAA"
-        Me.sfpFlowSsrcMaskedTextBox.Name = "sfpFlowSsrcMaskedTextBox"
-        Me.sfpFlowSsrcMaskedTextBox.Size = New System.Drawing.Size(85, 20)
-        Me.sfpFlowSsrcMaskedTextBox.TabIndex = 22
+        Me.sfpFlowVlanTagTextBox.Enabled = False
+        Me.sfpFlowVlanTagTextBox.Location = New System.Drawing.Point(265, 64)
+        Me.sfpFlowVlanTagTextBox.Name = "sfpFlowVlanTagTextBox"
+        Me.sfpFlowVlanTagTextBox.Size = New System.Drawing.Size(50, 20)
+        Me.sfpFlowVlanTagTextBox.TabIndex = 28
+        '
+        'sfpFlowSrcPortTextBox
+        '
+        Me.sfpFlowSrcPortTextBox.Enabled = False
+        Me.sfpFlowSrcPortTextBox.Location = New System.Drawing.Point(265, 36)
+        Me.sfpFlowSrcPortTextBox.Name = "sfpFlowSrcPortTextBox"
+        Me.sfpFlowSrcPortTextBox.Size = New System.Drawing.Size(50, 20)
+        Me.sfpFlowSrcPortTextBox.TabIndex = 27
+        '
+        'sfpFlowSsrcTextBox
+        '
+        Me.sfpFlowSsrcTextBox.Enabled = False
+        Me.sfpFlowSsrcTextBox.Location = New System.Drawing.Point(80, 89)
+        Me.sfpFlowSsrcTextBox.Name = "sfpFlowSsrcTextBox"
+        Me.sfpFlowSsrcTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpFlowSsrcTextBox.TabIndex = 26
+        '
+        'sfpFlowDstMacTextBox
+        '
+        Me.sfpFlowDstMacTextBox.Enabled = False
+        Me.sfpFlowDstMacTextBox.Location = New System.Drawing.Point(85, 62)
+        Me.sfpFlowDstMacTextBox.Name = "sfpFlowDstMacTextBox"
+        Me.sfpFlowDstMacTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpFlowDstMacTextBox.TabIndex = 25
+        '
+        'sfpFlowSrcIpTextBox
+        '
+        Me.sfpFlowSrcIpTextBox.Enabled = False
+        Me.sfpFlowSrcIpTextBox.Location = New System.Drawing.Point(96, 37)
+        Me.sfpFlowSrcIpTextBox.Name = "sfpFlowSrcIpTextBox"
+        Me.sfpFlowSrcIpTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpFlowSrcIpTextBox.TabIndex = 24
         '
         'sfpFlowSsrcLabel
         '
@@ -392,50 +430,14 @@ Partial Class MainForm
         Me.sfpFlowSsrcLabel.TabIndex = 21
         Me.sfpFlowSsrcLabel.Text = "RTP SSRC"
         '
-        'sfpVlanTagMaskedTextBox
+        'sfpFlowVlanTagLabel
         '
-        Me.sfpVlanTagMaskedTextBox.Enabled = False
-        Me.sfpVlanTagMaskedTextBox.Location = New System.Drawing.Point(265, 62)
-        Me.sfpVlanTagMaskedTextBox.Mask = "9990"
-        Me.sfpVlanTagMaskedTextBox.Name = "sfpVlanTagMaskedTextBox"
-        Me.sfpVlanTagMaskedTextBox.Size = New System.Drawing.Size(50, 20)
-        Me.sfpVlanTagMaskedTextBox.TabIndex = 20
-        '
-        'sfpVlanTagLabel
-        '
-        Me.sfpVlanTagLabel.AutoSize = True
-        Me.sfpVlanTagLabel.Location = New System.Drawing.Point(199, 66)
-        Me.sfpVlanTagLabel.Name = "sfpVlanTagLabel"
-        Me.sfpVlanTagLabel.Size = New System.Drawing.Size(57, 13)
-        Me.sfpVlanTagLabel.TabIndex = 19
-        Me.sfpVlanTagLabel.Text = "VLAN Tag"
-        '
-        'sfpFlowSrcPortMaskedTextBox
-        '
-        Me.sfpFlowSrcPortMaskedTextBox.Enabled = False
-        Me.sfpFlowSrcPortMaskedTextBox.Location = New System.Drawing.Point(265, 36)
-        Me.sfpFlowSrcPortMaskedTextBox.Mask = "99990"
-        Me.sfpFlowSrcPortMaskedTextBox.Name = "sfpFlowSrcPortMaskedTextBox"
-        Me.sfpFlowSrcPortMaskedTextBox.Size = New System.Drawing.Size(50, 20)
-        Me.sfpFlowSrcPortMaskedTextBox.TabIndex = 18
-        '
-        'sfpFlowSrcIpMaskedTextBox
-        '
-        Me.sfpFlowSrcIpMaskedTextBox.Enabled = False
-        Me.sfpFlowSrcIpMaskedTextBox.Location = New System.Drawing.Point(98, 36)
-        Me.sfpFlowSrcIpMaskedTextBox.Mask = "990.990.990.990"
-        Me.sfpFlowSrcIpMaskedTextBox.Name = "sfpFlowSrcIpMaskedTextBox"
-        Me.sfpFlowSrcIpMaskedTextBox.Size = New System.Drawing.Size(95, 20)
-        Me.sfpFlowSrcIpMaskedTextBox.TabIndex = 17
-        '
-        'sfpFlowDstMacMaskedTextBox
-        '
-        Me.sfpFlowDstMacMaskedTextBox.Enabled = False
-        Me.sfpFlowDstMacMaskedTextBox.Location = New System.Drawing.Point(85, 62)
-        Me.sfpFlowDstMacMaskedTextBox.Mask = ">AA:AA:AA:AA:AA:AA"
-        Me.sfpFlowDstMacMaskedTextBox.Name = "sfpFlowDstMacMaskedTextBox"
-        Me.sfpFlowDstMacMaskedTextBox.Size = New System.Drawing.Size(108, 20)
-        Me.sfpFlowDstMacMaskedTextBox.TabIndex = 16
+        Me.sfpFlowVlanTagLabel.AutoSize = True
+        Me.sfpFlowVlanTagLabel.Location = New System.Drawing.Point(199, 66)
+        Me.sfpFlowVlanTagLabel.Name = "sfpFlowVlanTagLabel"
+        Me.sfpFlowVlanTagLabel.Size = New System.Drawing.Size(57, 13)
+        Me.sfpFlowVlanTagLabel.TabIndex = 19
+        Me.sfpFlowVlanTagLabel.Text = "VLAN Tag"
         '
         'sfpFlowDstMacLabel
         '
@@ -493,7 +495,7 @@ Partial Class MainForm
         'sfpFlowPortLabelLabel
         '
         Me.sfpFlowPortLabelLabel.AutoSize = True
-        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(206, 30)
+        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(206, 34)
         Me.sfpFlowPortLabelLabel.Name = "sfpFlowPortLabelLabel"
         Me.sfpFlowPortLabelLabel.Size = New System.Drawing.Size(26, 13)
         Me.sfpFlowPortLabelLabel.TabIndex = 6
@@ -503,7 +505,7 @@ Partial Class MainForm
         'sfpFlowIpLabelLabel
         '
         Me.sfpFlowIpLabelLabel.AutoSize = True
-        Me.sfpFlowIpLabelLabel.Location = New System.Drawing.Point(41, 30)
+        Me.sfpFlowIpLabelLabel.Location = New System.Drawing.Point(41, 37)
         Me.sfpFlowIpLabelLabel.Name = "sfpFlowIpLabelLabel"
         Me.sfpFlowIpLabelLabel.Size = New System.Drawing.Size(45, 13)
         Me.sfpFlowIpLabelLabel.TabIndex = 4
@@ -526,14 +528,6 @@ Partial Class MainForm
         Me.sfpTypeLabelLabel.Size = New System.Drawing.Size(34, 13)
         Me.sfpTypeLabelLabel.TabIndex = 2
         Me.sfpTypeLabelLabel.Text = "Type:"
-        '
-        'sfpNameLabel
-        '
-        Me.sfpNameLabel.AutoSize = True
-        Me.sfpNameLabel.Location = New System.Drawing.Point(95, 6)
-        Me.sfpNameLabel.Name = "sfpNameLabel"
-        Me.sfpNameLabel.Size = New System.Drawing.Size(0, 13)
-        Me.sfpNameLabel.TabIndex = 1
         '
         'sfpNameLabelLabel
         '
@@ -564,7 +558,7 @@ Partial Class MainForm
         '
         Me.flow1SeenCounterLabel.AutoSize = True
         Me.flow1SeenCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1SeenCounterLabel.Location = New System.Drawing.Point(113, 5)
+        Me.flow1SeenCounterLabel.Location = New System.Drawing.Point(81, 5)
         Me.flow1SeenCounterLabel.Name = "flow1SeenCounterLabel"
         Me.flow1SeenCounterLabel.Size = New System.Drawing.Size(13, 13)
         Me.flow1SeenCounterLabel.TabIndex = 6
@@ -575,7 +569,7 @@ Partial Class MainForm
         '
         Me.flow1RenderedCounterLabel.AutoSize = True
         Me.flow1RenderedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(229, 5)
+        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(196, 5)
         Me.flow1RenderedCounterLabel.Name = "flow1RenderedCounterLabel"
         Me.flow1RenderedCounterLabel.Size = New System.Drawing.Size(13, 13)
         Me.flow1RenderedCounterLabel.TabIndex = 5
@@ -586,7 +580,7 @@ Partial Class MainForm
         '
         Me.flow1DroppedCounterLabel.AutoSize = True
         Me.flow1DroppedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1DroppedCounterLabel.Location = New System.Drawing.Point(326, 5)
+        Me.flow1DroppedCounterLabel.Location = New System.Drawing.Point(294, 5)
         Me.flow1DroppedCounterLabel.Name = "flow1DroppedCounterLabel"
         Me.flow1DroppedCounterLabel.Size = New System.Drawing.Size(13, 13)
         Me.flow1DroppedCounterLabel.TabIndex = 4
@@ -642,6 +636,10 @@ Partial Class MainForm
         Me.sfpConnectButton.Text = "Connect"
         Me.sfpConnectButton.UseVisualStyleBackColor = True
         '
+        'Timer1
+        '
+        Me.Timer1.Interval = 1000
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -679,7 +677,6 @@ Partial Class MainForm
     Friend WithEvents flow1SeenCounterLabel As Label
     Friend WithEvents flow1RenderedCounterLabel As Label
     Friend WithEvents sfpNameLabelLabel As Label
-    Friend WithEvents sfpNameLabel As Label
     Friend WithEvents sfpTypeLabel As Label
     Friend WithEvents sfpTypeLabelLabel As Label
     Friend WithEvents sfpFlowIpLabelLabel As Label
@@ -693,15 +690,8 @@ Partial Class MainForm
     Friend WithEvents sfpFlowSrcIpLabel As Label
     Friend WithEvents sfpFlowSrcPortLabel As Label
     Friend WithEvents sfpFlowDstMacLabel As Label
-    Friend WithEvents sfpFlowDstMacMaskedTextBox As MaskedTextBox
-    Friend WithEvents sfpFlowSrcIpMaskedTextBox As MaskedTextBox
-    Friend WithEvents sfpFlowPortMaskedTextBox As MaskedTextBox
-    Friend WithEvents sfpFlowIPMaskedTextBox As MaskedTextBox
-    Friend WithEvents sfpFlowSsrcMaskedTextBox As MaskedTextBox
     Friend WithEvents sfpFlowSsrcLabel As Label
-    Friend WithEvents sfpVlanTagMaskedTextBox As MaskedTextBox
-    Friend WithEvents sfpVlanTagLabel As Label
-    Friend WithEvents sfpFlowSrcPortMaskedTextBox As MaskedTextBox
+    Friend WithEvents sfpFlowVlanTagLabel As Label
     Friend WithEvents sfpFormattingPanel As Panel
     Friend WithEvents sfpFormatLineLabel As Label
     Friend WithEvents sfpFormatLabel As Label
@@ -722,4 +712,13 @@ Partial Class MainForm
     Friend WithEvents sfpFormatCodeSamplingLabelLabel As Label
     Friend WithEvents sfpFormatCodeRateLabel As Label
     Friend WithEvents sfpFormatCodeRateLabelLabel As Label
+    Friend WithEvents sfpNameTextBox As TextBox
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents sfpFlowVlanTagTextBox As TextBox
+    Friend WithEvents sfpFlowSrcPortTextBox As TextBox
+    Friend WithEvents sfpFlowSsrcTextBox As TextBox
+    Friend WithEvents sfpFlowDstMacTextBox As TextBox
+    Friend WithEvents sfpFlowSrcIpTextBox As TextBox
+    Friend WithEvents sfpFlowPortTextBox As TextBox
+    Friend WithEvents sfpFlowIPTextBox As TextBox
 End Class
