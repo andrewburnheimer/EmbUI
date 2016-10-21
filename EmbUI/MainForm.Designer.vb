@@ -26,6 +26,18 @@ Partial Class MainForm
         Me.sfpMgmtIPLabel = New System.Windows.Forms.Label()
         Me.sfpMgmtIpTextBox = New System.Windows.Forms.TextBox()
         Me.detailPanel = New System.Windows.Forms.Panel()
+        Me.sfpFilteringPanel = New System.Windows.Forms.Panel()
+        Me.sfpFilterSSRCCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterDestIPCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterDestMACCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterDestPortCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterVlanCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterSrcMACCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterSrcPortCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilterSrcIPCheckbox = New System.Windows.Forms.CheckBox()
+        Me.sfpFilteringLineLabel = New System.Windows.Forms.Label()
+        Me.sfpFilteringLabel = New System.Windows.Forms.Label()
+        Me.sfpFilteringButton = New System.Windows.Forms.Button()
         Me.sfpFlowPortTextBox = New System.Windows.Forms.TextBox()
         Me.sfpFlowIPTextBox = New System.Windows.Forms.TextBox()
         Me.sfpNameTextBox = New System.Windows.Forms.TextBox()
@@ -78,8 +90,10 @@ Partial Class MainForm
         Me.flow1Label = New System.Windows.Forms.Label()
         Me.sfpFlowDetailToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.sfpConnectButton = New System.Windows.Forms.Button()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.CounterTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.sfpApplyButton = New System.Windows.Forms.Button()
         Me.detailPanel.SuspendLayout()
+        Me.sfpFilteringPanel.SuspendLayout()
         Me.sfpFormattingPanel.SuspendLayout()
         Me.sfpAdvancedPanel.SuspendLayout()
         Me.statusPanel.SuspendLayout()
@@ -88,11 +102,11 @@ Partial Class MainForm
         'sfpMgmtIPLabel
         '
         Me.sfpMgmtIPLabel.AutoSize = True
-        Me.sfpMgmtIPLabel.Location = New System.Drawing.Point(58, 15)
+        Me.sfpMgmtIPLabel.Location = New System.Drawing.Point(94, 15)
         Me.sfpMgmtIPLabel.Name = "sfpMgmtIPLabel"
-        Me.sfpMgmtIPLabel.Size = New System.Drawing.Size(131, 13)
+        Me.sfpMgmtIPLabel.Size = New System.Drawing.Size(94, 13)
         Me.sfpMgmtIPLabel.TabIndex = 1
-        Me.sfpMgmtIPLabel.Text = "Device Control IP Address"
+        Me.sfpMgmtIPLabel.Text = "Control IP Address"
         '
         'sfpMgmtIpTextBox
         '
@@ -106,6 +120,7 @@ Partial Class MainForm
         Me.detailPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.detailPanel.AutoScroll = True
+        Me.detailPanel.Controls.Add(Me.sfpFilteringPanel)
         Me.detailPanel.Controls.Add(Me.sfpFlowPortTextBox)
         Me.detailPanel.Controls.Add(Me.sfpFlowIPTextBox)
         Me.detailPanel.Controls.Add(Me.sfpNameTextBox)
@@ -118,13 +133,138 @@ Partial Class MainForm
         Me.detailPanel.Controls.Add(Me.sfpNameLabelLabel)
         Me.detailPanel.Location = New System.Drawing.Point(12, 38)
         Me.detailPanel.Name = "detailPanel"
-        Me.detailPanel.Size = New System.Drawing.Size(346, 294)
+        Me.detailPanel.Size = New System.Drawing.Size(346, 426)
         Me.detailPanel.TabIndex = 3
+        '
+        'sfpFilteringPanel
+        '
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterSSRCCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterDestIPCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterDestMACCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterDestPortCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterVlanCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterSrcMACCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterSrcPortCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilterSrcIPCheckbox)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringLineLabel)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringLabel)
+        Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringButton)
+        Me.sfpFilteringPanel.Location = New System.Drawing.Point(5, 297)
+        Me.sfpFilteringPanel.Name = "sfpFilteringPanel"
+        Me.sfpFilteringPanel.Size = New System.Drawing.Size(336, 126)
+        Me.sfpFilteringPanel.TabIndex = 26
+        '
+        'sfpFilterSSRCCheckbox
+        '
+        Me.sfpFilterSSRCCheckbox.AutoSize = True
+        Me.sfpFilterSSRCCheckbox.Location = New System.Drawing.Point(216, 102)
+        Me.sfpFilterSSRCCheckbox.Name = "sfpFilterSSRCCheckbox"
+        Me.sfpFilterSSRCCheckbox.Size = New System.Drawing.Size(55, 17)
+        Me.sfpFilterSSRCCheckbox.TabIndex = 21
+        Me.sfpFilterSSRCCheckbox.Text = "SSRC"
+        Me.sfpFilterSSRCCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterDestIPCheckbox
+        '
+        Me.sfpFilterDestIPCheckbox.AutoSize = True
+        Me.sfpFilterDestIPCheckbox.Location = New System.Drawing.Point(216, 39)
+        Me.sfpFilterDestIPCheckbox.Name = "sfpFilterDestIPCheckbox"
+        Me.sfpFilterDestIPCheckbox.Size = New System.Drawing.Size(61, 17)
+        Me.sfpFilterDestIPCheckbox.TabIndex = 20
+        Me.sfpFilterDestIPCheckbox.Text = "Dest IP"
+        Me.sfpFilterDestIPCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterDestMACCheckbox
+        '
+        Me.sfpFilterDestMACCheckbox.AutoSize = True
+        Me.sfpFilterDestMACCheckbox.Location = New System.Drawing.Point(216, 80)
+        Me.sfpFilterDestMACCheckbox.Name = "sfpFilterDestMACCheckbox"
+        Me.sfpFilterDestMACCheckbox.Size = New System.Drawing.Size(74, 17)
+        Me.sfpFilterDestMACCheckbox.TabIndex = 19
+        Me.sfpFilterDestMACCheckbox.Text = "Dest MAC"
+        Me.sfpFilterDestMACCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterDestPortCheckbox
+        '
+        Me.sfpFilterDestPortCheckbox.AutoSize = True
+        Me.sfpFilterDestPortCheckbox.Location = New System.Drawing.Point(216, 59)
+        Me.sfpFilterDestPortCheckbox.Name = "sfpFilterDestPortCheckbox"
+        Me.sfpFilterDestPortCheckbox.Size = New System.Drawing.Size(96, 17)
+        Me.sfpFilterDestPortCheckbox.TabIndex = 18
+        Me.sfpFilterDestPortCheckbox.Text = "Dest UDP Port"
+        Me.sfpFilterDestPortCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterVlanCheckbox
+        '
+        Me.sfpFilterVlanCheckbox.AutoSize = True
+        Me.sfpFilterVlanCheckbox.Location = New System.Drawing.Point(28, 102)
+        Me.sfpFilterVlanCheckbox.Name = "sfpFilterVlanCheckbox"
+        Me.sfpFilterVlanCheckbox.Size = New System.Drawing.Size(69, 17)
+        Me.sfpFilterVlanCheckbox.TabIndex = 17
+        Me.sfpFilterVlanCheckbox.Text = "Vlan Tag"
+        Me.sfpFilterVlanCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterSrcMACCheckbox
+        '
+        Me.sfpFilterSrcMACCheckbox.AutoSize = True
+        Me.sfpFilterSrcMACCheckbox.Location = New System.Drawing.Point(28, 81)
+        Me.sfpFilterSrcMACCheckbox.Name = "sfpFilterSrcMACCheckbox"
+        Me.sfpFilterSrcMACCheckbox.Size = New System.Drawing.Size(86, 17)
+        Me.sfpFilterSrcMACCheckbox.TabIndex = 16
+        Me.sfpFilterSrcMACCheckbox.Text = "Source MAC"
+        Me.sfpFilterSrcMACCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterSrcPortCheckbox
+        '
+        Me.sfpFilterSrcPortCheckbox.AutoSize = True
+        Me.sfpFilterSrcPortCheckbox.Location = New System.Drawing.Point(28, 59)
+        Me.sfpFilterSrcPortCheckbox.Name = "sfpFilterSrcPortCheckbox"
+        Me.sfpFilterSrcPortCheckbox.Size = New System.Drawing.Size(108, 17)
+        Me.sfpFilterSrcPortCheckbox.TabIndex = 15
+        Me.sfpFilterSrcPortCheckbox.Text = "Source UDP Port"
+        Me.sfpFilterSrcPortCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilterSrcIPCheckbox
+        '
+        Me.sfpFilterSrcIPCheckbox.AutoSize = True
+        Me.sfpFilterSrcIPCheckbox.Location = New System.Drawing.Point(28, 39)
+        Me.sfpFilterSrcIPCheckbox.Name = "sfpFilterSrcIPCheckbox"
+        Me.sfpFilterSrcIPCheckbox.Size = New System.Drawing.Size(73, 17)
+        Me.sfpFilterSrcIPCheckbox.TabIndex = 14
+        Me.sfpFilterSrcIPCheckbox.Text = "Source IP"
+        Me.sfpFilterSrcIPCheckbox.UseVisualStyleBackColor = True
+        '
+        'sfpFilteringLineLabel
+        '
+        Me.sfpFilteringLineLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
+        Me.sfpFilteringLineLabel.Location = New System.Drawing.Point(53, 19)
+        Me.sfpFilteringLineLabel.Name = "sfpFilteringLineLabel"
+        Me.sfpFilteringLineLabel.Size = New System.Drawing.Size(250, 2)
+        Me.sfpFilteringLineLabel.TabIndex = 13
+        '
+        'sfpFilteringLabel
+        '
+        Me.sfpFilteringLabel.AutoSize = True
+        Me.sfpFilteringLabel.Location = New System.Drawing.Point(10, 12)
+        Me.sfpFilteringLabel.Name = "sfpFilteringLabel"
+        Me.sfpFilteringLabel.Size = New System.Drawing.Size(43, 13)
+        Me.sfpFilteringLabel.TabIndex = 12
+        Me.sfpFilteringLabel.Text = "Filtering"
+        '
+        'sfpFilteringButton
+        '
+        Me.sfpFilteringButton.Location = New System.Drawing.Point(311, 7)
+        Me.sfpFilteringButton.Name = "sfpFilteringButton"
+        Me.sfpFilteringButton.Size = New System.Drawing.Size(19, 23)
+        Me.sfpFilteringButton.TabIndex = 11
+        Me.sfpFilteringButton.Text = "v"
+        Me.sfpFilteringButton.UseVisualStyleBackColor = True
         '
         'sfpFlowPortTextBox
         '
+        Me.sfpFlowPortTextBox.BackColor = System.Drawing.SystemColors.Window
         Me.sfpFlowPortTextBox.Enabled = False
-        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(238, 31)
+        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(285, 31)
         Me.sfpFlowPortTextBox.Name = "sfpFlowPortTextBox"
         Me.sfpFlowPortTextBox.Size = New System.Drawing.Size(50, 20)
         Me.sfpFlowPortTextBox.TabIndex = 25
@@ -132,7 +272,7 @@ Partial Class MainForm
         'sfpFlowIPTextBox
         '
         Me.sfpFlowIPTextBox.Enabled = False
-        Me.sfpFlowIPTextBox.Location = New System.Drawing.Point(92, 34)
+        Me.sfpFlowIPTextBox.Location = New System.Drawing.Point(129, 34)
         Me.sfpFlowIPTextBox.Name = "sfpFlowIPTextBox"
         Me.sfpFlowIPTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpFlowIPTextBox.TabIndex = 24
@@ -140,7 +280,7 @@ Partial Class MainForm
         'sfpNameTextBox
         '
         Me.sfpNameTextBox.Enabled = False
-        Me.sfpNameTextBox.Location = New System.Drawing.Point(92, 4)
+        Me.sfpNameTextBox.Location = New System.Drawing.Point(127, 4)
         Me.sfpNameTextBox.Name = "sfpNameTextBox"
         Me.sfpNameTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpNameTextBox.TabIndex = 6
@@ -495,27 +635,27 @@ Partial Class MainForm
         'sfpFlowPortLabelLabel
         '
         Me.sfpFlowPortLabelLabel.AutoSize = True
-        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(206, 34)
+        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(253, 34)
         Me.sfpFlowPortLabelLabel.Name = "sfpFlowPortLabelLabel"
-        Me.sfpFlowPortLabelLabel.Size = New System.Drawing.Size(26, 13)
+        Me.sfpFlowPortLabelLabel.Size = New System.Drawing.Size(29, 13)
         Me.sfpFlowPortLabelLabel.TabIndex = 6
-        Me.sfpFlowPortLabelLabel.Text = "Port"
+        Me.sfpFlowPortLabelLabel.Text = "Port:"
         Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowPortLabelLabel, "Destination UDP port number of the flow")
         '
         'sfpFlowIpLabelLabel
         '
         Me.sfpFlowIpLabelLabel.AutoSize = True
-        Me.sfpFlowIpLabelLabel.Location = New System.Drawing.Point(41, 37)
+        Me.sfpFlowIpLabelLabel.Location = New System.Drawing.Point(5, 37)
         Me.sfpFlowIpLabelLabel.Name = "sfpFlowIpLabelLabel"
-        Me.sfpFlowIpLabelLabel.Size = New System.Drawing.Size(45, 13)
+        Me.sfpFlowIpLabelLabel.Size = New System.Drawing.Size(125, 13)
         Me.sfpFlowIpLabelLabel.TabIndex = 4
-        Me.sfpFlowIpLabelLabel.Text = "Address"
+        Me.sfpFlowIpLabelLabel.Text = "Multicast Group Address:"
         Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowIpLabelLabel, "Destination IP address of the flow")
         '
         'sfpTypeLabel
         '
         Me.sfpTypeLabel.AutoSize = True
-        Me.sfpTypeLabel.Location = New System.Drawing.Point(236, 6)
+        Me.sfpTypeLabel.Location = New System.Drawing.Point(294, 6)
         Me.sfpTypeLabel.Name = "sfpTypeLabel"
         Me.sfpTypeLabel.Size = New System.Drawing.Size(0, 13)
         Me.sfpTypeLabel.TabIndex = 3
@@ -523,7 +663,7 @@ Partial Class MainForm
         'sfpTypeLabelLabel
         '
         Me.sfpTypeLabelLabel.AutoSize = True
-        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(198, 6)
+        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(253, 6)
         Me.sfpTypeLabelLabel.Name = "sfpTypeLabelLabel"
         Me.sfpTypeLabelLabel.Size = New System.Drawing.Size(34, 13)
         Me.sfpTypeLabelLabel.TabIndex = 2
@@ -532,7 +672,7 @@ Partial Class MainForm
         'sfpNameLabelLabel
         '
         Me.sfpNameLabelLabel.AutoSize = True
-        Me.sfpNameLabelLabel.Location = New System.Drawing.Point(48, 6)
+        Me.sfpNameLabelLabel.Location = New System.Drawing.Point(83, 6)
         Me.sfpNameLabelLabel.Name = "sfpNameLabelLabel"
         Me.sfpNameLabelLabel.Size = New System.Drawing.Size(38, 13)
         Me.sfpNameLabelLabel.TabIndex = 0
@@ -549,9 +689,9 @@ Partial Class MainForm
         Me.statusPanel.Controls.Add(Me.flow1RenderedLabel)
         Me.statusPanel.Controls.Add(Me.flow1SeenLabel)
         Me.statusPanel.Controls.Add(Me.flow1Label)
-        Me.statusPanel.Location = New System.Drawing.Point(13, 338)
+        Me.statusPanel.Location = New System.Drawing.Point(13, 470)
         Me.statusPanel.Name = "statusPanel"
-        Me.statusPanel.Size = New System.Drawing.Size(345, 23)
+        Me.statusPanel.Size = New System.Drawing.Size(342, 23)
         Me.statusPanel.TabIndex = 4
         '
         'flow1SeenCounterLabel
@@ -569,7 +709,7 @@ Partial Class MainForm
         '
         Me.flow1RenderedCounterLabel.AutoSize = True
         Me.flow1RenderedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(196, 5)
+        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(190, 5)
         Me.flow1RenderedCounterLabel.Name = "flow1RenderedCounterLabel"
         Me.flow1RenderedCounterLabel.Size = New System.Drawing.Size(13, 13)
         Me.flow1RenderedCounterLabel.TabIndex = 5
@@ -601,7 +741,7 @@ Partial Class MainForm
         '
         Me.flow1RenderedLabel.AutoSize = True
         Me.flow1RenderedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1RenderedLabel.Location = New System.Drawing.Point(142, 5)
+        Me.flow1RenderedLabel.Location = New System.Drawing.Point(136, 5)
         Me.flow1RenderedLabel.Name = "flow1RenderedLabel"
         Me.flow1RenderedLabel.Size = New System.Drawing.Size(57, 13)
         Me.flow1RenderedLabel.TabIndex = 2
@@ -636,16 +776,27 @@ Partial Class MainForm
         Me.sfpConnectButton.Text = "Connect"
         Me.sfpConnectButton.UseVisualStyleBackColor = True
         '
-        'Timer1
+        'CounterTimer
         '
-        Me.Timer1.Interval = 1000
+        Me.CounterTimer.Interval = 1000
+        '
+        'sfpApplyButton
+        '
+        Me.sfpApplyButton.Enabled = False
+        Me.sfpApplyButton.Location = New System.Drawing.Point(13, 10)
+        Me.sfpApplyButton.Name = "sfpApplyButton"
+        Me.sfpApplyButton.Size = New System.Drawing.Size(75, 23)
+        Me.sfpApplyButton.TabIndex = 6
+        Me.sfpApplyButton.Text = "Apply"
+        Me.sfpApplyButton.UseVisualStyleBackColor = True
         '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(370, 373)
+        Me.ClientSize = New System.Drawing.Size(367, 505)
+        Me.Controls.Add(Me.sfpApplyButton)
         Me.Controls.Add(Me.sfpConnectButton)
         Me.Controls.Add(Me.statusPanel)
         Me.Controls.Add(Me.detailPanel)
@@ -655,6 +806,8 @@ Partial Class MainForm
         Me.Text = "EmbSFPConfigurator"
         Me.detailPanel.ResumeLayout(False)
         Me.detailPanel.PerformLayout()
+        Me.sfpFilteringPanel.ResumeLayout(False)
+        Me.sfpFilteringPanel.PerformLayout()
         Me.sfpFormattingPanel.ResumeLayout(False)
         Me.sfpFormattingPanel.PerformLayout()
         Me.sfpAdvancedPanel.ResumeLayout(False)
@@ -713,7 +866,7 @@ Partial Class MainForm
     Friend WithEvents sfpFormatCodeRateLabel As Label
     Friend WithEvents sfpFormatCodeRateLabelLabel As Label
     Friend WithEvents sfpNameTextBox As TextBox
-    Friend WithEvents Timer1 As Timer
+    Friend WithEvents CounterTimer As Timer
     Friend WithEvents sfpFlowVlanTagTextBox As TextBox
     Friend WithEvents sfpFlowSrcPortTextBox As TextBox
     Friend WithEvents sfpFlowSsrcTextBox As TextBox
@@ -721,4 +874,17 @@ Partial Class MainForm
     Friend WithEvents sfpFlowSrcIpTextBox As TextBox
     Friend WithEvents sfpFlowPortTextBox As TextBox
     Friend WithEvents sfpFlowIPTextBox As TextBox
+    Friend WithEvents sfpApplyButton As Button
+    Friend WithEvents sfpFilteringPanel As Panel
+    Friend WithEvents sfpFilteringLineLabel As Label
+    Friend WithEvents sfpFilteringLabel As Label
+    Friend WithEvents sfpFilteringButton As Button
+    Friend WithEvents sfpFilterSSRCCheckbox As CheckBox
+    Friend WithEvents sfpFilterDestIPCheckbox As CheckBox
+    Friend WithEvents sfpFilterDestMACCheckbox As CheckBox
+    Friend WithEvents sfpFilterDestPortCheckbox As CheckBox
+    Friend WithEvents sfpFilterVlanCheckbox As CheckBox
+    Friend WithEvents sfpFilterSrcMACCheckbox As CheckBox
+    Friend WithEvents sfpFilterSrcPortCheckbox As CheckBox
+    Friend WithEvents sfpFilterSrcIPCheckbox As CheckBox
 End Class

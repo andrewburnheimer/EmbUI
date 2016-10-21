@@ -3,10 +3,15 @@ Imports System.Net
 Imports Newtonsoft.Json
 
 Public Class MainForm
+
+    Private sfpMgmtIp As String = ""
+    Private validIP As Boolean = False
+
     Private Sub sfpConnect_Button_Click(sender As Object, e As EventArgs) Handles sfpConnectButton.Click
         ' When device is determined to be a decapsulator, scootch sfpFormattingPanel.Location with Offset() down, and set sfpFilterPanel.visible = True
 
-        Dim sfpRequest As New Uri("http://" & sfpMgmtIpTextBox.Text & "/emsfp/node/v1/flows")
+        sfpMgmtIp = sfpMgmtIpTextBox.Text
+        Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
 
         sfpFlowIPTextBox.Enabled = True
         sfpFlowPortTextBox.Enabled = True
@@ -16,7 +21,8 @@ Public Class MainForm
         sfpFlowSrcPortTextBox.Enabled = True
         sfpFlowSsrcTextBox.Enabled = True
         sfpFlowVlanTagTextBox.Enabled = True
-        Timer1.Enabled = True
+        sfpApplyButton.Enabled = True
+        CounterTimer.Enabled = True
 
         GetResponse(sfpRequest, Function(x)
                                     Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
@@ -30,6 +36,31 @@ Public Class MainForm
                                     sfpFlowSsrcTextBox.Text = f.network.ssrc
                                     sfpFlowVlanTagTextBox.Text = f.network.vlan_tag
 
+                                    If Int(f.network.pkt_filter_dst_ip) > 0 Then
+                                        sfpFilterDestIPCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_dst_udp) > 0 Then
+                                        sfpFilterDestPortCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_dst_mac) > 0 Then
+                                        sfpFilterDestMACCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_src_ip) > 0 Then
+                                        sfpFilterSrcIPCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_src_udp) > 0 Then
+                                        sfpFilterSrcPortCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_src_mac) > 0 Then
+                                        sfpFilterSrcMACCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_vlan) > 0 Then
+                                        sfpFilterVlanCheckbox.Checked = True
+                                    End If
+                                    If Int(f.network.pkt_filter_ssrc) > 0 Then
+                                        sfpFilterSSRCCheckbox.Checked = True
+                                    End If
+
                                     sfpFormatCodeValidLabel.Text = f.format_code_valid
                                     sfpFormatCodeTScanLabel.Text = f.format_code_t_scan
                                     sfpFormatCodePScanLabel.Text = f.format_code_p_scan
@@ -40,9 +71,22 @@ Public Class MainForm
 
                                     Return 0
                                 End Function)
+
+        If sfpTypeLabel.Text = "1" Then
+            sfpNameTextBox.BackColor = Color.PaleGreen
+            sfpFlowIPTextBox.BackColor = Color.PaleGreen
+            sfpFlowPortTextBox.BackColor = Color.PaleGreen
+        End If
+
+        If sfpTypeLabel.Text = "2" Then
+            sfpNameTextBox.BackColor = Color.LightSalmon
+            sfpFlowIPTextBox.BackColor = Color.LightSalmon
+            sfpFlowPortTextBox.BackColor = Color.LightSalmon
+        End If
+
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles sfpAdvancedButton.Click
+    Private Sub sfpAdvancedButton_Click(sender As Object, e As EventArgs) Handles sfpAdvancedButton.Click
         If sfpAdvancedButton.Text Is "v" Then
             sfpAdvancedPanel.Height = 118
             sfpAdvancedButton.Text = "^"
@@ -79,8 +123,10 @@ Public Class MainForm
                         s = New StreamReader(a.Result)
                         callback(s.ReadToEnd())
                     End If
+                    validIP = True
                     Return 0
                 Catch ex As Exception
+                    validIP = False
                     MessageBox.Show("Problem reaching uri:  " & uri.ToString(), "EmbUI")
                     Return -1
                 End Try
@@ -88,18 +134,130 @@ Public Class MainForm
         wc.OpenReadAsync(uri)
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+    Private Sub CounterTimer_Tick(sender As Object, e As EventArgs) Handles CounterTimer.Tick
 
-        Dim sfpRequest As New Uri("http://" & sfpMgmtIpTextBox.Text & "/emsfp/node/v1/flows")
+        Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
 
+        If validIP = True Then
+            GetResponse(sfpRequest, Function(x)
+                                        Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
+                                        flow1SeenCounterLabel.Text = f.network.rx_pkt_cnt
+                                        flow1RenderedCounterLabel.Text = f.network.rx_pkt_good_cnt
+                                        flow1DroppedCounterLabel.Text = f.network.rx_pkt_filtd_cnt
+                                        Return 0
+                                    End Function)
+        End If
+    End Sub
+
+    Private Sub sfpApplyButton_Click(sender As Object, e As EventArgs) Handles sfpApplyButton.Click
+        Dim flowToSend As New Flow
+        Dim net As New Network
+        flowToSend.network = net
+
+        flowToSend.name = sfpNameTextBox.Text
+        flowToSend.network.dst_ip_addr = sfpFlowIPTextBox.Text
+        flowToSend.network.dst_udp_port = sfpFlowPortTextBox.Text
+        flowToSend.network.src_ip_addr = sfpFlowSrcIpTextBox.Text
+        flowToSend.network.src_udp_port = sfpFlowSrcPortTextBox.Text
+        flowToSend.network.dst_mac = sfpFlowDstMacTextBox.Text
+        flowToSend.network.ssrc = sfpFlowSsrcTextBox.Text
+        flowToSend.network.vlan_tag = sfpFlowVlanTagTextBox.Text
+
+
+        If sfpFilterDestIPCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_dst_ip = 1
+        Else
+            flowToSend.network.pkt_filter_dst_ip = 0
+        End If
+
+        If sfpFilterDestPortCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_dst_udp = 1
+        Else
+            flowToSend.network.pkt_filter_dst_udp = 0
+        End If
+
+        If sfpFilterDestMACCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_dst_mac = 1
+        Else
+            flowToSend.network.pkt_filter_dst_mac = 0
+        End If
+
+        If sfpFilterSrcIPCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_src_ip = 1
+        Else
+            flowToSend.network.pkt_filter_src_ip = 0
+        End If
+
+        If sfpFilterSrcPortCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_src_udp = 1
+        Else
+            flowToSend.network.pkt_filter_src_udp = 0
+        End If
+
+        If sfpFilterSrcMACCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_src_mac = 1
+        Else
+            flowToSend.network.pkt_filter_src_mac = 0
+        End If
+
+        If sfpFilterVlanCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_vlan = 1
+        Else
+            flowToSend.network.pkt_filter_vlan = 0
+        End If
+
+        If sfpFilterSSRCCheckbox.Checked = True Then
+            flowToSend.network.pkt_filter_ssrc = 1
+        Else
+            flowToSend.network.pkt_filter_ssrc = 0
+        End If
+
+        Dim bodyData As String
+        bodyData = JsonConvert.SerializeObject(flowToSend)
+        Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
+        IssueHTTPRequest(sfpRequest, "PUT", bodyData)
+
+        'To get updates on format codes, but the valid flag takes a little while to update
         GetResponse(sfpRequest, Function(x)
                                     Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
-                                    flow1SeenCounterLabel.Text = f.network.rx_pkt_cnt
-                                    flow1RenderedCounterLabel.Text = f.network.rx_pkt_good_cnt
-                                    flow1DroppedCounterLabel.Text = f.network.rx_pkt_filtd_cnt
+                                    sfpFormatCodeValidLabel.Text = f.format_code_valid
+                                    sfpFormatCodeTScanLabel.Text = f.format_code_t_scan
+                                    sfpFormatCodePScanLabel.Text = f.format_code_p_scan
+                                    sfpFormatCodeModeLabel.Text = f.format_code_mode
+                                    sfpFormatCodeFormatLabel.Text = f.format_code_format
+                                    sfpFormatClkRateLabel.Text = f.format_code_rate
+                                    sfpFormatCodeSamplingLabel.Text = f.format_code_sampling
+
                                     Return 0
                                 End Function)
+
     End Sub
+
+    Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "GET", Optional ByVal data As String = "")
+        Dim req As HttpWebRequest = WebRequest.Create(uri)
+        req.KeepAlive = False
+        req.Method = method.ToUpper()
+
+        If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
+            Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
+            req.ContentLength = dataBuffer.Length
+            req.ContentType = "application/json"
+            Dim PostData As Stream = req.GetRequestStream()
+            PostData.Write(dataBuffer, 0, dataBuffer.Length)
+            PostData.Close()
+        End If
+
+        Dim resp As HttpWebResponse = req.GetResponse()
+        Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(1252)
+        Dim loResponseStream As StreamReader = New StreamReader(resp.GetResponseStream(), enc)
+        Dim Response As String = loResponseStream.ReadToEnd()
+
+        loResponseStream.Close()
+        resp.Close()
+        Return Response
+    End Function
+
+
 End Class
 
 Public Class Flow
