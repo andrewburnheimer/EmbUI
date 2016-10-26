@@ -80,14 +80,19 @@ Partial Class MainForm
         Me.sfpTypeLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabelLabel = New System.Windows.Forms.Label()
         Me.sfpNameLabelLabel = New System.Windows.Forms.Label()
-        Me.statusPanel = New System.Windows.Forms.Panel()
+        Me.decapStatusPanel = New System.Windows.Forms.Panel()
+        Me.encapStatusPanel = New System.Windows.Forms.Panel()
+        Me.encapCounterNote = New System.Windows.Forms.Label()
+        Me.flow1SentCounterLabel = New System.Windows.Forms.Label()
+        Me.flow1SentLabel = New System.Windows.Forms.Label()
+        Me.flow1LabelEncap = New System.Windows.Forms.Label()
         Me.flow1SeenCounterLabel = New System.Windows.Forms.Label()
         Me.flow1RenderedCounterLabel = New System.Windows.Forms.Label()
         Me.flow1DroppedCounterLabel = New System.Windows.Forms.Label()
         Me.flow1DroppedLabel = New System.Windows.Forms.Label()
         Me.flow1RenderedLabel = New System.Windows.Forms.Label()
         Me.flow1SeenLabel = New System.Windows.Forms.Label()
-        Me.flow1Label = New System.Windows.Forms.Label()
+        Me.flow1LabelDecap = New System.Windows.Forms.Label()
         Me.sfpFlowDetailToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.sfpConnectButton = New System.Windows.Forms.Button()
         Me.CounterTimer = New System.Windows.Forms.Timer(Me.components)
@@ -96,7 +101,8 @@ Partial Class MainForm
         Me.sfpFilteringPanel.SuspendLayout()
         Me.sfpFormattingPanel.SuspendLayout()
         Me.sfpAdvancedPanel.SuspendLayout()
-        Me.statusPanel.SuspendLayout()
+        Me.decapStatusPanel.SuspendLayout()
+        Me.encapStatusPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'sfpMgmtIPLabel
@@ -149,10 +155,12 @@ Partial Class MainForm
         Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringLineLabel)
         Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringLabel)
         Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringButton)
-        Me.sfpFilteringPanel.Location = New System.Drawing.Point(5, 297)
+        Me.sfpFilteringPanel.Enabled = False
+        Me.sfpFilteringPanel.Location = New System.Drawing.Point(7, 141)
         Me.sfpFilteringPanel.Name = "sfpFilteringPanel"
-        Me.sfpFilteringPanel.Size = New System.Drawing.Size(336, 126)
+        Me.sfpFilteringPanel.Size = New System.Drawing.Size(333, 33)
         Me.sfpFilteringPanel.TabIndex = 26
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFilteringPanel, "Decap Only")
         '
         'sfpFilterSSRCCheckbox
         '
@@ -237,19 +245,22 @@ Partial Class MainForm
         'sfpFilteringLineLabel
         '
         Me.sfpFilteringLineLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.sfpFilteringLineLabel.Location = New System.Drawing.Point(53, 19)
+        Me.sfpFilteringLineLabel.Location = New System.Drawing.Point(84, 19)
         Me.sfpFilteringLineLabel.Name = "sfpFilteringLineLabel"
-        Me.sfpFilteringLineLabel.Size = New System.Drawing.Size(250, 2)
+        Me.sfpFilteringLineLabel.Size = New System.Drawing.Size(220, 2)
         Me.sfpFilteringLineLabel.TabIndex = 13
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFilteringLineLabel, "Decap Only")
         '
         'sfpFilteringLabel
         '
         Me.sfpFilteringLabel.AutoSize = True
-        Me.sfpFilteringLabel.Location = New System.Drawing.Point(10, 12)
+        Me.sfpFilteringLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.sfpFilteringLabel.Location = New System.Drawing.Point(5, 12)
         Me.sfpFilteringLabel.Name = "sfpFilteringLabel"
-        Me.sfpFilteringLabel.Size = New System.Drawing.Size(43, 13)
+        Me.sfpFilteringLabel.Size = New System.Drawing.Size(78, 13)
         Me.sfpFilteringLabel.TabIndex = 12
-        Me.sfpFilteringLabel.Text = "Filtering"
+        Me.sfpFilteringLabel.Text = "Decap Filtering"
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFilteringLabel, "Decap Only")
         '
         'sfpFilteringButton
         '
@@ -258,13 +269,14 @@ Partial Class MainForm
         Me.sfpFilteringButton.Size = New System.Drawing.Size(19, 23)
         Me.sfpFilteringButton.TabIndex = 11
         Me.sfpFilteringButton.Text = "v"
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFilteringButton, "Decap Only")
         Me.sfpFilteringButton.UseVisualStyleBackColor = True
         '
         'sfpFlowPortTextBox
         '
         Me.sfpFlowPortTextBox.BackColor = System.Drawing.SystemColors.Window
         Me.sfpFlowPortTextBox.Enabled = False
-        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(285, 31)
+        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(266, 31)
         Me.sfpFlowPortTextBox.Name = "sfpFlowPortTextBox"
         Me.sfpFlowPortTextBox.Size = New System.Drawing.Size(50, 20)
         Me.sfpFlowPortTextBox.TabIndex = 25
@@ -280,7 +292,7 @@ Partial Class MainForm
         'sfpNameTextBox
         '
         Me.sfpNameTextBox.Enabled = False
-        Me.sfpNameTextBox.Location = New System.Drawing.Point(127, 4)
+        Me.sfpNameTextBox.Location = New System.Drawing.Point(129, 4)
         Me.sfpNameTextBox.Name = "sfpNameTextBox"
         Me.sfpNameTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpNameTextBox.TabIndex = 6
@@ -308,16 +320,17 @@ Partial Class MainForm
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatClkRateLabelLabel)
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatLabel)
         Me.sfpFormattingPanel.Controls.Add(Me.sfpFormatButton)
-        Me.sfpFormattingPanel.Location = New System.Drawing.Point(7, 112)
+        Me.sfpFormattingPanel.Enabled = False
+        Me.sfpFormattingPanel.Location = New System.Drawing.Point(7, 108)
         Me.sfpFormattingPanel.Name = "sfpFormattingPanel"
-        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 26)
+        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 30)
         Me.sfpFormattingPanel.TabIndex = 23
         '
         'sfpFormatCodeSamplingLabel
         '
         Me.sfpFormatCodeSamplingLabel.AutoSize = True
         Me.sfpFormatCodeSamplingLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeSamplingLabel.Location = New System.Drawing.Point(183, 59)
+        Me.sfpFormatCodeSamplingLabel.Location = New System.Drawing.Point(168, 65)
         Me.sfpFormatCodeSamplingLabel.Name = "sfpFormatCodeSamplingLabel"
         Me.sfpFormatCodeSamplingLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeSamplingLabel.TabIndex = 24
@@ -327,17 +340,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeSamplingLabelLabel.AutoSize = True
         Me.sfpFormatCodeSamplingLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeSamplingLabelLabel.Location = New System.Drawing.Point(104, 59)
+        Me.sfpFormatCodeSamplingLabelLabel.Location = New System.Drawing.Point(114, 65)
         Me.sfpFormatCodeSamplingLabelLabel.Name = "sfpFormatCodeSamplingLabelLabel"
-        Me.sfpFormatCodeSamplingLabelLabel.Size = New System.Drawing.Size(81, 13)
+        Me.sfpFormatCodeSamplingLabelLabel.Size = New System.Drawing.Size(53, 13)
         Me.sfpFormatCodeSamplingLabelLabel.TabIndex = 23
-        Me.sfpFormatCodeSamplingLabelLabel.Text = "Code Sampling:"
+        Me.sfpFormatCodeSamplingLabelLabel.Text = "Sampling:"
         '
         'sfpFormatCodeRateLabel
         '
         Me.sfpFormatCodeRateLabel.AutoSize = True
         Me.sfpFormatCodeRateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeRateLabel.Location = New System.Drawing.Point(75, 59)
+        Me.sfpFormatCodeRateLabel.Location = New System.Drawing.Point(70, 65)
         Me.sfpFormatCodeRateLabel.Name = "sfpFormatCodeRateLabel"
         Me.sfpFormatCodeRateLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeRateLabel.TabIndex = 22
@@ -347,17 +360,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeRateLabelLabel.AutoSize = True
         Me.sfpFormatCodeRateLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeRateLabelLabel.Location = New System.Drawing.Point(17, 59)
+        Me.sfpFormatCodeRateLabelLabel.Location = New System.Drawing.Point(37, 66)
         Me.sfpFormatCodeRateLabelLabel.Name = "sfpFormatCodeRateLabelLabel"
-        Me.sfpFormatCodeRateLabelLabel.Size = New System.Drawing.Size(61, 13)
+        Me.sfpFormatCodeRateLabelLabel.Size = New System.Drawing.Size(33, 13)
         Me.sfpFormatCodeRateLabelLabel.TabIndex = 21
-        Me.sfpFormatCodeRateLabelLabel.Text = "Code Rate:"
+        Me.sfpFormatCodeRateLabelLabel.Text = "Rate:"
         '
         'sfpFormatCodeFormatLabel
         '
         Me.sfpFormatCodeFormatLabel.AutoSize = True
         Me.sfpFormatCodeFormatLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeFormatLabel.Location = New System.Drawing.Point(75, 46)
+        Me.sfpFormatCodeFormatLabel.Location = New System.Drawing.Point(70, 48)
         Me.sfpFormatCodeFormatLabel.Name = "sfpFormatCodeFormatLabel"
         Me.sfpFormatCodeFormatLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeFormatLabel.TabIndex = 20
@@ -367,17 +380,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeFormatLabelLabel.AutoSize = True
         Me.sfpFormatCodeFormatLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeFormatLabelLabel.Location = New System.Drawing.Point(8, 46)
+        Me.sfpFormatCodeFormatLabelLabel.Location = New System.Drawing.Point(28, 49)
         Me.sfpFormatCodeFormatLabelLabel.Name = "sfpFormatCodeFormatLabelLabel"
-        Me.sfpFormatCodeFormatLabelLabel.Size = New System.Drawing.Size(70, 13)
+        Me.sfpFormatCodeFormatLabelLabel.Size = New System.Drawing.Size(42, 13)
         Me.sfpFormatCodeFormatLabelLabel.TabIndex = 19
-        Me.sfpFormatCodeFormatLabelLabel.Text = "Code Format:"
+        Me.sfpFormatCodeFormatLabelLabel.Text = "Format:"
         '
         'sfpFormatCodePScanLabel
         '
         Me.sfpFormatCodePScanLabel.AutoSize = True
         Me.sfpFormatCodePScanLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodePScanLabel.Location = New System.Drawing.Point(183, 46)
+        Me.sfpFormatCodePScanLabel.Location = New System.Drawing.Point(168, 49)
         Me.sfpFormatCodePScanLabel.Name = "sfpFormatCodePScanLabel"
         Me.sfpFormatCodePScanLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodePScanLabel.TabIndex = 18
@@ -387,17 +400,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodePScanLabelLabel.AutoSize = True
         Me.sfpFormatCodePScanLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodePScanLabelLabel.Location = New System.Drawing.Point(112, 46)
+        Me.sfpFormatCodePScanLabelLabel.Location = New System.Drawing.Point(122, 49)
         Me.sfpFormatCodePScanLabelLabel.Name = "sfpFormatCodePScanLabelLabel"
-        Me.sfpFormatCodePScanLabelLabel.Size = New System.Drawing.Size(73, 13)
+        Me.sfpFormatCodePScanLabelLabel.Size = New System.Drawing.Size(45, 13)
         Me.sfpFormatCodePScanLabelLabel.TabIndex = 17
-        Me.sfpFormatCodePScanLabelLabel.Text = "Code P Scan:"
+        Me.sfpFormatCodePScanLabelLabel.Text = "P Scan:"
         '
         'sfpFormatCodeTScanLabel
         '
         Me.sfpFormatCodeTScanLabel.AutoSize = True
         Me.sfpFormatCodeTScanLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeTScanLabel.Location = New System.Drawing.Point(282, 46)
+        Me.sfpFormatCodeTScanLabel.Location = New System.Drawing.Point(268, 53)
         Me.sfpFormatCodeTScanLabel.Name = "sfpFormatCodeTScanLabel"
         Me.sfpFormatCodeTScanLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeTScanLabel.TabIndex = 16
@@ -407,17 +420,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeTScanLabelLabel.AutoSize = True
         Me.sfpFormatCodeTScanLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeTScanLabelLabel.Location = New System.Drawing.Point(211, 46)
+        Me.sfpFormatCodeTScanLabelLabel.Location = New System.Drawing.Point(218, 51)
         Me.sfpFormatCodeTScanLabelLabel.Name = "sfpFormatCodeTScanLabelLabel"
-        Me.sfpFormatCodeTScanLabelLabel.Size = New System.Drawing.Size(73, 13)
+        Me.sfpFormatCodeTScanLabelLabel.Size = New System.Drawing.Size(45, 13)
         Me.sfpFormatCodeTScanLabelLabel.TabIndex = 15
-        Me.sfpFormatCodeTScanLabelLabel.Text = "Code T Scan:"
+        Me.sfpFormatCodeTScanLabelLabel.Text = "T Scan:"
         '
         'sfpFormatCodeModeLabel
         '
         Me.sfpFormatCodeModeLabel.AutoSize = True
         Me.sfpFormatCodeModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeModeLabel.Location = New System.Drawing.Point(282, 33)
+        Me.sfpFormatCodeModeLabel.Location = New System.Drawing.Point(268, 33)
         Me.sfpFormatCodeModeLabel.Name = "sfpFormatCodeModeLabel"
         Me.sfpFormatCodeModeLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeModeLabel.TabIndex = 14
@@ -427,17 +440,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeModeLabelLabel.AutoSize = True
         Me.sfpFormatCodeModeLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeModeLabelLabel.Location = New System.Drawing.Point(219, 33)
+        Me.sfpFormatCodeModeLabelLabel.Location = New System.Drawing.Point(226, 33)
         Me.sfpFormatCodeModeLabelLabel.Name = "sfpFormatCodeModeLabelLabel"
-        Me.sfpFormatCodeModeLabelLabel.Size = New System.Drawing.Size(65, 13)
+        Me.sfpFormatCodeModeLabelLabel.Size = New System.Drawing.Size(37, 13)
         Me.sfpFormatCodeModeLabelLabel.TabIndex = 13
-        Me.sfpFormatCodeModeLabelLabel.Text = "Code Mode:"
+        Me.sfpFormatCodeModeLabelLabel.Text = "Mode:"
         '
         'sfpFormatCodeValidLabel
         '
         Me.sfpFormatCodeValidLabel.AutoSize = True
         Me.sfpFormatCodeValidLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeValidLabel.Location = New System.Drawing.Point(183, 33)
+        Me.sfpFormatCodeValidLabel.Location = New System.Drawing.Point(168, 33)
         Me.sfpFormatCodeValidLabel.Name = "sfpFormatCodeValidLabel"
         Me.sfpFormatCodeValidLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeValidLabel.TabIndex = 12
@@ -447,17 +460,17 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeValidLabelLabel.AutoSize = True
         Me.sfpFormatCodeValidLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeValidLabelLabel.Location = New System.Drawing.Point(124, 33)
+        Me.sfpFormatCodeValidLabelLabel.Location = New System.Drawing.Point(134, 33)
         Me.sfpFormatCodeValidLabelLabel.Name = "sfpFormatCodeValidLabelLabel"
-        Me.sfpFormatCodeValidLabelLabel.Size = New System.Drawing.Size(61, 13)
+        Me.sfpFormatCodeValidLabelLabel.Size = New System.Drawing.Size(33, 13)
         Me.sfpFormatCodeValidLabelLabel.TabIndex = 11
-        Me.sfpFormatCodeValidLabelLabel.Text = "Code Valid:"
+        Me.sfpFormatCodeValidLabelLabel.Text = "Valid:"
         '
         'sfpFormatClkRateLabel
         '
         Me.sfpFormatClkRateLabel.AutoSize = True
         Me.sfpFormatClkRateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatClkRateLabel.Location = New System.Drawing.Point(75, 33)
+        Me.sfpFormatClkRateLabel.Location = New System.Drawing.Point(70, 33)
         Me.sfpFormatClkRateLabel.Name = "sfpFormatClkRateLabel"
         Me.sfpFormatClkRateLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatClkRateLabel.TabIndex = 8
@@ -466,16 +479,16 @@ Partial Class MainForm
         'sfpFormatLineLabel
         '
         Me.sfpFormatLineLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D
-        Me.sfpFormatLineLabel.Location = New System.Drawing.Point(94, 15)
+        Me.sfpFormatLineLabel.Location = New System.Drawing.Point(107, 15)
         Me.sfpFormatLineLabel.Name = "sfpFormatLineLabel"
-        Me.sfpFormatLineLabel.Size = New System.Drawing.Size(214, 2)
+        Me.sfpFormatLineLabel.Size = New System.Drawing.Size(200, 2)
         Me.sfpFormatLineLabel.TabIndex = 10
         '
         'sfpFormatClkRateLabelLabel
         '
         Me.sfpFormatClkRateLabelLabel.AutoSize = True
         Me.sfpFormatClkRateLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatClkRateLabelLabel.Location = New System.Drawing.Point(15, 33)
+        Me.sfpFormatClkRateLabelLabel.Location = New System.Drawing.Point(7, 33)
         Me.sfpFormatClkRateLabelLabel.Name = "sfpFormatClkRateLabelLabel"
         Me.sfpFormatClkRateLabelLabel.Size = New System.Drawing.Size(63, 13)
         Me.sfpFormatClkRateLabelLabel.TabIndex = 7
@@ -484,11 +497,12 @@ Partial Class MainForm
         'sfpFormatLabel
         '
         Me.sfpFormatLabel.AutoSize = True
+        Me.sfpFormatLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.sfpFormatLabel.Location = New System.Drawing.Point(3, 8)
         Me.sfpFormatLabel.Name = "sfpFormatLabel"
-        Me.sfpFormatLabel.Size = New System.Drawing.Size(93, 13)
+        Me.sfpFormatLabel.Size = New System.Drawing.Size(102, 13)
         Me.sfpFormatLabel.TabIndex = 9
-        Me.sfpFormatLabel.Text = "Video Format Info."
+        Me.sfpFormatLabel.Text = "Video Format Codes"
         '
         'sfpFormatButton
         '
@@ -516,14 +530,14 @@ Partial Class MainForm
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpAdvancedLineLabel)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpAdvancedLabel)
         Me.sfpAdvancedPanel.Controls.Add(Me.sfpAdvancedButton)
+        Me.sfpAdvancedPanel.Enabled = False
         Me.sfpAdvancedPanel.Location = New System.Drawing.Point(7, 72)
         Me.sfpAdvancedPanel.Name = "sfpAdvancedPanel"
-        Me.sfpAdvancedPanel.Size = New System.Drawing.Size(333, 34)
+        Me.sfpAdvancedPanel.Size = New System.Drawing.Size(333, 32)
         Me.sfpAdvancedPanel.TabIndex = 10
         '
         'sfpFlowVlanTagTextBox
         '
-        Me.sfpFlowVlanTagTextBox.Enabled = False
         Me.sfpFlowVlanTagTextBox.Location = New System.Drawing.Point(265, 64)
         Me.sfpFlowVlanTagTextBox.Name = "sfpFlowVlanTagTextBox"
         Me.sfpFlowVlanTagTextBox.Size = New System.Drawing.Size(50, 20)
@@ -531,7 +545,6 @@ Partial Class MainForm
         '
         'sfpFlowSrcPortTextBox
         '
-        Me.sfpFlowSrcPortTextBox.Enabled = False
         Me.sfpFlowSrcPortTextBox.Location = New System.Drawing.Point(265, 36)
         Me.sfpFlowSrcPortTextBox.Name = "sfpFlowSrcPortTextBox"
         Me.sfpFlowSrcPortTextBox.Size = New System.Drawing.Size(50, 20)
@@ -539,72 +552,69 @@ Partial Class MainForm
         '
         'sfpFlowSsrcTextBox
         '
-        Me.sfpFlowSsrcTextBox.Enabled = False
-        Me.sfpFlowSsrcTextBox.Location = New System.Drawing.Point(80, 89)
+        Me.sfpFlowSsrcTextBox.Location = New System.Drawing.Point(89, 89)
         Me.sfpFlowSsrcTextBox.Name = "sfpFlowSsrcTextBox"
         Me.sfpFlowSsrcTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpFlowSsrcTextBox.TabIndex = 26
         '
         'sfpFlowDstMacTextBox
         '
-        Me.sfpFlowDstMacTextBox.Enabled = False
-        Me.sfpFlowDstMacTextBox.Location = New System.Drawing.Point(85, 62)
+        Me.sfpFlowDstMacTextBox.Location = New System.Drawing.Point(89, 62)
         Me.sfpFlowDstMacTextBox.Name = "sfpFlowDstMacTextBox"
         Me.sfpFlowDstMacTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpFlowDstMacTextBox.TabIndex = 25
         '
         'sfpFlowSrcIpTextBox
         '
-        Me.sfpFlowSrcIpTextBox.Enabled = False
-        Me.sfpFlowSrcIpTextBox.Location = New System.Drawing.Point(96, 37)
+        Me.sfpFlowSrcIpTextBox.Location = New System.Drawing.Point(90, 37)
         Me.sfpFlowSrcIpTextBox.Name = "sfpFlowSrcIpTextBox"
-        Me.sfpFlowSrcIpTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.sfpFlowSrcIpTextBox.Size = New System.Drawing.Size(99, 20)
         Me.sfpFlowSrcIpTextBox.TabIndex = 24
         '
         'sfpFlowSsrcLabel
         '
         Me.sfpFlowSsrcLabel.AutoSize = True
-        Me.sfpFlowSsrcLabel.Location = New System.Drawing.Point(13, 92)
+        Me.sfpFlowSsrcLabel.Location = New System.Drawing.Point(51, 92)
         Me.sfpFlowSsrcLabel.Name = "sfpFlowSsrcLabel"
-        Me.sfpFlowSsrcLabel.Size = New System.Drawing.Size(61, 13)
+        Me.sfpFlowSsrcLabel.Size = New System.Drawing.Size(39, 13)
         Me.sfpFlowSsrcLabel.TabIndex = 21
-        Me.sfpFlowSsrcLabel.Text = "RTP SSRC"
+        Me.sfpFlowSsrcLabel.Text = "SSRC:"
         '
         'sfpFlowVlanTagLabel
         '
         Me.sfpFlowVlanTagLabel.AutoSize = True
-        Me.sfpFlowVlanTagLabel.Location = New System.Drawing.Point(199, 66)
+        Me.sfpFlowVlanTagLabel.Location = New System.Drawing.Point(204, 66)
         Me.sfpFlowVlanTagLabel.Name = "sfpFlowVlanTagLabel"
-        Me.sfpFlowVlanTagLabel.Size = New System.Drawing.Size(57, 13)
+        Me.sfpFlowVlanTagLabel.Size = New System.Drawing.Size(60, 13)
         Me.sfpFlowVlanTagLabel.TabIndex = 19
-        Me.sfpFlowVlanTagLabel.Text = "VLAN Tag"
+        Me.sfpFlowVlanTagLabel.Text = "VLAN Tag:"
         '
         'sfpFlowDstMacLabel
         '
         Me.sfpFlowDstMacLabel.AutoSize = True
-        Me.sfpFlowDstMacLabel.Location = New System.Drawing.Point(13, 66)
+        Me.sfpFlowDstMacLabel.Location = New System.Drawing.Point(32, 66)
         Me.sfpFlowDstMacLabel.Name = "sfpFlowDstMacLabel"
         Me.sfpFlowDstMacLabel.Size = New System.Drawing.Size(58, 13)
         Me.sfpFlowDstMacLabel.TabIndex = 15
-        Me.sfpFlowDstMacLabel.Text = "Dest. MAC"
+        Me.sfpFlowDstMacLabel.Text = "Dest MAC:"
         '
         'sfpFlowSrcPortLabel
         '
         Me.sfpFlowSrcPortLabel.AutoSize = True
         Me.sfpFlowSrcPortLabel.Location = New System.Drawing.Point(199, 40)
         Me.sfpFlowSrcPortLabel.Name = "sfpFlowSrcPortLabel"
-        Me.sfpFlowSrcPortLabel.Size = New System.Drawing.Size(63, 13)
+        Me.sfpFlowSrcPortLabel.Size = New System.Drawing.Size(66, 13)
         Me.sfpFlowSrcPortLabel.TabIndex = 13
-        Me.sfpFlowSrcPortLabel.Text = "Source Port"
+        Me.sfpFlowSrcPortLabel.Text = "Source Port:"
         '
         'sfpFlowSrcIpLabel
         '
         Me.sfpFlowSrcIpLabel.AutoSize = True
-        Me.sfpFlowSrcIpLabel.Location = New System.Drawing.Point(13, 40)
+        Me.sfpFlowSrcIpLabel.Location = New System.Drawing.Point(4, 40)
         Me.sfpFlowSrcIpLabel.Name = "sfpFlowSrcIpLabel"
-        Me.sfpFlowSrcIpLabel.Size = New System.Drawing.Size(82, 13)
+        Me.sfpFlowSrcIpLabel.Size = New System.Drawing.Size(85, 13)
         Me.sfpFlowSrcIpLabel.TabIndex = 11
-        Me.sfpFlowSrcIpLabel.Text = "Source Address"
+        Me.sfpFlowSrcIpLabel.Text = "Source Address:"
         '
         'sfpAdvancedLineLabel
         '
@@ -617,6 +627,7 @@ Partial Class MainForm
         'sfpAdvancedLabel
         '
         Me.sfpAdvancedLabel.AutoSize = True
+        Me.sfpAdvancedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.sfpAdvancedLabel.Location = New System.Drawing.Point(3, 8)
         Me.sfpAdvancedLabel.Name = "sfpAdvancedLabel"
         Me.sfpAdvancedLabel.Size = New System.Drawing.Size(140, 13)
@@ -635,7 +646,7 @@ Partial Class MainForm
         'sfpFlowPortLabelLabel
         '
         Me.sfpFlowPortLabelLabel.AutoSize = True
-        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(253, 34)
+        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(237, 34)
         Me.sfpFlowPortLabelLabel.Name = "sfpFlowPortLabelLabel"
         Me.sfpFlowPortLabelLabel.Size = New System.Drawing.Size(29, 13)
         Me.sfpFlowPortLabelLabel.TabIndex = 6
@@ -655,7 +666,7 @@ Partial Class MainForm
         'sfpTypeLabel
         '
         Me.sfpTypeLabel.AutoSize = True
-        Me.sfpTypeLabel.Location = New System.Drawing.Point(294, 6)
+        Me.sfpTypeLabel.Location = New System.Drawing.Point(263, 7)
         Me.sfpTypeLabel.Name = "sfpTypeLabel"
         Me.sfpTypeLabel.Size = New System.Drawing.Size(0, 13)
         Me.sfpTypeLabel.TabIndex = 3
@@ -663,7 +674,7 @@ Partial Class MainForm
         'sfpTypeLabelLabel
         '
         Me.sfpTypeLabelLabel.AutoSize = True
-        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(253, 6)
+        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(233, 6)
         Me.sfpTypeLabelLabel.Name = "sfpTypeLabelLabel"
         Me.sfpTypeLabelLabel.Size = New System.Drawing.Size(34, 13)
         Me.sfpTypeLabelLabel.TabIndex = 2
@@ -672,27 +683,83 @@ Partial Class MainForm
         'sfpNameLabelLabel
         '
         Me.sfpNameLabelLabel.AutoSize = True
-        Me.sfpNameLabelLabel.Location = New System.Drawing.Point(83, 6)
+        Me.sfpNameLabelLabel.Location = New System.Drawing.Point(89, 6)
         Me.sfpNameLabelLabel.Name = "sfpNameLabelLabel"
         Me.sfpNameLabelLabel.Size = New System.Drawing.Size(38, 13)
         Me.sfpNameLabelLabel.TabIndex = 0
         Me.sfpNameLabelLabel.Text = "Name:"
         '
-        'statusPanel
+        'decapStatusPanel
         '
-        Me.statusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+        Me.decapStatusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.statusPanel.Controls.Add(Me.flow1SeenCounterLabel)
-        Me.statusPanel.Controls.Add(Me.flow1RenderedCounterLabel)
-        Me.statusPanel.Controls.Add(Me.flow1DroppedCounterLabel)
-        Me.statusPanel.Controls.Add(Me.flow1DroppedLabel)
-        Me.statusPanel.Controls.Add(Me.flow1RenderedLabel)
-        Me.statusPanel.Controls.Add(Me.flow1SeenLabel)
-        Me.statusPanel.Controls.Add(Me.flow1Label)
-        Me.statusPanel.Location = New System.Drawing.Point(13, 470)
-        Me.statusPanel.Name = "statusPanel"
-        Me.statusPanel.Size = New System.Drawing.Size(342, 23)
-        Me.statusPanel.TabIndex = 4
+        Me.decapStatusPanel.Controls.Add(Me.encapStatusPanel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1SeenCounterLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1RenderedCounterLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1DroppedCounterLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1DroppedLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1RenderedLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1SeenLabel)
+        Me.decapStatusPanel.Controls.Add(Me.flow1LabelDecap)
+        Me.decapStatusPanel.Location = New System.Drawing.Point(13, 470)
+        Me.decapStatusPanel.Name = "decapStatusPanel"
+        Me.decapStatusPanel.Size = New System.Drawing.Size(342, 23)
+        Me.decapStatusPanel.TabIndex = 4
+        '
+        'encapStatusPanel
+        '
+        Me.encapStatusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.encapStatusPanel.Controls.Add(Me.encapCounterNote)
+        Me.encapStatusPanel.Controls.Add(Me.flow1SentCounterLabel)
+        Me.encapStatusPanel.Controls.Add(Me.flow1SentLabel)
+        Me.encapStatusPanel.Controls.Add(Me.flow1LabelEncap)
+        Me.encapStatusPanel.Location = New System.Drawing.Point(0, 0)
+        Me.encapStatusPanel.Name = "encapStatusPanel"
+        Me.encapStatusPanel.Size = New System.Drawing.Size(342, 23)
+        Me.encapStatusPanel.TabIndex = 27
+        '
+        'encapCounterNote
+        '
+        Me.encapCounterNote.AutoSize = True
+        Me.encapCounterNote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.encapCounterNote.Location = New System.Drawing.Point(159, 5)
+        Me.encapCounterNote.Name = "encapCounterNote"
+        Me.encapCounterNote.Size = New System.Drawing.Size(179, 13)
+        Me.encapCounterNote.TabIndex = 6
+        Me.encapCounterNote.Text = "Counter on Encap SFPs not iterating"
+        Me.encapCounterNote.Visible = False
+        '
+        'flow1SentCounterLabel
+        '
+        Me.flow1SentCounterLabel.AutoSize = True
+        Me.flow1SentCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SentCounterLabel.Location = New System.Drawing.Point(122, 5)
+        Me.flow1SentCounterLabel.Name = "flow1SentCounterLabel"
+        Me.flow1SentCounterLabel.Size = New System.Drawing.Size(13, 13)
+        Me.flow1SentCounterLabel.TabIndex = 5
+        Me.flow1SentCounterLabel.Text = "0"
+        Me.flow1SentCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'flow1SentLabel
+        '
+        Me.flow1SentLabel.AutoSize = True
+        Me.flow1SentLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SentLabel.Location = New System.Drawing.Point(94, 5)
+        Me.flow1SentLabel.Name = "flow1SentLabel"
+        Me.flow1SentLabel.Size = New System.Drawing.Size(32, 13)
+        Me.flow1SentLabel.TabIndex = 2
+        Me.flow1SentLabel.Text = "Sent:"
+        '
+        'flow1LabelEncap
+        '
+        Me.flow1LabelEncap.AutoSize = True
+        Me.flow1LabelEncap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1LabelEncap.Location = New System.Drawing.Point(3, 5)
+        Me.flow1LabelEncap.Name = "flow1LabelEncap"
+        Me.flow1LabelEncap.Size = New System.Drawing.Size(44, 13)
+        Me.flow1LabelEncap.TabIndex = 0
+        Me.flow1LabelEncap.Text = "Flow 1"
         '
         'flow1SeenCounterLabel
         '
@@ -757,15 +824,15 @@ Partial Class MainForm
         Me.flow1SeenLabel.TabIndex = 1
         Me.flow1SeenLabel.Text = "Seen:"
         '
-        'flow1Label
+        'flow1LabelDecap
         '
-        Me.flow1Label.AutoSize = True
-        Me.flow1Label.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1Label.Location = New System.Drawing.Point(3, 5)
-        Me.flow1Label.Name = "flow1Label"
-        Me.flow1Label.Size = New System.Drawing.Size(44, 13)
-        Me.flow1Label.TabIndex = 0
-        Me.flow1Label.Text = "Flow 1"
+        Me.flow1LabelDecap.AutoSize = True
+        Me.flow1LabelDecap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1LabelDecap.Location = New System.Drawing.Point(3, 5)
+        Me.flow1LabelDecap.Name = "flow1LabelDecap"
+        Me.flow1LabelDecap.Size = New System.Drawing.Size(44, 13)
+        Me.flow1LabelDecap.TabIndex = 0
+        Me.flow1LabelDecap.Text = "Flow 1"
         '
         'sfpConnectButton
         '
@@ -798,12 +865,16 @@ Partial Class MainForm
         Me.ClientSize = New System.Drawing.Size(367, 505)
         Me.Controls.Add(Me.sfpApplyButton)
         Me.Controls.Add(Me.sfpConnectButton)
-        Me.Controls.Add(Me.statusPanel)
         Me.Controls.Add(Me.detailPanel)
         Me.Controls.Add(Me.sfpMgmtIpTextBox)
         Me.Controls.Add(Me.sfpMgmtIPLabel)
+        Me.Controls.Add(Me.decapStatusPanel)
+        Me.Location = New System.Drawing.Point(50, 50)
+        Me.MaximizeBox = False
+        Me.MaximumSize = New System.Drawing.Size(383, 543)
+        Me.MinimumSize = New System.Drawing.Size(383, 543)
         Me.Name = "MainForm"
-        Me.Text = "EmbSFPConfigurator"
+        Me.Text = "EmbSFP Configurator"
         Me.detailPanel.ResumeLayout(False)
         Me.detailPanel.PerformLayout()
         Me.sfpFilteringPanel.ResumeLayout(False)
@@ -812,8 +883,10 @@ Partial Class MainForm
         Me.sfpFormattingPanel.PerformLayout()
         Me.sfpAdvancedPanel.ResumeLayout(False)
         Me.sfpAdvancedPanel.PerformLayout()
-        Me.statusPanel.ResumeLayout(False)
-        Me.statusPanel.PerformLayout()
+        Me.decapStatusPanel.ResumeLayout(False)
+        Me.decapStatusPanel.PerformLayout()
+        Me.encapStatusPanel.ResumeLayout(False)
+        Me.encapStatusPanel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -821,8 +894,8 @@ Partial Class MainForm
     Friend WithEvents sfpMgmtIPLabel As Label
     Friend WithEvents sfpMgmtIpTextBox As TextBox
     Friend WithEvents detailPanel As Panel
-    Friend WithEvents statusPanel As Panel
-    Friend WithEvents flow1Label As Label
+    Friend WithEvents decapStatusPanel As Panel
+    Friend WithEvents flow1LabelDecap As Label
     Friend WithEvents flow1SeenLabel As Label
     Friend WithEvents flow1DroppedCounterLabel As Label
     Friend WithEvents flow1DroppedLabel As Label
@@ -887,4 +960,9 @@ Partial Class MainForm
     Friend WithEvents sfpFilterSrcMACCheckbox As CheckBox
     Friend WithEvents sfpFilterSrcPortCheckbox As CheckBox
     Friend WithEvents sfpFilterSrcIPCheckbox As CheckBox
+    Friend WithEvents encapStatusPanel As Panel
+    Friend WithEvents flow1SentCounterLabel As Label
+    Friend WithEvents flow1SentLabel As Label
+    Friend WithEvents flow1LabelEncap As Label
+    Friend WithEvents encapCounterNote As Label
 End Class
