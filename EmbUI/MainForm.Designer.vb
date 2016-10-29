@@ -24,7 +24,6 @@ Partial Class MainForm
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Me.sfpMgmtIPLabel = New System.Windows.Forms.Label()
-        Me.sfpMgmtIpTextBox = New System.Windows.Forms.TextBox()
         Me.detailPanel = New System.Windows.Forms.Panel()
         Me.sfpFilteringPanel = New System.Windows.Forms.Panel()
         Me.sfpFilterSSRCCheckbox = New System.Windows.Forms.CheckBox()
@@ -75,11 +74,12 @@ Partial Class MainForm
         Me.sfpAdvancedLineLabel = New System.Windows.Forms.Label()
         Me.sfpAdvancedLabel = New System.Windows.Forms.Label()
         Me.sfpAdvancedButton = New System.Windows.Forms.Button()
-        Me.sfpFlowPortLabelLabel = New System.Windows.Forms.Label()
-        Me.sfpFlowIpLabelLabel = New System.Windows.Forms.Label()
+        Me.sfpFlowPortLabel = New System.Windows.Forms.Label()
+        Me.sfpFlowIpLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabelLabel = New System.Windows.Forms.Label()
-        Me.sfpNameLabelLabel = New System.Windows.Forms.Label()
+        Me.sfpNameLabel = New System.Windows.Forms.Label()
+        Me.sfpMgmtIpComboBox = New System.Windows.Forms.ComboBox()
         Me.decapStatusPanel = New System.Windows.Forms.Panel()
         Me.encapStatusPanel = New System.Windows.Forms.Panel()
         Me.encapCounterNote = New System.Windows.Forms.Label()
@@ -97,29 +97,39 @@ Partial Class MainForm
         Me.sfpConnectButton = New System.Windows.Forms.Button()
         Me.CounterTimer = New System.Windows.Forms.Timer(Me.components)
         Me.sfpApplyButton = New System.Windows.Forms.Button()
+        Me.sfpDevicesButton = New System.Windows.Forms.Button()
+        Me.devicesFlowsButton = New System.Windows.Forms.Button()
+        Me.devicesPanel = New System.Windows.Forms.Panel()
+        Me.devicesSNMTextBox = New System.Windows.Forms.TextBox()
+        Me.devicesSNMLabel = New System.Windows.Forms.Label()
+        Me.devicesListBox = New System.Windows.Forms.ListBox()
+        Me.devicesDGTextBox = New System.Windows.Forms.TextBox()
+        Me.devicesDHCPListBox = New System.Windows.Forms.ListBox()
+        Me.devicesDGLabel = New System.Windows.Forms.Label()
+        Me.devicesDHCPCheckBox = New System.Windows.Forms.CheckBox()
+        Me.devicesIpTextBox = New System.Windows.Forms.TextBox()
+        Me.devicesRemoveButton = New System.Windows.Forms.Button()
+        Me.devicesIpLabel = New System.Windows.Forms.Label()
+        Me.devicesAddButton = New System.Windows.Forms.Button()
+        Me.devicesApplyButton = New System.Windows.Forms.Button()
+        Me.ComboBoxTimer = New System.Windows.Forms.Timer(Me.components)
         Me.detailPanel.SuspendLayout()
         Me.sfpFilteringPanel.SuspendLayout()
         Me.sfpFormattingPanel.SuspendLayout()
         Me.sfpAdvancedPanel.SuspendLayout()
         Me.decapStatusPanel.SuspendLayout()
         Me.encapStatusPanel.SuspendLayout()
+        Me.devicesPanel.SuspendLayout()
         Me.SuspendLayout()
         '
         'sfpMgmtIPLabel
         '
         Me.sfpMgmtIPLabel.AutoSize = True
-        Me.sfpMgmtIPLabel.Location = New System.Drawing.Point(94, 15)
+        Me.sfpMgmtIPLabel.Location = New System.Drawing.Point(85, 15)
         Me.sfpMgmtIPLabel.Name = "sfpMgmtIPLabel"
         Me.sfpMgmtIPLabel.Size = New System.Drawing.Size(94, 13)
         Me.sfpMgmtIPLabel.TabIndex = 1
         Me.sfpMgmtIPLabel.Text = "Control IP Address"
-        '
-        'sfpMgmtIpTextBox
-        '
-        Me.sfpMgmtIpTextBox.Location = New System.Drawing.Point(195, 12)
-        Me.sfpMgmtIpTextBox.Name = "sfpMgmtIpTextBox"
-        Me.sfpMgmtIpTextBox.Size = New System.Drawing.Size(100, 20)
-        Me.sfpMgmtIpTextBox.TabIndex = 2
         '
         'detailPanel
         '
@@ -132,14 +142,14 @@ Partial Class MainForm
         Me.detailPanel.Controls.Add(Me.sfpNameTextBox)
         Me.detailPanel.Controls.Add(Me.sfpFormattingPanel)
         Me.detailPanel.Controls.Add(Me.sfpAdvancedPanel)
-        Me.detailPanel.Controls.Add(Me.sfpFlowPortLabelLabel)
-        Me.detailPanel.Controls.Add(Me.sfpFlowIpLabelLabel)
+        Me.detailPanel.Controls.Add(Me.sfpFlowPortLabel)
+        Me.detailPanel.Controls.Add(Me.sfpFlowIpLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabelLabel)
-        Me.detailPanel.Controls.Add(Me.sfpNameLabelLabel)
-        Me.detailPanel.Location = New System.Drawing.Point(12, 38)
+        Me.detailPanel.Controls.Add(Me.sfpNameLabel)
+        Me.detailPanel.Location = New System.Drawing.Point(18, 38)
         Me.detailPanel.Name = "detailPanel"
-        Me.detailPanel.Size = New System.Drawing.Size(346, 426)
+        Me.detailPanel.Size = New System.Drawing.Size(346, 419)
         Me.detailPanel.TabIndex = 3
         '
         'sfpFilteringPanel
@@ -165,7 +175,7 @@ Partial Class MainForm
         'sfpFilterSSRCCheckbox
         '
         Me.sfpFilterSSRCCheckbox.AutoSize = True
-        Me.sfpFilterSSRCCheckbox.Location = New System.Drawing.Point(216, 102)
+        Me.sfpFilterSSRCCheckbox.Location = New System.Drawing.Point(234, 102)
         Me.sfpFilterSSRCCheckbox.Name = "sfpFilterSSRCCheckbox"
         Me.sfpFilterSSRCCheckbox.Size = New System.Drawing.Size(55, 17)
         Me.sfpFilterSSRCCheckbox.TabIndex = 21
@@ -175,7 +185,7 @@ Partial Class MainForm
         'sfpFilterDestIPCheckbox
         '
         Me.sfpFilterDestIPCheckbox.AutoSize = True
-        Me.sfpFilterDestIPCheckbox.Location = New System.Drawing.Point(216, 39)
+        Me.sfpFilterDestIPCheckbox.Location = New System.Drawing.Point(234, 39)
         Me.sfpFilterDestIPCheckbox.Name = "sfpFilterDestIPCheckbox"
         Me.sfpFilterDestIPCheckbox.Size = New System.Drawing.Size(61, 17)
         Me.sfpFilterDestIPCheckbox.TabIndex = 20
@@ -185,7 +195,7 @@ Partial Class MainForm
         'sfpFilterDestMACCheckbox
         '
         Me.sfpFilterDestMACCheckbox.AutoSize = True
-        Me.sfpFilterDestMACCheckbox.Location = New System.Drawing.Point(216, 80)
+        Me.sfpFilterDestMACCheckbox.Location = New System.Drawing.Point(234, 80)
         Me.sfpFilterDestMACCheckbox.Name = "sfpFilterDestMACCheckbox"
         Me.sfpFilterDestMACCheckbox.Size = New System.Drawing.Size(74, 17)
         Me.sfpFilterDestMACCheckbox.TabIndex = 19
@@ -195,7 +205,7 @@ Partial Class MainForm
         'sfpFilterDestPortCheckbox
         '
         Me.sfpFilterDestPortCheckbox.AutoSize = True
-        Me.sfpFilterDestPortCheckbox.Location = New System.Drawing.Point(216, 59)
+        Me.sfpFilterDestPortCheckbox.Location = New System.Drawing.Point(234, 59)
         Me.sfpFilterDestPortCheckbox.Name = "sfpFilterDestPortCheckbox"
         Me.sfpFilterDestPortCheckbox.Size = New System.Drawing.Size(96, 17)
         Me.sfpFilterDestPortCheckbox.TabIndex = 18
@@ -205,7 +215,7 @@ Partial Class MainForm
         'sfpFilterVlanCheckbox
         '
         Me.sfpFilterVlanCheckbox.AutoSize = True
-        Me.sfpFilterVlanCheckbox.Location = New System.Drawing.Point(28, 102)
+        Me.sfpFilterVlanCheckbox.Location = New System.Drawing.Point(36, 102)
         Me.sfpFilterVlanCheckbox.Name = "sfpFilterVlanCheckbox"
         Me.sfpFilterVlanCheckbox.Size = New System.Drawing.Size(69, 17)
         Me.sfpFilterVlanCheckbox.TabIndex = 17
@@ -215,7 +225,7 @@ Partial Class MainForm
         'sfpFilterSrcMACCheckbox
         '
         Me.sfpFilterSrcMACCheckbox.AutoSize = True
-        Me.sfpFilterSrcMACCheckbox.Location = New System.Drawing.Point(28, 81)
+        Me.sfpFilterSrcMACCheckbox.Location = New System.Drawing.Point(36, 81)
         Me.sfpFilterSrcMACCheckbox.Name = "sfpFilterSrcMACCheckbox"
         Me.sfpFilterSrcMACCheckbox.Size = New System.Drawing.Size(86, 17)
         Me.sfpFilterSrcMACCheckbox.TabIndex = 16
@@ -225,7 +235,7 @@ Partial Class MainForm
         'sfpFilterSrcPortCheckbox
         '
         Me.sfpFilterSrcPortCheckbox.AutoSize = True
-        Me.sfpFilterSrcPortCheckbox.Location = New System.Drawing.Point(28, 59)
+        Me.sfpFilterSrcPortCheckbox.Location = New System.Drawing.Point(36, 59)
         Me.sfpFilterSrcPortCheckbox.Name = "sfpFilterSrcPortCheckbox"
         Me.sfpFilterSrcPortCheckbox.Size = New System.Drawing.Size(108, 17)
         Me.sfpFilterSrcPortCheckbox.TabIndex = 15
@@ -235,7 +245,7 @@ Partial Class MainForm
         'sfpFilterSrcIPCheckbox
         '
         Me.sfpFilterSrcIPCheckbox.AutoSize = True
-        Me.sfpFilterSrcIPCheckbox.Location = New System.Drawing.Point(28, 39)
+        Me.sfpFilterSrcIPCheckbox.Location = New System.Drawing.Point(36, 39)
         Me.sfpFilterSrcIPCheckbox.Name = "sfpFilterSrcIPCheckbox"
         Me.sfpFilterSrcIPCheckbox.Size = New System.Drawing.Size(73, 17)
         Me.sfpFilterSrcIPCheckbox.TabIndex = 14
@@ -276,7 +286,7 @@ Partial Class MainForm
         '
         Me.sfpFlowPortTextBox.BackColor = System.Drawing.SystemColors.Window
         Me.sfpFlowPortTextBox.Enabled = False
-        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(266, 31)
+        Me.sfpFlowPortTextBox.Location = New System.Drawing.Point(266, 39)
         Me.sfpFlowPortTextBox.Name = "sfpFlowPortTextBox"
         Me.sfpFlowPortTextBox.Size = New System.Drawing.Size(50, 20)
         Me.sfpFlowPortTextBox.TabIndex = 25
@@ -284,7 +294,7 @@ Partial Class MainForm
         'sfpFlowIPTextBox
         '
         Me.sfpFlowIPTextBox.Enabled = False
-        Me.sfpFlowIPTextBox.Location = New System.Drawing.Point(129, 34)
+        Me.sfpFlowIPTextBox.Location = New System.Drawing.Point(129, 42)
         Me.sfpFlowIPTextBox.Name = "sfpFlowIPTextBox"
         Me.sfpFlowIPTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpFlowIPTextBox.TabIndex = 24
@@ -292,7 +302,7 @@ Partial Class MainForm
         'sfpNameTextBox
         '
         Me.sfpNameTextBox.Enabled = False
-        Me.sfpNameTextBox.Location = New System.Drawing.Point(129, 4)
+        Me.sfpNameTextBox.Location = New System.Drawing.Point(129, 12)
         Me.sfpNameTextBox.Name = "sfpNameTextBox"
         Me.sfpNameTextBox.Size = New System.Drawing.Size(100, 20)
         Me.sfpNameTextBox.TabIndex = 6
@@ -643,30 +653,30 @@ Partial Class MainForm
         Me.sfpAdvancedButton.Text = "v"
         Me.sfpAdvancedButton.UseVisualStyleBackColor = True
         '
-        'sfpFlowPortLabelLabel
+        'sfpFlowPortLabel
         '
-        Me.sfpFlowPortLabelLabel.AutoSize = True
-        Me.sfpFlowPortLabelLabel.Location = New System.Drawing.Point(237, 34)
-        Me.sfpFlowPortLabelLabel.Name = "sfpFlowPortLabelLabel"
-        Me.sfpFlowPortLabelLabel.Size = New System.Drawing.Size(29, 13)
-        Me.sfpFlowPortLabelLabel.TabIndex = 6
-        Me.sfpFlowPortLabelLabel.Text = "Port:"
-        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowPortLabelLabel, "Destination UDP port number of the flow")
+        Me.sfpFlowPortLabel.AutoSize = True
+        Me.sfpFlowPortLabel.Location = New System.Drawing.Point(237, 42)
+        Me.sfpFlowPortLabel.Name = "sfpFlowPortLabel"
+        Me.sfpFlowPortLabel.Size = New System.Drawing.Size(29, 13)
+        Me.sfpFlowPortLabel.TabIndex = 6
+        Me.sfpFlowPortLabel.Text = "Port:"
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowPortLabel, "Destination UDP port number of the flow")
         '
-        'sfpFlowIpLabelLabel
+        'sfpFlowIpLabel
         '
-        Me.sfpFlowIpLabelLabel.AutoSize = True
-        Me.sfpFlowIpLabelLabel.Location = New System.Drawing.Point(5, 37)
-        Me.sfpFlowIpLabelLabel.Name = "sfpFlowIpLabelLabel"
-        Me.sfpFlowIpLabelLabel.Size = New System.Drawing.Size(125, 13)
-        Me.sfpFlowIpLabelLabel.TabIndex = 4
-        Me.sfpFlowIpLabelLabel.Text = "Multicast Group Address:"
-        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowIpLabelLabel, "Destination IP address of the flow")
+        Me.sfpFlowIpLabel.AutoSize = True
+        Me.sfpFlowIpLabel.Location = New System.Drawing.Point(5, 45)
+        Me.sfpFlowIpLabel.Name = "sfpFlowIpLabel"
+        Me.sfpFlowIpLabel.Size = New System.Drawing.Size(125, 13)
+        Me.sfpFlowIpLabel.TabIndex = 4
+        Me.sfpFlowIpLabel.Text = "Multicast Group Address:"
+        Me.sfpFlowDetailToolTip.SetToolTip(Me.sfpFlowIpLabel, "Destination IP address of the flow")
         '
         'sfpTypeLabel
         '
         Me.sfpTypeLabel.AutoSize = True
-        Me.sfpTypeLabel.Location = New System.Drawing.Point(263, 7)
+        Me.sfpTypeLabel.Location = New System.Drawing.Point(263, 15)
         Me.sfpTypeLabel.Name = "sfpTypeLabel"
         Me.sfpTypeLabel.Size = New System.Drawing.Size(0, 13)
         Me.sfpTypeLabel.TabIndex = 3
@@ -674,26 +684,35 @@ Partial Class MainForm
         'sfpTypeLabelLabel
         '
         Me.sfpTypeLabelLabel.AutoSize = True
-        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(233, 6)
+        Me.sfpTypeLabelLabel.Location = New System.Drawing.Point(233, 14)
         Me.sfpTypeLabelLabel.Name = "sfpTypeLabelLabel"
         Me.sfpTypeLabelLabel.Size = New System.Drawing.Size(34, 13)
         Me.sfpTypeLabelLabel.TabIndex = 2
         Me.sfpTypeLabelLabel.Text = "Type:"
         '
-        'sfpNameLabelLabel
+        'sfpNameLabel
         '
-        Me.sfpNameLabelLabel.AutoSize = True
-        Me.sfpNameLabelLabel.Location = New System.Drawing.Point(89, 6)
-        Me.sfpNameLabelLabel.Name = "sfpNameLabelLabel"
-        Me.sfpNameLabelLabel.Size = New System.Drawing.Size(38, 13)
-        Me.sfpNameLabelLabel.TabIndex = 0
-        Me.sfpNameLabelLabel.Text = "Name:"
+        Me.sfpNameLabel.AutoSize = True
+        Me.sfpNameLabel.Location = New System.Drawing.Point(89, 14)
+        Me.sfpNameLabel.Name = "sfpNameLabel"
+        Me.sfpNameLabel.Size = New System.Drawing.Size(38, 13)
+        Me.sfpNameLabel.TabIndex = 0
+        Me.sfpNameLabel.Text = "Name:"
+        '
+        'sfpMgmtIpComboBox
+        '
+        Me.sfpMgmtIpComboBox.FormattingEnabled = True
+        Me.sfpMgmtIpComboBox.Items.AddRange(New Object() {"127.0.0.1:9912", "127.0.0.1:9913", "127.0.0.1:9914", "127.0.0.1:9991"})
+        Me.sfpMgmtIpComboBox.Location = New System.Drawing.Point(181, 11)
+        Me.sfpMgmtIpComboBox.MaxDropDownItems = 100
+        Me.sfpMgmtIpComboBox.Name = "sfpMgmtIpComboBox"
+        Me.sfpMgmtIpComboBox.Size = New System.Drawing.Size(131, 21)
+        Me.sfpMgmtIpComboBox.TabIndex = 27
         '
         'decapStatusPanel
         '
         Me.decapStatusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.decapStatusPanel.Controls.Add(Me.encapStatusPanel)
         Me.decapStatusPanel.Controls.Add(Me.flow1SeenCounterLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1RenderedCounterLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1DroppedCounterLabel)
@@ -701,9 +720,9 @@ Partial Class MainForm
         Me.decapStatusPanel.Controls.Add(Me.flow1RenderedLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1SeenLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1LabelDecap)
-        Me.decapStatusPanel.Location = New System.Drawing.Point(13, 470)
+        Me.decapStatusPanel.Location = New System.Drawing.Point(9, 479)
         Me.decapStatusPanel.Name = "decapStatusPanel"
-        Me.decapStatusPanel.Size = New System.Drawing.Size(342, 23)
+        Me.decapStatusPanel.Size = New System.Drawing.Size(378, 23)
         Me.decapStatusPanel.TabIndex = 4
         '
         'encapStatusPanel
@@ -714,9 +733,9 @@ Partial Class MainForm
         Me.encapStatusPanel.Controls.Add(Me.flow1SentCounterLabel)
         Me.encapStatusPanel.Controls.Add(Me.flow1SentLabel)
         Me.encapStatusPanel.Controls.Add(Me.flow1LabelEncap)
-        Me.encapStatusPanel.Location = New System.Drawing.Point(0, 0)
+        Me.encapStatusPanel.Location = New System.Drawing.Point(9, 479)
         Me.encapStatusPanel.Name = "encapStatusPanel"
-        Me.encapStatusPanel.Size = New System.Drawing.Size(342, 23)
+        Me.encapStatusPanel.Size = New System.Drawing.Size(378, 23)
         Me.encapStatusPanel.TabIndex = 27
         '
         'encapCounterNote
@@ -836,7 +855,7 @@ Partial Class MainForm
         '
         'sfpConnectButton
         '
-        Me.sfpConnectButton.Location = New System.Drawing.Point(301, 11)
+        Me.sfpConnectButton.Location = New System.Drawing.Point(316, 11)
         Me.sfpConnectButton.Name = "sfpConnectButton"
         Me.sfpConnectButton.Size = New System.Drawing.Size(57, 23)
         Me.sfpConnectButton.TabIndex = 5
@@ -850,30 +869,191 @@ Partial Class MainForm
         'sfpApplyButton
         '
         Me.sfpApplyButton.Enabled = False
-        Me.sfpApplyButton.Location = New System.Drawing.Point(13, 10)
+        Me.sfpApplyButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.sfpApplyButton.Location = New System.Drawing.Point(158, 455)
         Me.sfpApplyButton.Name = "sfpApplyButton"
         Me.sfpApplyButton.Size = New System.Drawing.Size(75, 23)
         Me.sfpApplyButton.TabIndex = 6
         Me.sfpApplyButton.Text = "Apply"
         Me.sfpApplyButton.UseVisualStyleBackColor = True
         '
+        'sfpDevicesButton
+        '
+        Me.sfpDevicesButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.sfpDevicesButton.Location = New System.Drawing.Point(8, 10)
+        Me.sfpDevicesButton.Name = "sfpDevicesButton"
+        Me.sfpDevicesButton.Size = New System.Drawing.Size(75, 23)
+        Me.sfpDevicesButton.TabIndex = 7
+        Me.sfpDevicesButton.Text = "Devices"
+        Me.sfpDevicesButton.UseVisualStyleBackColor = True
+        '
+        'devicesFlowsButton
+        '
+        Me.devicesFlowsButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesFlowsButton.Location = New System.Drawing.Point(3, 9)
+        Me.devicesFlowsButton.Name = "devicesFlowsButton"
+        Me.devicesFlowsButton.Size = New System.Drawing.Size(75, 23)
+        Me.devicesFlowsButton.TabIndex = 28
+        Me.devicesFlowsButton.Text = "Flows"
+        Me.devicesFlowsButton.UseVisualStyleBackColor = True
+        '
+        'devicesPanel
+        '
+        Me.devicesPanel.Controls.Add(Me.devicesSNMTextBox)
+        Me.devicesPanel.Controls.Add(Me.devicesSNMLabel)
+        Me.devicesPanel.Controls.Add(Me.devicesListBox)
+        Me.devicesPanel.Controls.Add(Me.devicesDGTextBox)
+        Me.devicesPanel.Controls.Add(Me.devicesDHCPListBox)
+        Me.devicesPanel.Controls.Add(Me.devicesDGLabel)
+        Me.devicesPanel.Controls.Add(Me.devicesDHCPCheckBox)
+        Me.devicesPanel.Controls.Add(Me.devicesIpTextBox)
+        Me.devicesPanel.Controls.Add(Me.devicesRemoveButton)
+        Me.devicesPanel.Controls.Add(Me.devicesIpLabel)
+        Me.devicesPanel.Controls.Add(Me.devicesAddButton)
+        Me.devicesPanel.Controls.Add(Me.devicesApplyButton)
+        Me.devicesPanel.Controls.Add(Me.devicesFlowsButton)
+        Me.devicesPanel.Location = New System.Drawing.Point(8, 2)
+        Me.devicesPanel.Name = "devicesPanel"
+        Me.devicesPanel.Size = New System.Drawing.Size(379, 501)
+        Me.devicesPanel.TabIndex = 29
+        Me.devicesPanel.Visible = False
+        '
+        'devicesSNMTextBox
+        '
+        Me.devicesSNMTextBox.Location = New System.Drawing.Point(268, 393)
+        Me.devicesSNMTextBox.Name = "devicesSNMTextBox"
+        Me.devicesSNMTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesSNMTextBox.TabIndex = 32
+        '
+        'devicesSNMLabel
+        '
+        Me.devicesSNMLabel.AutoSize = True
+        Me.devicesSNMLabel.Location = New System.Drawing.Point(196, 395)
+        Me.devicesSNMLabel.Name = "devicesSNMLabel"
+        Me.devicesSNMLabel.Size = New System.Drawing.Size(73, 13)
+        Me.devicesSNMLabel.TabIndex = 31
+        Me.devicesSNMLabel.Text = "Subnet Mask:"
+        '
+        'devicesListBox
+        '
+        Me.devicesListBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesListBox.FormattingEnabled = True
+        Me.devicesListBox.ItemHeight = 16
+        Me.devicesListBox.Items.AddRange(New Object() {"127.0.0.1:9912", "127.0.0.1:9913", "127.0.0.1:9914", "127.0.0.1:9991"})
+        Me.devicesListBox.Location = New System.Drawing.Point(47, 44)
+        Me.devicesListBox.Name = "devicesListBox"
+        Me.devicesListBox.Size = New System.Drawing.Size(142, 292)
+        Me.devicesListBox.TabIndex = 29
+        '
+        'devicesDGTextBox
+        '
+        Me.devicesDGTextBox.Location = New System.Drawing.Point(190, 424)
+        Me.devicesDGTextBox.Name = "devicesDGTextBox"
+        Me.devicesDGTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesDGTextBox.TabIndex = 30
+        '
+        'devicesDHCPListBox
+        '
+        Me.devicesDHCPListBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesDHCPListBox.FormattingEnabled = True
+        Me.devicesDHCPListBox.ItemHeight = 16
+        Me.devicesDHCPListBox.Items.AddRange(New Object() {"000.000.000.000:0000", "000.000.000.000:0000", "DHCP Box Test", "000.000.000.000:0000", "000.000.000.000:0000"})
+        Me.devicesDHCPListBox.Location = New System.Drawing.Point(47, 189)
+        Me.devicesDHCPListBox.Name = "devicesDHCPListBox"
+        Me.devicesDHCPListBox.Size = New System.Drawing.Size(142, 148)
+        Me.devicesDHCPListBox.TabIndex = 33
+        '
+        'devicesDGLabel
+        '
+        Me.devicesDGLabel.AutoSize = True
+        Me.devicesDGLabel.Location = New System.Drawing.Point(102, 426)
+        Me.devicesDGLabel.Name = "devicesDGLabel"
+        Me.devicesDGLabel.Size = New System.Drawing.Size(89, 13)
+        Me.devicesDGLabel.TabIndex = 29
+        Me.devicesDGLabel.Text = "Default Gateway:"
+        '
+        'devicesDHCPCheckBox
+        '
+        Me.devicesDHCPCheckBox.AutoSize = True
+        Me.devicesDHCPCheckBox.Location = New System.Drawing.Point(54, 341)
+        Me.devicesDHCPCheckBox.Name = "devicesDHCPCheckBox"
+        Me.devicesDHCPCheckBox.Size = New System.Drawing.Size(134, 17)
+        Me.devicesDHCPCheckBox.TabIndex = 32
+        Me.devicesDHCPCheckBox.Text = "Show DHCP Requests"
+        Me.devicesDHCPCheckBox.UseVisualStyleBackColor = True
+        '
+        'devicesIpTextBox
+        '
+        Me.devicesIpTextBox.Location = New System.Drawing.Point(78, 393)
+        Me.devicesIpTextBox.Name = "devicesIpTextBox"
+        Me.devicesIpTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesIpTextBox.TabIndex = 28
+        '
+        'devicesRemoveButton
+        '
+        Me.devicesRemoveButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesRemoveButton.Location = New System.Drawing.Point(209, 191)
+        Me.devicesRemoveButton.Name = "devicesRemoveButton"
+        Me.devicesRemoveButton.Size = New System.Drawing.Size(145, 44)
+        Me.devicesRemoveButton.TabIndex = 30
+        Me.devicesRemoveButton.Text = "--->  Remove (-)"
+        Me.devicesRemoveButton.UseVisualStyleBackColor = True
+        '
+        'devicesIpLabel
+        '
+        Me.devicesIpLabel.AutoSize = True
+        Me.devicesIpLabel.Location = New System.Drawing.Point(19, 396)
+        Me.devicesIpLabel.Name = "devicesIpLabel"
+        Me.devicesIpLabel.Size = New System.Drawing.Size(61, 13)
+        Me.devicesIpLabel.TabIndex = 27
+        Me.devicesIpLabel.Text = "IP Address:"
+        '
+        'devicesAddButton
+        '
+        Me.devicesAddButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesAddButton.Location = New System.Drawing.Point(209, 137)
+        Me.devicesAddButton.Name = "devicesAddButton"
+        Me.devicesAddButton.Size = New System.Drawing.Size(145, 42)
+        Me.devicesAddButton.TabIndex = 31
+        Me.devicesAddButton.Text = "<---   Add (+)"
+        Me.devicesAddButton.UseVisualStyleBackColor = True
+        '
+        'devicesApplyButton
+        '
+        Me.devicesApplyButton.Enabled = False
+        Me.devicesApplyButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesApplyButton.Location = New System.Drawing.Point(161, 469)
+        Me.devicesApplyButton.Name = "devicesApplyButton"
+        Me.devicesApplyButton.Size = New System.Drawing.Size(75, 23)
+        Me.devicesApplyButton.TabIndex = 30
+        Me.devicesApplyButton.Text = "Apply"
+        Me.devicesApplyButton.UseVisualStyleBackColor = True
+        '
+        'ComboBoxTimer
+        '
+        Me.ComboBoxTimer.Interval = 1000
+        '
         'MainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.AutoScroll = True
-        Me.ClientSize = New System.Drawing.Size(367, 505)
+        Me.ClientSize = New System.Drawing.Size(391, 505)
+        Me.Controls.Add(Me.devicesPanel)
+        Me.Controls.Add(Me.encapStatusPanel)
+        Me.Controls.Add(Me.sfpMgmtIpComboBox)
+        Me.Controls.Add(Me.sfpDevicesButton)
         Me.Controls.Add(Me.sfpApplyButton)
         Me.Controls.Add(Me.sfpConnectButton)
         Me.Controls.Add(Me.detailPanel)
-        Me.Controls.Add(Me.sfpMgmtIpTextBox)
         Me.Controls.Add(Me.sfpMgmtIPLabel)
         Me.Controls.Add(Me.decapStatusPanel)
         Me.Location = New System.Drawing.Point(50, 50)
         Me.MaximizeBox = False
-        Me.MaximumSize = New System.Drawing.Size(383, 543)
-        Me.MinimumSize = New System.Drawing.Size(383, 543)
+        Me.MaximumSize = New System.Drawing.Size(407, 543)
+        Me.MinimumSize = New System.Drawing.Size(407, 543)
         Me.Name = "MainForm"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "EmbSFP Configurator"
         Me.detailPanel.ResumeLayout(False)
         Me.detailPanel.PerformLayout()
@@ -887,12 +1067,13 @@ Partial Class MainForm
         Me.decapStatusPanel.PerformLayout()
         Me.encapStatusPanel.ResumeLayout(False)
         Me.encapStatusPanel.PerformLayout()
+        Me.devicesPanel.ResumeLayout(False)
+        Me.devicesPanel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
     End Sub
     Friend WithEvents sfpMgmtIPLabel As Label
-    Friend WithEvents sfpMgmtIpTextBox As TextBox
     Friend WithEvents detailPanel As Panel
     Friend WithEvents decapStatusPanel As Panel
     Friend WithEvents flow1LabelDecap As Label
@@ -902,11 +1083,11 @@ Partial Class MainForm
     Friend WithEvents flow1RenderedLabel As Label
     Friend WithEvents flow1SeenCounterLabel As Label
     Friend WithEvents flow1RenderedCounterLabel As Label
-    Friend WithEvents sfpNameLabelLabel As Label
+    Friend WithEvents sfpNameLabel As Label
     Friend WithEvents sfpTypeLabel As Label
     Friend WithEvents sfpTypeLabelLabel As Label
-    Friend WithEvents sfpFlowIpLabelLabel As Label
-    Friend WithEvents sfpFlowPortLabelLabel As Label
+    Friend WithEvents sfpFlowIpLabel As Label
+    Friend WithEvents sfpFlowPortLabel As Label
     Friend WithEvents sfpFlowDetailToolTip As ToolTip
     Friend WithEvents sfpConnectButton As Button
     Friend WithEvents sfpAdvancedButton As Button
@@ -965,4 +1146,21 @@ Partial Class MainForm
     Friend WithEvents flow1SentLabel As Label
     Friend WithEvents flow1LabelEncap As Label
     Friend WithEvents encapCounterNote As Label
+    Friend WithEvents sfpDevicesButton As Button
+    Friend WithEvents sfpMgmtIpComboBox As ComboBox
+    Friend WithEvents devicesFlowsButton As Button
+    Friend WithEvents devicesPanel As Panel
+    Friend WithEvents devicesRemoveButton As Button
+    Friend WithEvents devicesAddButton As Button
+    Friend WithEvents devicesApplyButton As Button
+    Friend WithEvents devicesListBox As ListBox
+    Friend WithEvents devicesDHCPCheckBox As CheckBox
+    Friend WithEvents devicesDHCPListBox As ListBox
+    Friend WithEvents devicesSNMTextBox As TextBox
+    Friend WithEvents devicesSNMLabel As Label
+    Friend WithEvents devicesDGTextBox As TextBox
+    Friend WithEvents devicesDGLabel As Label
+    Friend WithEvents devicesIpTextBox As TextBox
+    Friend WithEvents devicesIpLabel As Label
+    Friend WithEvents ComboBoxTimer As Timer
 End Class

@@ -8,7 +8,7 @@ Public Class MainForm
     Private validIP As Boolean = False
     Private sfpType As String = ""
 
-    Private Sub sfpMgmtIpTextBox_KeyPress(sender As Object, e As KeyEventArgs) Handles sfpMgmtIpTextBox.KeyDown
+    Private Sub sfpMgmtIpComboBox_KeyPress(sender As Object, e As KeyEventArgs) Handles sfpMgmtIpComboBox.KeyDown
         If e.KeyCode.Equals(Keys.Enter) Then
             Call sfpConnect_Button_Click(sender, e)
         End If
@@ -18,12 +18,17 @@ Public Class MainForm
 
         'Maybe make the connect text box invalid until a real flow is found and a parameter changes so that you can't change the IP while it's still trying, making the MsgBx loop error.
 
-        If sfpMgmtIpTextBox.Text.Length > 0 Then
+        If sfpMgmtIpComboBox.Text.Length > 0 Then
 
-            sfpMgmtIp = sfpMgmtIpTextBox.Text
+            sfpMgmtIp = sfpMgmtIpComboBox.Text
             Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
 
-            'sfpMgmtIpTextBox.Enabled = False
+            'sfpMgmtIpComboBox.Enabled = False
+
+            If Not sfpMgmtIpComboBox.Items.Contains(sfpMgmtIp) Then
+                sfpMgmtIpComboBox.Items.Add(sfpMgmtIp)
+                devicesListBox.Items.Add(sfpMgmtIp)
+            End If
 
             GetResponse(sfpRequest, Function(x)
                                         Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
@@ -199,7 +204,7 @@ Public Class MainForm
                 Catch ex As Exception
                     validIP = False
                     MessageBox.Show("Problem reaching uri:  " & uri.ToString(), "EmbSFP Configurator")
-                    'sfpMgmtIpTextBox.Enabled = True
+                    'sfpMgmtIpComboBox.Enabled = True
                     Return -1
                 End Try
             End Function
@@ -327,9 +332,97 @@ Public Class MainForm
         Return Response
     End Function
 
+    Private Sub sfpDevicesButton_Click(sender As Object, e As EventArgs) Handles sfpDevicesButton.Click
+        devicesPanel.Visible = True
+    End Sub
+
+    Private Sub devicesFlowsButton_Click(sender As Object, e As EventArgs) Handles devicesFlowsButton.Click
+        devicesPanel.Visible = false
+    End Sub
+
+    Private Sub devicesIpTextBox_TextChanged(sender As Object, e As EventArgs) Handles devicesIpTextBox.TextChanged
+        If devicesIpTextBox.Text.Length > 0 Then
+            devicesApplyButton.Enabled = True
+        Else
+            devicesApplyButton.Enabled = False
+        End If
+    End Sub
+
+    Private Sub devicesDHCPCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles devicesDHCPCheckBox.CheckedChanged
+        If devicesDHCPCheckBox.Checked = False Then
+            devicesListBox.Height = 292
+        ElseIf devicesDHCPCheckBox.Checked = True Then
+            devicesListBox.Height = 160
+        End If
+    End Sub
+
+    'Private Sub devicesListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles devicesListBox.SelectedIndexChanged
+    'If devicesListBox.SelectedItem.ToString().Length > 0 Then
+
+    'Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
+    'Dim dev As New Device
+    'Dim sfpRequest As New Uri("http://" & ipAddr & "/emsfp/ipconfig")
+
+    '       GetResponse(sfpRequest, Function(x)
+    '                                   dev = JsonConvert.DeserializeObject(Of Device)(x)
+    '                                  devicesIpTextBox.Text = dev.ip_addr
+    '                                  devicesSNMTextBox.Text = dev.subnet_mask
+    '                                  devicesDGTextBox.Text = dev.gateway
+
+    'Return 0
+    'End Function)
+    'Else
+    '       devicesListBox.SelectedItem = devicesListBox.Items.Item(0)
+    'End If
+
+    'End Sub
+
+    Private Sub devicesAddButton_Click(sender As Object, e As EventArgs) Handles devicesAddButton.Click
+        devicesListBox.Items.Add(devicesIpTextBox.Text)
+        sfpMgmtIpComboBox.Items.Add(devicesIpTextBox.Text)
+        'Need to save it somewhere at load and close
+    End Sub
+
+    Private Sub devicesRemoveButton_Click(sender As Object, e As EventArgs) Handles devicesRemoveButton.Click
+        Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
+        devicesListBox.SelectedItems.Remove(ipAddr)
+        devicesListBox.Items.Remove(ipAddr)
+        sfpMgmtIpComboBox.Items.Remove(ipAddr)
+    End Sub
 
     'Private Sub sfpTypeLabel_TextChanged(sender As Object, e As EventArgs) Handles sfpTypeLabel.TextChanged
-    'sfpMgmtIpTextBox.Enabled = True
+    'sfpMgmtIpComboBox.Enabled = True
+    'End Sub
+
+    Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+
+        My.Settings.Device0 = devicesListBox.Items.Item(0)
+        My.Settings.Device1 = devicesListBox.Items.Item(1)
+        My.Settings.Device2 = devicesListBox.Items.Item(2)
+        My.Settings.Device3 = devicesListBox.Items.Item(3)
+
+        My.Settings.Save()
+
+        'Obviously have to change this, just testing the Settings function-it's not working, might have to resort to txt file since it uses an xml anyway...
+    End Sub
+
+    'Private Sub ComboBoxTimer_Tick(sender As Object, e As EventArgs) Handles ComboBoxTimer.Tick
+
+    'For Each item As String In devicesListBox.Items
+    '    If Not sfpMgmtIpComboBox.Items.Contains(item) Then
+    '        sfpMgmtIpComboBox.Items.Add(item)
+    '    End If
+    'Next
+
+    'For Each item As String In sfpMgmtIpComboBox.Items
+    'If Not devicesListBox.Items.Contains(item) Then
+    'sfpMgmtIpComboBox.Items.Remove(item)
+    'End If
+    'Next
+
+
+    'Might not need this counter if just keep lists updated using Add and Remove buttons, can also add using Connect on Flows page
+
     'End Sub
 
 
@@ -373,4 +466,10 @@ Public Class Network
     Public rx_pkt_cnt As Integer
     Public rx_pkt_good_cnt As Integer
     Public rx_pkt_filtd_cnt As Integer
+End Class
+
+Public Class Device
+    Public ip_addr As String
+    Public subnet_mask As String
+    Public gateway As String
 End Class
