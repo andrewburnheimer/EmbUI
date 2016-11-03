@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Net
+Imports System.Net.Sockets
 Imports Newtonsoft.Json
 
 Public Class MainForm
@@ -7,6 +8,13 @@ Public Class MainForm
     Private sfpMgmtIp As String = ""
     Private validIP As Boolean = False
     Private sfpType As String = ""
+    Private mycomputerconnections() As Net.NetworkInformation.NetworkInterface
+    Private myip As IPAddress
+    Private sock As New Socket(AddressFamily.InterNetwork, SocketType.Raw, ProtocolType.IP)
+    Private bytedata(4096) As Byte
+    Private connType As String = ""
+    Private ipFrom As IPAddress
+    'Private wcBusy As Boolean = False
 
     Private Sub sfpMgmtIpComboBox_KeyPress(sender As Object, e As KeyEventArgs) Handles sfpMgmtIpComboBox.KeyDown
         If e.KeyCode.Equals(Keys.Enter) Then
@@ -17,6 +25,7 @@ Public Class MainForm
     Private Sub sfpConnect_Button_Click(sender As Object, e As EventArgs) Handles sfpConnectButton.Click
 
         'Maybe make the connect text box invalid until a real flow is found and a parameter changes so that you can't change the IP while it's still trying, making the MsgBx loop error.
+        'Shouldn't enable stuff until actual connection is made (no message box saying there's a problem).
 
         If sfpMgmtIpComboBox.Text.Length > 0 Then
 
@@ -31,99 +40,104 @@ Public Class MainForm
             End If
 
             GetResponse(sfpRequest, Function(x)
-                                        Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
-                                        sfpNameTextBox.Text = f.name
-                                        sfpType = f.type
-                                        sfpFlowIPTextBox.Text = f.network.dst_ip_addr
-                                        sfpFlowPortTextBox.Text = f.network.dst_udp_port
-                                        sfpFlowSrcIpTextBox.Text = f.network.src_ip_addr
-                                        sfpFlowSrcPortTextBox.Text = f.network.src_udp_port
-                                        sfpFlowDstMacTextBox.Text = f.network.dst_mac
-                                        sfpFlowSsrcTextBox.Text = f.network.ssrc
-                                        sfpFlowVlanTagTextBox.Text = f.network.vlan_tag
+                                        Try
+                                            Dim f As Flow = JsonConvert.DeserializeObject(Of Flow)(x)
+                                            sfpNameTextBox.Text = f.name
+                                            sfpType = f.type
+                                            sfpFlowIPTextBox.Text = f.network.dst_ip_addr
+                                            sfpFlowPortTextBox.Text = f.network.dst_udp_port
+                                            sfpFlowSrcIpTextBox.Text = f.network.src_ip_addr
+                                            sfpFlowSrcPortTextBox.Text = f.network.src_udp_port
+                                            sfpFlowDstMacTextBox.Text = f.network.dst_mac
+                                            sfpFlowSsrcTextBox.Text = f.network.ssrc
+                                            sfpFlowVlanTagTextBox.Text = f.network.vlan_tag
 
-                                        If sfpType = "2" Then
-                                            If Int(f.network.pkt_filter_dst_ip) > 0 Then
-                                                sfpFilterDestIPCheckbox.Checked = True
-                                            Else
-                                                sfpFilterDestIPCheckbox.Checked = False
+                                            If sfpType = "2" Then
+                                                If Int(f.network.pkt_filter_dst_ip) > 0 Then
+                                                    sfpFilterDestIPCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterDestIPCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_dst_udp) > 0 Then
+                                                    sfpFilterDestPortCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterDestPortCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_dst_mac) > 0 Then
+                                                    sfpFilterDestMACCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterDestMACCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_src_ip) > 0 Then
+                                                    sfpFilterSrcIPCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterSrcIPCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_src_udp) > 0 Then
+                                                    sfpFilterSrcPortCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterSrcPortCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_src_mac) > 0 Then
+                                                    sfpFilterSrcMACCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterSrcMACCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_vlan) > 0 Then
+                                                    sfpFilterVlanCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterVlanCheckbox.Checked = False
+                                                End If
+
+                                                If Int(f.network.pkt_filter_ssrc) > 0 Then
+                                                    sfpFilterSSRCCheckbox.Checked = True
+                                                Else
+                                                    sfpFilterSSRCCheckbox.Checked = False
+                                                End If
+
                                             End If
 
-                                            If Int(f.network.pkt_filter_dst_udp) > 0 Then
-                                                sfpFilterDestPortCheckbox.Checked = True
-                                            Else
-                                                sfpFilterDestPortCheckbox.Checked = False
+
+                                            sfpFormatCodeValidLabel.Text = f.format_code_valid
+                                            sfpFormatCodeTScanLabel.Text = f.format_code_t_scan
+                                            sfpFormatCodePScanLabel.Text = f.format_code_p_scan
+                                            sfpFormatCodeModeLabel.Text = f.format_code_mode
+                                            sfpFormatCodeFormatLabel.Text = f.format_code_format
+                                            sfpFormatClkRateLabel.Text = f.format_code_rate
+                                            sfpFormatCodeSamplingLabel.Text = f.format_code_sampling
+
+                                            If sfpType = "1" Then
+                                                sfpTypeLabel.Text = "Encap (Source)"
+                                                sfpNameTextBox.BackColor = Color.PaleGreen
+                                                sfpFlowIPTextBox.BackColor = Color.PaleGreen
+                                                sfpFlowPortTextBox.BackColor = Color.PaleGreen
+                                                sfpFilteringPanel.Enabled = False
+                                                encapStatusPanel.Visible = True
+                                                encapCounterNote.Visible = True
+                                                If sfpFilteringButton.Text = "^" Then
+                                                    Call sfpFilteringButton_Click(sender, e)
+                                                End If
+
+                                            ElseIf sfpType = "2" Then
+                                                sfpTypeLabel.Text = "Decap (Dest)"
+                                                sfpNameTextBox.BackColor = Color.NavajoWhite
+                                                sfpFlowIPTextBox.BackColor = Color.NavajoWhite
+                                                sfpFlowPortTextBox.BackColor = Color.NavajoWhite
+                                                sfpFilteringPanel.Enabled = True
+                                                encapStatusPanel.Visible = False
                                             End If
 
-                                            If Int(f.network.pkt_filter_dst_mac) > 0 Then
-                                                sfpFilterDestMACCheckbox.Checked = True
-                                            Else
-                                                sfpFilterDestMACCheckbox.Checked = False
-                                            End If
-
-                                            If Int(f.network.pkt_filter_src_ip) > 0 Then
-                                                sfpFilterSrcIPCheckbox.Checked = True
-                                            Else
-                                                sfpFilterSrcIPCheckbox.Checked = False
-                                            End If
-
-                                            If Int(f.network.pkt_filter_src_udp) > 0 Then
-                                                sfpFilterSrcPortCheckbox.Checked = True
-                                            Else
-                                                sfpFilterSrcPortCheckbox.Checked = False
-                                            End If
-
-                                            If Int(f.network.pkt_filter_src_mac) > 0 Then
-                                                sfpFilterSrcMACCheckbox.Checked = True
-                                            Else
-                                                sfpFilterSrcMACCheckbox.Checked = False
-                                            End If
-
-                                            If Int(f.network.pkt_filter_vlan) > 0 Then
-                                                sfpFilterVlanCheckbox.Checked = True
-                                            Else
-                                                sfpFilterVlanCheckbox.Checked = False
-                                            End If
-
-                                            If Int(f.network.pkt_filter_ssrc) > 0 Then
-                                                sfpFilterSSRCCheckbox.Checked = True
-                                            Else
-                                                sfpFilterSSRCCheckbox.Checked = False
-                                            End If
-
-                                        End If
-
-
-                                        sfpFormatCodeValidLabel.Text = f.format_code_valid
-                                        sfpFormatCodeTScanLabel.Text = f.format_code_t_scan
-                                        sfpFormatCodePScanLabel.Text = f.format_code_p_scan
-                                        sfpFormatCodeModeLabel.Text = f.format_code_mode
-                                        sfpFormatCodeFormatLabel.Text = f.format_code_format
-                                        sfpFormatClkRateLabel.Text = f.format_code_rate
-                                        sfpFormatCodeSamplingLabel.Text = f.format_code_sampling
-
-                                        If sfpType = "1" Then
-                                            sfpTypeLabel.Text = "Encap (Source)"
-                                            sfpNameTextBox.BackColor = Color.PaleGreen
-                                            sfpFlowIPTextBox.BackColor = Color.PaleGreen
-                                            sfpFlowPortTextBox.BackColor = Color.PaleGreen
-                                            sfpFilteringPanel.Enabled = False
-                                            encapStatusPanel.Visible = True
-                                            encapCounterNote.Visible = True
-                                            If sfpFilteringButton.Text = "^" Then
-                                                Call sfpFilteringButton_Click(sender, e)
-                                            End If
-
-                                        ElseIf sfpType = "2" Then
-                                            sfpTypeLabel.Text = "Decap (Dest)"
-                                            sfpNameTextBox.BackColor = Color.NavajoWhite
-                                            sfpFlowIPTextBox.BackColor = Color.NavajoWhite
-                                            sfpFlowPortTextBox.BackColor = Color.NavajoWhite
-                                            sfpFilteringPanel.Enabled = True
-                                            encapStatusPanel.Visible = False
-                                        End If
-
-                                        Return 0
+                                            Return 0
+                                        Catch ex As Exception
+                                            MessageBox.Show("Connected IP Address might not belong to EmbSFP device.", "EmbSFP Configurator")
+                                            Return 0
+                                        End Try
                                     End Function)
 
             sfpFlowIPTextBox.Enabled = True
@@ -191,6 +205,9 @@ Public Class MainForm
     End Sub
     Private Sub GetResponse(ByVal uri As Uri, ByVal callback As Action(Of String))
         Dim wc As New WebClient()
+        'getResponseBusyTimer.Enabled = True
+        'wcBusy = True
+        'webClientBusy(True)
         AddHandler wc.OpenReadCompleted,
             Function(o, a)
                 Try
@@ -200,6 +217,7 @@ Public Class MainForm
                         callback(s.ReadToEnd())
                         validIP = True
                     End If
+
                     Return 0
                 Catch ex As Exception
                     validIP = False
@@ -209,7 +227,38 @@ Public Class MainForm
                 End Try
             End Function
         wc.OpenReadAsync(uri)
+        'getResponseBusyTimer.Enabled = False
+        'wcBusy = False
+        'webClientBusy(False)
     End Sub
+
+    'Private Sub webClientBusy(ByVal busy As Boolean)
+    '    If busy Then
+    '        sfpConnectButton.BackColor = SystemColors.Highlight
+    '        'sfpFlowIPTextBox.Enabled = False
+    '        'sfpFlowPortTextBox.Enabled = False
+    '        'sfpNameTextBox.Enabled = False
+    '        'sfpApplyButton.Enabled = False
+    '        'CounterTimer.Enabled = False
+    '        'sfpAdvancedPanel.Enabled = False
+    '        'sfpFormattingPanel.Enabled = False
+    '        'If sfpType = "2" Then
+    '        '    sfpFilteringPanel.Enabled = False
+    '        'End If
+    '    Else
+    '        sfpConnectButton.BackColor = SystemColors.Control
+    '        'sfpFlowIPTextBox.Enabled = True
+    '        'sfpFlowPortTextBox.Enabled = True
+    '        'sfpNameTextBox.Enabled = True
+    '        'sfpApplyButton.Enabled = True
+    '        'CounterTimer.Enabled = True
+    '        'sfpAdvancedPanel.Enabled = True
+    '        'sfpFormattingPanel.Enabled = True
+    '        'If sfpType = "2" Then
+    '        '    sfpFilteringPanel.Enabled = True
+    '        'End If
+    '    End If
+    'End Sub
 
     Private Sub CounterTimer_Tick(sender As Object, e As EventArgs) Handles CounterTimer.Tick
 
@@ -308,7 +357,7 @@ Public Class MainForm
 
     End Sub
 
-    Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "GET", Optional ByVal data As String = "")
+    Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "GET", Optional ByVal data As String = "", Optional ByVal timeout As Integer = 0)
         Dim req As HttpWebRequest = WebRequest.Create(uri)
         req.KeepAlive = False
         req.Method = method.ToUpper()
@@ -337,7 +386,7 @@ Public Class MainForm
     End Sub
 
     Private Sub devicesFlowsButton_Click(sender As Object, e As EventArgs) Handles devicesFlowsButton.Click
-        devicesPanel.Visible = false
+        devicesPanel.Visible = False
     End Sub
 
     Private Sub devicesIpTextBox_TextChanged(sender As Object, e As EventArgs) Handles devicesIpTextBox.TextChanged
@@ -350,61 +399,140 @@ Public Class MainForm
 
     Private Sub devicesDHCPCheckBox_CheckedChanged(sender As Object, e As EventArgs) Handles devicesDHCPCheckBox.CheckedChanged
         If devicesDHCPCheckBox.Checked = False Then
+            devicesAdaptersLabel.Enabled = False
+            devicesAdaptersComboBox.Enabled = False
             devicesListBox.Height = 292
         ElseIf devicesDHCPCheckBox.Checked = True Then
+            MessageBox.Show("Please select a Network Adapter that is on the EmbSFP LAN.", "EmbSFP Configurator")
+
+            mycomputerconnections = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces
+            devicesAdaptersComboBox.Items.Clear()
+            For i = 0 To mycomputerconnections.Length - 1
+                devicesAdaptersComboBox.Items.Add(mycomputerconnections(i).Name)
+            Next
+
+            devicesAdaptersLabel.Enabled = True
+            devicesAdaptersComboBox.Enabled = True
             devicesListBox.Height = 160
         End If
     End Sub
 
-    'Private Sub devicesListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles devicesListBox.SelectedIndexChanged
-    'If devicesListBox.SelectedItem.ToString().Length > 0 Then
+    Private Sub devicesListBox_MouseDoubleClick(sender As Object, e As EventArgs) Handles devicesListBox.MouseDoubleClick
+        Try
+            If devicesListBox.SelectedItem.ToString().Length > 0 And devicesListBox.SelectedItem.ToString().Contains(".") Then
 
-    'Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
-    'Dim dev As New Device
-    'Dim sfpRequest As New Uri("http://" & ipAddr & "/emsfp/ipconfig")
+                Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
+                Dim dev As New Device
+                Dim sfpRequest As New Uri("http://" & ipAddr & "/emsfp/ipconfig")
 
-    '       GetResponse(sfpRequest, Function(x)
-    '                                   dev = JsonConvert.DeserializeObject(Of Device)(x)
-    '                                  devicesIpTextBox.Text = dev.ip_addr
-    '                                  devicesSNMTextBox.Text = dev.subnet_mask
-    '                                  devicesDGTextBox.Text = dev.gateway
+                GetResponse(sfpRequest, Function(x)
+                                            dev = JsonConvert.DeserializeObject(Of Device)(x)
+                                            devicesIpTextBox.Text = dev.ip_addr
+                                            devicesSNMTextBox.Text = dev.subnet_mask
+                                            devicesDGTextBox.Text = dev.gateway
 
-    'Return 0
-    'End Function)
-    'Else
-    '       devicesListBox.SelectedItem = devicesListBox.Items.Item(0)
-    'End If
+                                            Return 0
+                                        End Function)
+            End If
+        Catch ex As Exception
+            If devicesListBox.Items.Count > 0 Then
+                devicesListBox.SelectedItem = devicesListBox.Items.Item(devicesListBox.Items.Count - 1)
+            End If
 
-    'End Sub
+        End Try
+    End Sub
+
+    Private Sub devicesListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles devicesListBox.SelectedIndexChanged
+        devicesIpTextBox.Text = ""
+        devicesSNMTextBox.Text = ""
+        devicesDGTextBox.Text = ""
+    End Sub
 
     Private Sub devicesAddButton_Click(sender As Object, e As EventArgs) Handles devicesAddButton.Click
-        devicesListBox.Items.Add(devicesIpTextBox.Text)
-        sfpMgmtIpComboBox.Items.Add(devicesIpTextBox.Text)
+        If devicesIpTextBox.Text.Length > 0 And devicesIpTextBox.Text.Contains(".") Then
+            devicesListBox.Items.Add(devicesIpTextBox.Text)
+            sfpMgmtIpComboBox.Items.Add(devicesIpTextBox.Text)
+        Else
+            MessageBox.Show("Please fill in a valid IP Address below before adding it to the list.", "EmbSFP Configurator")
+        End If
+
         'Need to save it somewhere at load and close
+
     End Sub
 
     Private Sub devicesRemoveButton_Click(sender As Object, e As EventArgs) Handles devicesRemoveButton.Click
-        Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
-        devicesListBox.SelectedItems.Remove(ipAddr)
-        devicesListBox.Items.Remove(ipAddr)
-        sfpMgmtIpComboBox.Items.Remove(ipAddr)
+
+        Try
+            Dim ipAddr As String = devicesListBox.SelectedItem.ToString()
+            Dim selIndex As Integer = devicesListBox.SelectedIndex
+            devicesListBox.SelectedItems.Remove(ipAddr)
+            devicesListBox.Items.Remove(ipAddr)
+            sfpMgmtIpComboBox.Items.Remove(ipAddr)
+
+            If devicesListBox.Items.Count > 0 Then
+                devicesListBox.SelectedItem = devicesListBox.Items.Item(0)
+            End If
+
+        Catch ex As Exception
+            MessageBox.Show("Please select an IP Address from your Devices list to remove.", "EmbSFP Configurator")
+        End Try
+
+    End Sub
+
+    Private Sub devicesDHCPListBox_SelectedIndexChanged(sender As Object, e As EventArgs) Handles devicesDHCPListBox.SelectedIndexChanged
+        Try
+            devicesIpTextBox.Text = ""
+            devicesSNMTextBox.Text = ""
+            devicesDGTextBox.Text = ""
+            devicesIpTextBox.Text = devicesDHCPListBox.SelectedItem.ToString()
+        Catch ex As Exception
+            devicesIpTextBox.Text = ""
+        End Try
+    End Sub
+
+    Private Sub devicesDHCPListBox_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles devicesDHCPListBox.MouseDoubleClick
+        Try
+            If devicesDHCPListBox.SelectedItem.ToString().Length > 0 And devicesDHCPListBox.SelectedItem.ToString().Contains(".") Then
+
+                Dim ipAddr As String = devicesDHCPListBox.SelectedItem.ToString()
+                Dim dev As New Device
+                Dim sfpRequest As New Uri("http://" & ipAddr & "/emsfp/ipconfig")
+
+                GetResponse(sfpRequest, Function(x)
+                                            dev = JsonConvert.DeserializeObject(Of Device)(x)
+                                            devicesIpTextBox.Text = dev.ip_addr
+                                            devicesSNMTextBox.Text = dev.subnet_mask
+                                            devicesDGTextBox.Text = dev.gateway
+
+                                            Return 0
+                                        End Function)
+            End If
+        Catch ex As Exception
+            If devicesDHCPListBox.Items.Count > 0 Then
+                devicesDHCPListBox.SelectedItem = devicesDHCPListBox.Items.Item(0)
+            End If
+        End Try
+
     End Sub
 
     'Private Sub sfpTypeLabel_TextChanged(sender As Object, e As EventArgs) Handles sfpTypeLabel.TextChanged
     'sfpMgmtIpComboBox.Enabled = True
     'End Sub
 
-    Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
-        My.Settings.Device0 = devicesListBox.Items.Item(0)
-        My.Settings.Device1 = devicesListBox.Items.Item(1)
-        My.Settings.Device2 = devicesListBox.Items.Item(2)
-        My.Settings.Device3 = devicesListBox.Items.Item(3)
 
-        My.Settings.Save()
 
-        'Obviously have to change this, just testing the Settings function-it's not working, might have to resort to txt file since it uses an xml anyway...
-    End Sub
+    'Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+
+    'My.Settings.Device0 = devicesListBox.Items.Item(0)
+    'My.Settings.Device1 = devicesListBox.Items.Item(1)
+    'My.Settings.Device2 = devicesListBox.Items.Item(2)
+    'My.Settings.Device3 = devicesListBox.Items.Item(3)
+
+    'My.Settings.Save()
+
+    'Obviously have to change this, just testing the Settings function-it's not working, might have to resort to txt file since it uses an xml anyway...
+    'End Sub
 
     'Private Sub ComboBoxTimer_Tick(sender As Object, e As EventArgs) Handles ComboBoxTimer.Tick
 
@@ -424,6 +552,64 @@ Public Class MainForm
     'Might not need this counter if just keep lists updated using Add and Remove buttons, can also add using Connect on Flows page
 
     'End Sub
+
+    Private Sub devicesAdaptersComboBox_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles devicesAdaptersComboBox.SelectedIndexChanged
+        For i = 0 To mycomputerconnections(devicesAdaptersComboBox.SelectedIndex).GetIPProperties.UnicastAddresses.Count - 1
+            If mycomputerconnections(devicesAdaptersComboBox.SelectedIndex).GetIPProperties.UnicastAddresses(i).Address.AddressFamily = Net.Sockets.AddressFamily.InterNetwork Then
+                myip = mycomputerconnections(devicesAdaptersComboBox.SelectedIndex).GetIPProperties.UnicastAddresses(i).Address
+                devicesAdaptersComboBox.BackColor = SystemColors.Window
+                BindSocket()
+            End If
+        Next
+    End Sub
+
+    Private Sub BindSocket()
+        Try
+            sock.Bind(New IPEndPoint(myip, 0))
+            sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, True)
+            Dim bytrue() As Byte = {1, 0, 0, 0}
+            Dim byout() As Byte = {1, 0, 0, 0}
+            sock.IOControl(IOControlCode.ReceiveAll, bytrue, byout)
+            sock.Blocking = False
+            ReDim bytedata(sock.ReceiveBufferSize)
+            sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+        Catch ex As Exception
+            devicesAdaptersComboBox.BackColor = Color.Red
+        End Try
+    End Sub
+
+    Private Function Byteswap(ByVal bytes() As Byte, ByVal index As UInteger)
+        Dim result(1) As Byte
+        result(0) = bytes(index + 1)
+        result(1) = bytes(index)
+        Return result
+    End Function
+
+
+    Private Sub OnReceive(ByVal asyncresult As IAsyncResult)
+        'Get Protocol Type
+        If bytedata(9) = 6 Then
+            connType = "TCP"
+        ElseIf bytedata(9) = 17 Then
+            connType = "UDP"
+        ElseIf bytedata(9) = 68 Then
+            connType = "DHCP Client"
+            'Get IP from
+            ipFrom = New IPAddress(BitConverter.ToUInt32(bytedata, 12))
+            devicesDHCPListBox.Items.Add(ipFrom.ToString())
+        ElseIf bytedata(9) = 67 Then
+            connType = "DHCP Server"
+        Else
+            connType = "???"
+        End If
+
+        'Restart the Receiving
+        sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+    End Sub
+
+    Private Sub devicesApplyButton_Click(sender As Object, e As EventArgs) Handles devicesApplyButton.Click
+
+    End Sub
 
 
 End Class

@@ -25,6 +25,7 @@ Partial Class MainForm
         Me.components = New System.ComponentModel.Container()
         Me.sfpMgmtIPLabel = New System.Windows.Forms.Label()
         Me.detailPanel = New System.Windows.Forms.Panel()
+        Me.sfpNameLabel = New System.Windows.Forms.Label()
         Me.sfpFilteringPanel = New System.Windows.Forms.Panel()
         Me.sfpFilterSSRCCheckbox = New System.Windows.Forms.CheckBox()
         Me.sfpFilterDestIPCheckbox = New System.Windows.Forms.CheckBox()
@@ -78,14 +79,8 @@ Partial Class MainForm
         Me.sfpFlowIpLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabel = New System.Windows.Forms.Label()
         Me.sfpTypeLabelLabel = New System.Windows.Forms.Label()
-        Me.sfpNameLabel = New System.Windows.Forms.Label()
         Me.sfpMgmtIpComboBox = New System.Windows.Forms.ComboBox()
         Me.decapStatusPanel = New System.Windows.Forms.Panel()
-        Me.encapStatusPanel = New System.Windows.Forms.Panel()
-        Me.encapCounterNote = New System.Windows.Forms.Label()
-        Me.flow1SentCounterLabel = New System.Windows.Forms.Label()
-        Me.flow1SentLabel = New System.Windows.Forms.Label()
-        Me.flow1LabelEncap = New System.Windows.Forms.Label()
         Me.flow1SeenCounterLabel = New System.Windows.Forms.Label()
         Me.flow1RenderedCounterLabel = New System.Windows.Forms.Label()
         Me.flow1DroppedCounterLabel = New System.Windows.Forms.Label()
@@ -93,6 +88,11 @@ Partial Class MainForm
         Me.flow1RenderedLabel = New System.Windows.Forms.Label()
         Me.flow1SeenLabel = New System.Windows.Forms.Label()
         Me.flow1LabelDecap = New System.Windows.Forms.Label()
+        Me.encapStatusPanel = New System.Windows.Forms.Panel()
+        Me.encapCounterNote = New System.Windows.Forms.Label()
+        Me.flow1SentCounterLabel = New System.Windows.Forms.Label()
+        Me.flow1SentLabel = New System.Windows.Forms.Label()
+        Me.flow1LabelEncap = New System.Windows.Forms.Label()
         Me.sfpFlowDetailToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.sfpConnectButton = New System.Windows.Forms.Button()
         Me.CounterTimer = New System.Windows.Forms.Timer(Me.components)
@@ -100,6 +100,10 @@ Partial Class MainForm
         Me.sfpDevicesButton = New System.Windows.Forms.Button()
         Me.devicesFlowsButton = New System.Windows.Forms.Button()
         Me.devicesPanel = New System.Windows.Forms.Panel()
+        Me.devicesAdaptersLabel = New System.Windows.Forms.Label()
+        Me.devicesAdaptersComboBox = New System.Windows.Forms.ComboBox()
+        Me.devicesAddButton = New System.Windows.Forms.Button()
+        Me.devicesDoubleClickLabel = New System.Windows.Forms.Label()
         Me.devicesSNMTextBox = New System.Windows.Forms.TextBox()
         Me.devicesSNMLabel = New System.Windows.Forms.Label()
         Me.devicesListBox = New System.Windows.Forms.ListBox()
@@ -109,10 +113,14 @@ Partial Class MainForm
         Me.devicesDHCPCheckBox = New System.Windows.Forms.CheckBox()
         Me.devicesIpTextBox = New System.Windows.Forms.TextBox()
         Me.devicesRemoveButton = New System.Windows.Forms.Button()
-        Me.devicesIpLabel = New System.Windows.Forms.Label()
-        Me.devicesAddButton = New System.Windows.Forms.Button()
         Me.devicesApplyButton = New System.Windows.Forms.Button()
+        Me.devicesAccentPanel1 = New System.Windows.Forms.Panel()
+        Me.devicesIpLabel = New System.Windows.Forms.Label()
+        Me.devicesAccentPanel3 = New System.Windows.Forms.Panel()
+        Me.devicesAccentPanel2 = New System.Windows.Forms.Panel()
         Me.ComboBoxTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.getResponseBusyTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.sfpAccentPanel = New System.Windows.Forms.Panel()
         Me.detailPanel.SuspendLayout()
         Me.sfpFilteringPanel.SuspendLayout()
         Me.sfpFormattingPanel.SuspendLayout()
@@ -120,11 +128,13 @@ Partial Class MainForm
         Me.decapStatusPanel.SuspendLayout()
         Me.encapStatusPanel.SuspendLayout()
         Me.devicesPanel.SuspendLayout()
+        Me.devicesAccentPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'sfpMgmtIPLabel
         '
         Me.sfpMgmtIPLabel.AutoSize = True
+        Me.sfpMgmtIPLabel.BackColor = System.Drawing.SystemColors.ActiveCaption
         Me.sfpMgmtIPLabel.Location = New System.Drawing.Point(85, 15)
         Me.sfpMgmtIPLabel.Name = "sfpMgmtIPLabel"
         Me.sfpMgmtIPLabel.Size = New System.Drawing.Size(94, 13)
@@ -136,6 +146,7 @@ Partial Class MainForm
         Me.detailPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.detailPanel.AutoScroll = True
+        Me.detailPanel.Controls.Add(Me.sfpNameLabel)
         Me.detailPanel.Controls.Add(Me.sfpFilteringPanel)
         Me.detailPanel.Controls.Add(Me.sfpFlowPortTextBox)
         Me.detailPanel.Controls.Add(Me.sfpFlowIPTextBox)
@@ -146,11 +157,19 @@ Partial Class MainForm
         Me.detailPanel.Controls.Add(Me.sfpFlowIpLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabel)
         Me.detailPanel.Controls.Add(Me.sfpTypeLabelLabel)
-        Me.detailPanel.Controls.Add(Me.sfpNameLabel)
-        Me.detailPanel.Location = New System.Drawing.Point(18, 38)
+        Me.detailPanel.Location = New System.Drawing.Point(19, 41)
         Me.detailPanel.Name = "detailPanel"
-        Me.detailPanel.Size = New System.Drawing.Size(346, 419)
+        Me.detailPanel.Size = New System.Drawing.Size(346, 454)
         Me.detailPanel.TabIndex = 3
+        '
+        'sfpNameLabel
+        '
+        Me.sfpNameLabel.AutoSize = True
+        Me.sfpNameLabel.Location = New System.Drawing.Point(89, 14)
+        Me.sfpNameLabel.Name = "sfpNameLabel"
+        Me.sfpNameLabel.Size = New System.Drawing.Size(38, 13)
+        Me.sfpNameLabel.TabIndex = 0
+        Me.sfpNameLabel.Text = "Name:"
         '
         'sfpFilteringPanel
         '
@@ -166,7 +185,7 @@ Partial Class MainForm
         Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringLabel)
         Me.sfpFilteringPanel.Controls.Add(Me.sfpFilteringButton)
         Me.sfpFilteringPanel.Enabled = False
-        Me.sfpFilteringPanel.Location = New System.Drawing.Point(7, 141)
+        Me.sfpFilteringPanel.Location = New System.Drawing.Point(7, 142)
         Me.sfpFilteringPanel.Name = "sfpFilteringPanel"
         Me.sfpFilteringPanel.Size = New System.Drawing.Size(333, 33)
         Me.sfpFilteringPanel.TabIndex = 26
@@ -333,14 +352,14 @@ Partial Class MainForm
         Me.sfpFormattingPanel.Enabled = False
         Me.sfpFormattingPanel.Location = New System.Drawing.Point(7, 108)
         Me.sfpFormattingPanel.Name = "sfpFormattingPanel"
-        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 30)
+        Me.sfpFormattingPanel.Size = New System.Drawing.Size(333, 29)
         Me.sfpFormattingPanel.TabIndex = 23
         '
         'sfpFormatCodeSamplingLabel
         '
         Me.sfpFormatCodeSamplingLabel.AutoSize = True
         Me.sfpFormatCodeSamplingLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeSamplingLabel.Location = New System.Drawing.Point(168, 65)
+        Me.sfpFormatCodeSamplingLabel.Location = New System.Drawing.Point(190, 65)
         Me.sfpFormatCodeSamplingLabel.Name = "sfpFormatCodeSamplingLabel"
         Me.sfpFormatCodeSamplingLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeSamplingLabel.TabIndex = 24
@@ -350,7 +369,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeSamplingLabelLabel.AutoSize = True
         Me.sfpFormatCodeSamplingLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeSamplingLabelLabel.Location = New System.Drawing.Point(114, 65)
+        Me.sfpFormatCodeSamplingLabelLabel.Location = New System.Drawing.Point(136, 65)
         Me.sfpFormatCodeSamplingLabelLabel.Name = "sfpFormatCodeSamplingLabelLabel"
         Me.sfpFormatCodeSamplingLabelLabel.Size = New System.Drawing.Size(53, 13)
         Me.sfpFormatCodeSamplingLabelLabel.TabIndex = 23
@@ -360,7 +379,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeRateLabel.AutoSize = True
         Me.sfpFormatCodeRateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeRateLabel.Location = New System.Drawing.Point(70, 65)
+        Me.sfpFormatCodeRateLabel.Location = New System.Drawing.Point(92, 65)
         Me.sfpFormatCodeRateLabel.Name = "sfpFormatCodeRateLabel"
         Me.sfpFormatCodeRateLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeRateLabel.TabIndex = 22
@@ -370,7 +389,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeRateLabelLabel.AutoSize = True
         Me.sfpFormatCodeRateLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeRateLabelLabel.Location = New System.Drawing.Point(37, 66)
+        Me.sfpFormatCodeRateLabelLabel.Location = New System.Drawing.Point(59, 66)
         Me.sfpFormatCodeRateLabelLabel.Name = "sfpFormatCodeRateLabelLabel"
         Me.sfpFormatCodeRateLabelLabel.Size = New System.Drawing.Size(33, 13)
         Me.sfpFormatCodeRateLabelLabel.TabIndex = 21
@@ -380,7 +399,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeFormatLabel.AutoSize = True
         Me.sfpFormatCodeFormatLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeFormatLabel.Location = New System.Drawing.Point(70, 48)
+        Me.sfpFormatCodeFormatLabel.Location = New System.Drawing.Point(92, 48)
         Me.sfpFormatCodeFormatLabel.Name = "sfpFormatCodeFormatLabel"
         Me.sfpFormatCodeFormatLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeFormatLabel.TabIndex = 20
@@ -390,7 +409,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeFormatLabelLabel.AutoSize = True
         Me.sfpFormatCodeFormatLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeFormatLabelLabel.Location = New System.Drawing.Point(28, 49)
+        Me.sfpFormatCodeFormatLabelLabel.Location = New System.Drawing.Point(50, 49)
         Me.sfpFormatCodeFormatLabelLabel.Name = "sfpFormatCodeFormatLabelLabel"
         Me.sfpFormatCodeFormatLabelLabel.Size = New System.Drawing.Size(42, 13)
         Me.sfpFormatCodeFormatLabelLabel.TabIndex = 19
@@ -400,7 +419,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodePScanLabel.AutoSize = True
         Me.sfpFormatCodePScanLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodePScanLabel.Location = New System.Drawing.Point(168, 49)
+        Me.sfpFormatCodePScanLabel.Location = New System.Drawing.Point(190, 49)
         Me.sfpFormatCodePScanLabel.Name = "sfpFormatCodePScanLabel"
         Me.sfpFormatCodePScanLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodePScanLabel.TabIndex = 18
@@ -410,7 +429,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodePScanLabelLabel.AutoSize = True
         Me.sfpFormatCodePScanLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodePScanLabelLabel.Location = New System.Drawing.Point(122, 49)
+        Me.sfpFormatCodePScanLabelLabel.Location = New System.Drawing.Point(144, 49)
         Me.sfpFormatCodePScanLabelLabel.Name = "sfpFormatCodePScanLabelLabel"
         Me.sfpFormatCodePScanLabelLabel.Size = New System.Drawing.Size(45, 13)
         Me.sfpFormatCodePScanLabelLabel.TabIndex = 17
@@ -420,7 +439,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeTScanLabel.AutoSize = True
         Me.sfpFormatCodeTScanLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeTScanLabel.Location = New System.Drawing.Point(268, 53)
+        Me.sfpFormatCodeTScanLabel.Location = New System.Drawing.Point(290, 53)
         Me.sfpFormatCodeTScanLabel.Name = "sfpFormatCodeTScanLabel"
         Me.sfpFormatCodeTScanLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeTScanLabel.TabIndex = 16
@@ -430,7 +449,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeTScanLabelLabel.AutoSize = True
         Me.sfpFormatCodeTScanLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeTScanLabelLabel.Location = New System.Drawing.Point(218, 51)
+        Me.sfpFormatCodeTScanLabelLabel.Location = New System.Drawing.Point(240, 51)
         Me.sfpFormatCodeTScanLabelLabel.Name = "sfpFormatCodeTScanLabelLabel"
         Me.sfpFormatCodeTScanLabelLabel.Size = New System.Drawing.Size(45, 13)
         Me.sfpFormatCodeTScanLabelLabel.TabIndex = 15
@@ -440,7 +459,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeModeLabel.AutoSize = True
         Me.sfpFormatCodeModeLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeModeLabel.Location = New System.Drawing.Point(268, 33)
+        Me.sfpFormatCodeModeLabel.Location = New System.Drawing.Point(290, 33)
         Me.sfpFormatCodeModeLabel.Name = "sfpFormatCodeModeLabel"
         Me.sfpFormatCodeModeLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeModeLabel.TabIndex = 14
@@ -450,7 +469,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeModeLabelLabel.AutoSize = True
         Me.sfpFormatCodeModeLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeModeLabelLabel.Location = New System.Drawing.Point(226, 33)
+        Me.sfpFormatCodeModeLabelLabel.Location = New System.Drawing.Point(248, 33)
         Me.sfpFormatCodeModeLabelLabel.Name = "sfpFormatCodeModeLabelLabel"
         Me.sfpFormatCodeModeLabelLabel.Size = New System.Drawing.Size(37, 13)
         Me.sfpFormatCodeModeLabelLabel.TabIndex = 13
@@ -460,7 +479,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeValidLabel.AutoSize = True
         Me.sfpFormatCodeValidLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeValidLabel.Location = New System.Drawing.Point(168, 33)
+        Me.sfpFormatCodeValidLabel.Location = New System.Drawing.Point(190, 33)
         Me.sfpFormatCodeValidLabel.Name = "sfpFormatCodeValidLabel"
         Me.sfpFormatCodeValidLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatCodeValidLabel.TabIndex = 12
@@ -470,7 +489,7 @@ Partial Class MainForm
         '
         Me.sfpFormatCodeValidLabelLabel.AutoSize = True
         Me.sfpFormatCodeValidLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatCodeValidLabelLabel.Location = New System.Drawing.Point(134, 33)
+        Me.sfpFormatCodeValidLabelLabel.Location = New System.Drawing.Point(156, 33)
         Me.sfpFormatCodeValidLabelLabel.Name = "sfpFormatCodeValidLabelLabel"
         Me.sfpFormatCodeValidLabelLabel.Size = New System.Drawing.Size(33, 13)
         Me.sfpFormatCodeValidLabelLabel.TabIndex = 11
@@ -480,7 +499,7 @@ Partial Class MainForm
         '
         Me.sfpFormatClkRateLabel.AutoSize = True
         Me.sfpFormatClkRateLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatClkRateLabel.Location = New System.Drawing.Point(70, 33)
+        Me.sfpFormatClkRateLabel.Location = New System.Drawing.Point(92, 33)
         Me.sfpFormatClkRateLabel.Name = "sfpFormatClkRateLabel"
         Me.sfpFormatClkRateLabel.Size = New System.Drawing.Size(13, 13)
         Me.sfpFormatClkRateLabel.TabIndex = 8
@@ -498,7 +517,7 @@ Partial Class MainForm
         '
         Me.sfpFormatClkRateLabelLabel.AutoSize = True
         Me.sfpFormatClkRateLabelLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpFormatClkRateLabelLabel.Location = New System.Drawing.Point(7, 33)
+        Me.sfpFormatClkRateLabelLabel.Location = New System.Drawing.Point(29, 33)
         Me.sfpFormatClkRateLabelLabel.Name = "sfpFormatClkRateLabelLabel"
         Me.sfpFormatClkRateLabelLabel.Size = New System.Drawing.Size(63, 13)
         Me.sfpFormatClkRateLabelLabel.TabIndex = 7
@@ -666,6 +685,7 @@ Partial Class MainForm
         'sfpFlowIpLabel
         '
         Me.sfpFlowIpLabel.AutoSize = True
+        Me.sfpFlowIpLabel.BackColor = System.Drawing.SystemColors.Control
         Me.sfpFlowIpLabel.Location = New System.Drawing.Point(5, 45)
         Me.sfpFlowIpLabel.Name = "sfpFlowIpLabel"
         Me.sfpFlowIpLabel.Size = New System.Drawing.Size(125, 13)
@@ -690,15 +710,6 @@ Partial Class MainForm
         Me.sfpTypeLabelLabel.TabIndex = 2
         Me.sfpTypeLabelLabel.Text = "Type:"
         '
-        'sfpNameLabel
-        '
-        Me.sfpNameLabel.AutoSize = True
-        Me.sfpNameLabel.Location = New System.Drawing.Point(89, 14)
-        Me.sfpNameLabel.Name = "sfpNameLabel"
-        Me.sfpNameLabel.Size = New System.Drawing.Size(38, 13)
-        Me.sfpNameLabel.TabIndex = 0
-        Me.sfpNameLabel.Text = "Name:"
-        '
         'sfpMgmtIpComboBox
         '
         Me.sfpMgmtIpComboBox.FormattingEnabled = True
@@ -711,8 +722,7 @@ Partial Class MainForm
         '
         'decapStatusPanel
         '
-        Me.decapStatusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.decapStatusPanel.Controls.Add(Me.encapStatusPanel)
         Me.decapStatusPanel.Controls.Add(Me.flow1SeenCounterLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1RenderedCounterLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1DroppedCounterLabel)
@@ -720,22 +730,93 @@ Partial Class MainForm
         Me.decapStatusPanel.Controls.Add(Me.flow1RenderedLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1SeenLabel)
         Me.decapStatusPanel.Controls.Add(Me.flow1LabelDecap)
-        Me.decapStatusPanel.Location = New System.Drawing.Point(9, 479)
+        Me.decapStatusPanel.Location = New System.Drawing.Point(0, 475)
         Me.decapStatusPanel.Name = "decapStatusPanel"
-        Me.decapStatusPanel.Size = New System.Drawing.Size(378, 23)
+        Me.decapStatusPanel.Size = New System.Drawing.Size(389, 23)
         Me.decapStatusPanel.TabIndex = 4
+        '
+        'flow1SeenCounterLabel
+        '
+        Me.flow1SeenCounterLabel.AutoSize = True
+        Me.flow1SeenCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SeenCounterLabel.Location = New System.Drawing.Point(81, 5)
+        Me.flow1SeenCounterLabel.Name = "flow1SeenCounterLabel"
+        Me.flow1SeenCounterLabel.Size = New System.Drawing.Size(13, 13)
+        Me.flow1SeenCounterLabel.TabIndex = 6
+        Me.flow1SeenCounterLabel.Text = "0"
+        Me.flow1SeenCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'flow1RenderedCounterLabel
+        '
+        Me.flow1RenderedCounterLabel.AutoSize = True
+        Me.flow1RenderedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(206, 5)
+        Me.flow1RenderedCounterLabel.Name = "flow1RenderedCounterLabel"
+        Me.flow1RenderedCounterLabel.Size = New System.Drawing.Size(13, 13)
+        Me.flow1RenderedCounterLabel.TabIndex = 5
+        Me.flow1RenderedCounterLabel.Text = "0"
+        Me.flow1RenderedCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'flow1DroppedCounterLabel
+        '
+        Me.flow1DroppedCounterLabel.AutoSize = True
+        Me.flow1DroppedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1DroppedCounterLabel.Location = New System.Drawing.Point(316, 5)
+        Me.flow1DroppedCounterLabel.Name = "flow1DroppedCounterLabel"
+        Me.flow1DroppedCounterLabel.Size = New System.Drawing.Size(13, 13)
+        Me.flow1DroppedCounterLabel.TabIndex = 4
+        Me.flow1DroppedCounterLabel.Text = "0"
+        Me.flow1DroppedCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        '
+        'flow1DroppedLabel
+        '
+        Me.flow1DroppedLabel.AutoSize = True
+        Me.flow1DroppedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1DroppedLabel.Location = New System.Drawing.Point(268, 5)
+        Me.flow1DroppedLabel.Name = "flow1DroppedLabel"
+        Me.flow1DroppedLabel.Size = New System.Drawing.Size(51, 13)
+        Me.flow1DroppedLabel.TabIndex = 3
+        Me.flow1DroppedLabel.Text = "Dropped:"
+        '
+        'flow1RenderedLabel
+        '
+        Me.flow1RenderedLabel.AutoSize = True
+        Me.flow1RenderedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1RenderedLabel.Location = New System.Drawing.Point(152, 5)
+        Me.flow1RenderedLabel.Name = "flow1RenderedLabel"
+        Me.flow1RenderedLabel.Size = New System.Drawing.Size(57, 13)
+        Me.flow1RenderedLabel.TabIndex = 2
+        Me.flow1RenderedLabel.Text = "Rendered:"
+        '
+        'flow1SeenLabel
+        '
+        Me.flow1SeenLabel.AutoSize = True
+        Me.flow1SeenLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SeenLabel.Location = New System.Drawing.Point(47, 5)
+        Me.flow1SeenLabel.Name = "flow1SeenLabel"
+        Me.flow1SeenLabel.Size = New System.Drawing.Size(35, 13)
+        Me.flow1SeenLabel.TabIndex = 1
+        Me.flow1SeenLabel.Text = "Seen:"
+        '
+        'flow1LabelDecap
+        '
+        Me.flow1LabelDecap.AutoSize = True
+        Me.flow1LabelDecap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1LabelDecap.Location = New System.Drawing.Point(3, 5)
+        Me.flow1LabelDecap.Name = "flow1LabelDecap"
+        Me.flow1LabelDecap.Size = New System.Drawing.Size(44, 13)
+        Me.flow1LabelDecap.TabIndex = 0
+        Me.flow1LabelDecap.Text = "Flow 1"
         '
         'encapStatusPanel
         '
-        Me.encapStatusPanel.Anchor = CType(((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.encapStatusPanel.Controls.Add(Me.encapCounterNote)
         Me.encapStatusPanel.Controls.Add(Me.flow1SentCounterLabel)
         Me.encapStatusPanel.Controls.Add(Me.flow1SentLabel)
         Me.encapStatusPanel.Controls.Add(Me.flow1LabelEncap)
-        Me.encapStatusPanel.Location = New System.Drawing.Point(9, 479)
+        Me.encapStatusPanel.Location = New System.Drawing.Point(0, 0)
         Me.encapStatusPanel.Name = "encapStatusPanel"
-        Me.encapStatusPanel.Size = New System.Drawing.Size(378, 23)
+        Me.encapStatusPanel.Size = New System.Drawing.Size(389, 23)
         Me.encapStatusPanel.TabIndex = 27
         '
         'encapCounterNote
@@ -780,87 +861,15 @@ Partial Class MainForm
         Me.flow1LabelEncap.TabIndex = 0
         Me.flow1LabelEncap.Text = "Flow 1"
         '
-        'flow1SeenCounterLabel
-        '
-        Me.flow1SeenCounterLabel.AutoSize = True
-        Me.flow1SeenCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1SeenCounterLabel.Location = New System.Drawing.Point(81, 5)
-        Me.flow1SeenCounterLabel.Name = "flow1SeenCounterLabel"
-        Me.flow1SeenCounterLabel.Size = New System.Drawing.Size(13, 13)
-        Me.flow1SeenCounterLabel.TabIndex = 6
-        Me.flow1SeenCounterLabel.Text = "0"
-        Me.flow1SeenCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'flow1RenderedCounterLabel
-        '
-        Me.flow1RenderedCounterLabel.AutoSize = True
-        Me.flow1RenderedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1RenderedCounterLabel.Location = New System.Drawing.Point(190, 5)
-        Me.flow1RenderedCounterLabel.Name = "flow1RenderedCounterLabel"
-        Me.flow1RenderedCounterLabel.Size = New System.Drawing.Size(13, 13)
-        Me.flow1RenderedCounterLabel.TabIndex = 5
-        Me.flow1RenderedCounterLabel.Text = "0"
-        Me.flow1RenderedCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'flow1DroppedCounterLabel
-        '
-        Me.flow1DroppedCounterLabel.AutoSize = True
-        Me.flow1DroppedCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1DroppedCounterLabel.Location = New System.Drawing.Point(294, 5)
-        Me.flow1DroppedCounterLabel.Name = "flow1DroppedCounterLabel"
-        Me.flow1DroppedCounterLabel.Size = New System.Drawing.Size(13, 13)
-        Me.flow1DroppedCounterLabel.TabIndex = 4
-        Me.flow1DroppedCounterLabel.Text = "0"
-        Me.flow1DroppedCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'flow1DroppedLabel
-        '
-        Me.flow1DroppedLabel.AutoSize = True
-        Me.flow1DroppedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1DroppedLabel.Location = New System.Drawing.Point(246, 5)
-        Me.flow1DroppedLabel.Name = "flow1DroppedLabel"
-        Me.flow1DroppedLabel.Size = New System.Drawing.Size(51, 13)
-        Me.flow1DroppedLabel.TabIndex = 3
-        Me.flow1DroppedLabel.Text = "Dropped:"
-        '
-        'flow1RenderedLabel
-        '
-        Me.flow1RenderedLabel.AutoSize = True
-        Me.flow1RenderedLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1RenderedLabel.Location = New System.Drawing.Point(136, 5)
-        Me.flow1RenderedLabel.Name = "flow1RenderedLabel"
-        Me.flow1RenderedLabel.Size = New System.Drawing.Size(57, 13)
-        Me.flow1RenderedLabel.TabIndex = 2
-        Me.flow1RenderedLabel.Text = "Rendered:"
-        '
-        'flow1SeenLabel
-        '
-        Me.flow1SeenLabel.AutoSize = True
-        Me.flow1SeenLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1SeenLabel.Location = New System.Drawing.Point(47, 5)
-        Me.flow1SeenLabel.Name = "flow1SeenLabel"
-        Me.flow1SeenLabel.Size = New System.Drawing.Size(35, 13)
-        Me.flow1SeenLabel.TabIndex = 1
-        Me.flow1SeenLabel.Text = "Seen:"
-        '
-        'flow1LabelDecap
-        '
-        Me.flow1LabelDecap.AutoSize = True
-        Me.flow1LabelDecap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1LabelDecap.Location = New System.Drawing.Point(3, 5)
-        Me.flow1LabelDecap.Name = "flow1LabelDecap"
-        Me.flow1LabelDecap.Size = New System.Drawing.Size(44, 13)
-        Me.flow1LabelDecap.TabIndex = 0
-        Me.flow1LabelDecap.Text = "Flow 1"
-        '
         'sfpConnectButton
         '
+        Me.sfpConnectButton.BackColor = System.Drawing.SystemColors.Control
         Me.sfpConnectButton.Location = New System.Drawing.Point(316, 11)
         Me.sfpConnectButton.Name = "sfpConnectButton"
         Me.sfpConnectButton.Size = New System.Drawing.Size(57, 23)
         Me.sfpConnectButton.TabIndex = 5
         Me.sfpConnectButton.Text = "Connect"
-        Me.sfpConnectButton.UseVisualStyleBackColor = True
+        Me.sfpConnectButton.UseVisualStyleBackColor = False
         '
         'CounterTimer
         '
@@ -870,7 +879,7 @@ Partial Class MainForm
         '
         Me.sfpApplyButton.Enabled = False
         Me.sfpApplyButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.sfpApplyButton.Location = New System.Drawing.Point(158, 455)
+        Me.sfpApplyButton.Location = New System.Drawing.Point(158, 453)
         Me.sfpApplyButton.Name = "sfpApplyButton"
         Me.sfpApplyButton.Size = New System.Drawing.Size(75, 23)
         Me.sfpApplyButton.TabIndex = 6
@@ -890,7 +899,7 @@ Partial Class MainForm
         'devicesFlowsButton
         '
         Me.devicesFlowsButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.devicesFlowsButton.Location = New System.Drawing.Point(3, 9)
+        Me.devicesFlowsButton.Location = New System.Drawing.Point(13, 9)
         Me.devicesFlowsButton.Name = "devicesFlowsButton"
         Me.devicesFlowsButton.Size = New System.Drawing.Size(75, 23)
         Me.devicesFlowsButton.TabIndex = 28
@@ -899,6 +908,10 @@ Partial Class MainForm
         '
         'devicesPanel
         '
+        Me.devicesPanel.Controls.Add(Me.devicesAdaptersLabel)
+        Me.devicesPanel.Controls.Add(Me.devicesAdaptersComboBox)
+        Me.devicesPanel.Controls.Add(Me.devicesAddButton)
+        Me.devicesPanel.Controls.Add(Me.devicesDoubleClickLabel)
         Me.devicesPanel.Controls.Add(Me.devicesSNMTextBox)
         Me.devicesPanel.Controls.Add(Me.devicesSNMLabel)
         Me.devicesPanel.Controls.Add(Me.devicesListBox)
@@ -908,27 +921,67 @@ Partial Class MainForm
         Me.devicesPanel.Controls.Add(Me.devicesDHCPCheckBox)
         Me.devicesPanel.Controls.Add(Me.devicesIpTextBox)
         Me.devicesPanel.Controls.Add(Me.devicesRemoveButton)
-        Me.devicesPanel.Controls.Add(Me.devicesIpLabel)
-        Me.devicesPanel.Controls.Add(Me.devicesAddButton)
         Me.devicesPanel.Controls.Add(Me.devicesApplyButton)
         Me.devicesPanel.Controls.Add(Me.devicesFlowsButton)
-        Me.devicesPanel.Location = New System.Drawing.Point(8, 2)
+        Me.devicesPanel.Controls.Add(Me.devicesAccentPanel1)
+        Me.devicesPanel.Controls.Add(Me.devicesAccentPanel3)
+        Me.devicesPanel.Controls.Add(Me.devicesAccentPanel2)
+        Me.devicesPanel.Location = New System.Drawing.Point(-1, 0)
         Me.devicesPanel.Name = "devicesPanel"
-        Me.devicesPanel.Size = New System.Drawing.Size(379, 501)
+        Me.devicesPanel.Size = New System.Drawing.Size(390, 501)
         Me.devicesPanel.TabIndex = 29
         Me.devicesPanel.Visible = False
         '
+        'devicesAdaptersLabel
+        '
+        Me.devicesAdaptersLabel.AutoSize = True
+        Me.devicesAdaptersLabel.Enabled = False
+        Me.devicesAdaptersLabel.Location = New System.Drawing.Point(23, 200)
+        Me.devicesAdaptersLabel.Name = "devicesAdaptersLabel"
+        Me.devicesAdaptersLabel.Size = New System.Drawing.Size(190, 13)
+        Me.devicesAdaptersLabel.TabIndex = 37
+        Me.devicesAdaptersLabel.Text = "Network Adapters for DHCP Discovery"
+        '
+        'devicesAdaptersComboBox
+        '
+        Me.devicesAdaptersComboBox.Enabled = False
+        Me.devicesAdaptersComboBox.FormattingEnabled = True
+        Me.devicesAdaptersComboBox.Location = New System.Drawing.Point(20, 219)
+        Me.devicesAdaptersComboBox.Name = "devicesAdaptersComboBox"
+        Me.devicesAdaptersComboBox.Size = New System.Drawing.Size(198, 21)
+        Me.devicesAdaptersComboBox.TabIndex = 36
+        '
+        'devicesAddButton
+        '
+        Me.devicesAddButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.devicesAddButton.ForeColor = System.Drawing.SystemColors.ControlText
+        Me.devicesAddButton.Location = New System.Drawing.Point(49, 69)
+        Me.devicesAddButton.Name = "devicesAddButton"
+        Me.devicesAddButton.Size = New System.Drawing.Size(145, 42)
+        Me.devicesAddButton.TabIndex = 31
+        Me.devicesAddButton.Text = "     Add (+)      --->  "
+        Me.devicesAddButton.UseVisualStyleBackColor = True
+        '
+        'devicesDoubleClickLabel
+        '
+        Me.devicesDoubleClickLabel.AutoSize = True
+        Me.devicesDoubleClickLabel.Location = New System.Drawing.Point(187, 29)
+        Me.devicesDoubleClickLabel.Name = "devicesDoubleClickLabel"
+        Me.devicesDoubleClickLabel.Size = New System.Drawing.Size(203, 13)
+        Me.devicesDoubleClickLabel.TabIndex = 35
+        Me.devicesDoubleClickLabel.Text = "Double Click an IP to Attempt Connection"
+        '
         'devicesSNMTextBox
         '
-        Me.devicesSNMTextBox.Location = New System.Drawing.Point(268, 393)
+        Me.devicesSNMTextBox.Location = New System.Drawing.Point(267, 394)
         Me.devicesSNMTextBox.Name = "devicesSNMTextBox"
-        Me.devicesSNMTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesSNMTextBox.Size = New System.Drawing.Size(112, 20)
         Me.devicesSNMTextBox.TabIndex = 32
         '
         'devicesSNMLabel
         '
         Me.devicesSNMLabel.AutoSize = True
-        Me.devicesSNMLabel.Location = New System.Drawing.Point(196, 395)
+        Me.devicesSNMLabel.Location = New System.Drawing.Point(195, 396)
         Me.devicesSNMLabel.Name = "devicesSNMLabel"
         Me.devicesSNMLabel.Size = New System.Drawing.Size(73, 13)
         Me.devicesSNMLabel.TabIndex = 31
@@ -940,16 +993,16 @@ Partial Class MainForm
         Me.devicesListBox.FormattingEnabled = True
         Me.devicesListBox.ItemHeight = 16
         Me.devicesListBox.Items.AddRange(New Object() {"127.0.0.1:9912", "127.0.0.1:9913", "127.0.0.1:9914", "127.0.0.1:9991"})
-        Me.devicesListBox.Location = New System.Drawing.Point(47, 44)
+        Me.devicesListBox.Location = New System.Drawing.Point(222, 49)
         Me.devicesListBox.Name = "devicesListBox"
         Me.devicesListBox.Size = New System.Drawing.Size(142, 292)
         Me.devicesListBox.TabIndex = 29
         '
         'devicesDGTextBox
         '
-        Me.devicesDGTextBox.Location = New System.Drawing.Point(190, 424)
+        Me.devicesDGTextBox.Location = New System.Drawing.Point(166, 433)
         Me.devicesDGTextBox.Name = "devicesDGTextBox"
-        Me.devicesDGTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesDGTextBox.Size = New System.Drawing.Size(110, 20)
         Me.devicesDGTextBox.TabIndex = 30
         '
         'devicesDHCPListBox
@@ -957,8 +1010,8 @@ Partial Class MainForm
         Me.devicesDHCPListBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.devicesDHCPListBox.FormattingEnabled = True
         Me.devicesDHCPListBox.ItemHeight = 16
-        Me.devicesDHCPListBox.Items.AddRange(New Object() {"000.000.000.000:0000", "000.000.000.000:0000", "DHCP Box Test", "000.000.000.000:0000", "000.000.000.000:0000"})
-        Me.devicesDHCPListBox.Location = New System.Drawing.Point(47, 189)
+        Me.devicesDHCPListBox.Items.AddRange(New Object() {"000.000.000.000:0000", "000.000.000.000:0000", "DHCP Box Test", "000.000.000.000:0000", "000.000.000.000:0000", "127.0.0.1:9912"})
+        Me.devicesDHCPListBox.Location = New System.Drawing.Point(222, 194)
         Me.devicesDHCPListBox.Name = "devicesDHCPListBox"
         Me.devicesDHCPListBox.Size = New System.Drawing.Size(142, 148)
         Me.devicesDHCPListBox.TabIndex = 33
@@ -966,7 +1019,7 @@ Partial Class MainForm
         'devicesDGLabel
         '
         Me.devicesDGLabel.AutoSize = True
-        Me.devicesDGLabel.Location = New System.Drawing.Point(102, 426)
+        Me.devicesDGLabel.Location = New System.Drawing.Point(79, 435)
         Me.devicesDGLabel.Name = "devicesDGLabel"
         Me.devicesDGLabel.Size = New System.Drawing.Size(89, 13)
         Me.devicesDGLabel.TabIndex = 29
@@ -975,7 +1028,7 @@ Partial Class MainForm
         'devicesDHCPCheckBox
         '
         Me.devicesDHCPCheckBox.AutoSize = True
-        Me.devicesDHCPCheckBox.Location = New System.Drawing.Point(54, 341)
+        Me.devicesDHCPCheckBox.Location = New System.Drawing.Point(229, 346)
         Me.devicesDHCPCheckBox.Name = "devicesDHCPCheckBox"
         Me.devicesDHCPCheckBox.Size = New System.Drawing.Size(134, 17)
         Me.devicesDHCPCheckBox.TabIndex = 32
@@ -984,39 +1037,20 @@ Partial Class MainForm
         '
         'devicesIpTextBox
         '
-        Me.devicesIpTextBox.Location = New System.Drawing.Point(78, 393)
+        Me.devicesIpTextBox.Location = New System.Drawing.Point(67, 393)
         Me.devicesIpTextBox.Name = "devicesIpTextBox"
-        Me.devicesIpTextBox.Size = New System.Drawing.Size(100, 20)
+        Me.devicesIpTextBox.Size = New System.Drawing.Size(112, 20)
         Me.devicesIpTextBox.TabIndex = 28
         '
         'devicesRemoveButton
         '
         Me.devicesRemoveButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.devicesRemoveButton.Location = New System.Drawing.Point(209, 191)
+        Me.devicesRemoveButton.Location = New System.Drawing.Point(49, 123)
         Me.devicesRemoveButton.Name = "devicesRemoveButton"
         Me.devicesRemoveButton.Size = New System.Drawing.Size(145, 44)
         Me.devicesRemoveButton.TabIndex = 30
-        Me.devicesRemoveButton.Text = "--->  Remove (-)"
+        Me.devicesRemoveButton.Text = "  Remove (-)    <---   "
         Me.devicesRemoveButton.UseVisualStyleBackColor = True
-        '
-        'devicesIpLabel
-        '
-        Me.devicesIpLabel.AutoSize = True
-        Me.devicesIpLabel.Location = New System.Drawing.Point(19, 396)
-        Me.devicesIpLabel.Name = "devicesIpLabel"
-        Me.devicesIpLabel.Size = New System.Drawing.Size(61, 13)
-        Me.devicesIpLabel.TabIndex = 27
-        Me.devicesIpLabel.Text = "IP Address:"
-        '
-        'devicesAddButton
-        '
-        Me.devicesAddButton.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.devicesAddButton.Location = New System.Drawing.Point(209, 137)
-        Me.devicesAddButton.Name = "devicesAddButton"
-        Me.devicesAddButton.Size = New System.Drawing.Size(145, 42)
-        Me.devicesAddButton.TabIndex = 31
-        Me.devicesAddButton.Text = "<---   Add (+)"
-        Me.devicesAddButton.UseVisualStyleBackColor = True
         '
         'devicesApplyButton
         '
@@ -1029,9 +1063,55 @@ Partial Class MainForm
         Me.devicesApplyButton.Text = "Apply"
         Me.devicesApplyButton.UseVisualStyleBackColor = True
         '
+        'devicesAccentPanel1
+        '
+        Me.devicesAccentPanel1.BackColor = System.Drawing.Color.PeachPuff
+        Me.devicesAccentPanel1.Controls.Add(Me.devicesIpLabel)
+        Me.devicesAccentPanel1.Location = New System.Drawing.Point(7, 386)
+        Me.devicesAccentPanel1.Name = "devicesAccentPanel1"
+        Me.devicesAccentPanel1.Size = New System.Drawing.Size(187, 35)
+        Me.devicesAccentPanel1.TabIndex = 38
+        '
+        'devicesIpLabel
+        '
+        Me.devicesIpLabel.AutoSize = True
+        Me.devicesIpLabel.Location = New System.Drawing.Point(1, 10)
+        Me.devicesIpLabel.Name = "devicesIpLabel"
+        Me.devicesIpLabel.Size = New System.Drawing.Size(61, 13)
+        Me.devicesIpLabel.TabIndex = 27
+        Me.devicesIpLabel.Text = "IP Address:"
+        '
+        'devicesAccentPanel3
+        '
+        Me.devicesAccentPanel3.BackColor = System.Drawing.Color.PeachPuff
+        Me.devicesAccentPanel3.Location = New System.Drawing.Point(7, 62)
+        Me.devicesAccentPanel3.Name = "devicesAccentPanel3"
+        Me.devicesAccentPanel3.Size = New System.Drawing.Size(195, 55)
+        Me.devicesAccentPanel3.TabIndex = 39
+        '
+        'devicesAccentPanel2
+        '
+        Me.devicesAccentPanel2.BackColor = System.Drawing.Color.PeachPuff
+        Me.devicesAccentPanel2.Location = New System.Drawing.Point(7, 69)
+        Me.devicesAccentPanel2.Name = "devicesAccentPanel2"
+        Me.devicesAccentPanel2.Size = New System.Drawing.Size(10, 321)
+        Me.devicesAccentPanel2.TabIndex = 39
+        '
         'ComboBoxTimer
         '
         Me.ComboBoxTimer.Interval = 1000
+        '
+        'getResponseBusyTimer
+        '
+        Me.getResponseBusyTimer.Interval = 300
+        '
+        'sfpAccentPanel
+        '
+        Me.sfpAccentPanel.BackColor = System.Drawing.SystemColors.ActiveCaption
+        Me.sfpAccentPanel.Location = New System.Drawing.Point(-1, 0)
+        Me.sfpAccentPanel.Name = "sfpAccentPanel"
+        Me.sfpAccentPanel.Size = New System.Drawing.Size(390, 41)
+        Me.sfpAccentPanel.TabIndex = 30
         '
         'MainForm
         '
@@ -1040,14 +1120,14 @@ Partial Class MainForm
         Me.AutoScroll = True
         Me.ClientSize = New System.Drawing.Size(391, 505)
         Me.Controls.Add(Me.devicesPanel)
-        Me.Controls.Add(Me.encapStatusPanel)
+        Me.Controls.Add(Me.decapStatusPanel)
         Me.Controls.Add(Me.sfpMgmtIpComboBox)
         Me.Controls.Add(Me.sfpDevicesButton)
         Me.Controls.Add(Me.sfpApplyButton)
         Me.Controls.Add(Me.sfpConnectButton)
-        Me.Controls.Add(Me.detailPanel)
         Me.Controls.Add(Me.sfpMgmtIPLabel)
-        Me.Controls.Add(Me.decapStatusPanel)
+        Me.Controls.Add(Me.sfpAccentPanel)
+        Me.Controls.Add(Me.detailPanel)
         Me.Location = New System.Drawing.Point(50, 50)
         Me.MaximizeBox = False
         Me.MaximumSize = New System.Drawing.Size(407, 543)
@@ -1069,6 +1149,8 @@ Partial Class MainForm
         Me.encapStatusPanel.PerformLayout()
         Me.devicesPanel.ResumeLayout(False)
         Me.devicesPanel.PerformLayout()
+        Me.devicesAccentPanel1.ResumeLayout(False)
+        Me.devicesAccentPanel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1163,4 +1245,12 @@ Partial Class MainForm
     Friend WithEvents devicesIpTextBox As TextBox
     Friend WithEvents devicesIpLabel As Label
     Friend WithEvents ComboBoxTimer As Timer
+    Friend WithEvents getResponseBusyTimer As Timer
+    Friend WithEvents devicesDoubleClickLabel As Label
+    Friend WithEvents devicesAdaptersComboBox As ComboBox
+    Friend WithEvents devicesAdaptersLabel As Label
+    Friend WithEvents devicesAccentPanel2 As Panel
+    Friend WithEvents devicesAccentPanel1 As Panel
+    Friend WithEvents devicesAccentPanel3 As Panel
+    Friend WithEvents sfpAccentPanel As Panel
 End Class
