@@ -81,6 +81,11 @@ Partial Class MainForm
         Me.sfpTypeLabelLabel = New System.Windows.Forms.Label()
         Me.sfpMgmtIpComboBox = New System.Windows.Forms.ComboBox()
         Me.decapStatusPanel = New System.Windows.Forms.Panel()
+        Me.encapStatusPanel = New System.Windows.Forms.Panel()
+        Me.encapCounterNote = New System.Windows.Forms.Label()
+        Me.flow1SentCounterLabel = New System.Windows.Forms.Label()
+        Me.flow1SentLabel = New System.Windows.Forms.Label()
+        Me.flow1LabelEncap = New System.Windows.Forms.Label()
         Me.flow1SeenCounterLabel = New System.Windows.Forms.Label()
         Me.flow1RenderedCounterLabel = New System.Windows.Forms.Label()
         Me.flow1DroppedCounterLabel = New System.Windows.Forms.Label()
@@ -88,11 +93,6 @@ Partial Class MainForm
         Me.flow1RenderedLabel = New System.Windows.Forms.Label()
         Me.flow1SeenLabel = New System.Windows.Forms.Label()
         Me.flow1LabelDecap = New System.Windows.Forms.Label()
-        Me.encapStatusPanel = New System.Windows.Forms.Panel()
-        Me.encapCounterNote = New System.Windows.Forms.Label()
-        Me.flow1SentCounterLabel = New System.Windows.Forms.Label()
-        Me.flow1SentLabel = New System.Windows.Forms.Label()
-        Me.flow1LabelEncap = New System.Windows.Forms.Label()
         Me.sfpFlowDetailToolTip = New System.Windows.Forms.ToolTip(Me.components)
         Me.sfpConnectButton = New System.Windows.Forms.Button()
         Me.CounterTimer = New System.Windows.Forms.Timer(Me.components)
@@ -119,7 +119,7 @@ Partial Class MainForm
         Me.devicesAccentPanel3 = New System.Windows.Forms.Panel()
         Me.devicesAccentPanel2 = New System.Windows.Forms.Panel()
         Me.ComboBoxTimer = New System.Windows.Forms.Timer(Me.components)
-        Me.getResponseBusyTimer = New System.Windows.Forms.Timer(Me.components)
+        Me.getResponseTimer = New System.Windows.Forms.Timer(Me.components)
         Me.sfpAccentPanel = New System.Windows.Forms.Panel()
         Me.detailPanel.SuspendLayout()
         Me.sfpFilteringPanel.SuspendLayout()
@@ -735,6 +735,62 @@ Partial Class MainForm
         Me.decapStatusPanel.Size = New System.Drawing.Size(389, 23)
         Me.decapStatusPanel.TabIndex = 4
         '
+        'encapStatusPanel
+        '
+        Me.encapStatusPanel.Controls.Add(Me.encapCounterNote)
+        Me.encapStatusPanel.Controls.Add(Me.flow1SentCounterLabel)
+        Me.encapStatusPanel.Controls.Add(Me.flow1SentLabel)
+        Me.encapStatusPanel.Controls.Add(Me.flow1LabelEncap)
+        Me.encapStatusPanel.Location = New System.Drawing.Point(0, 0)
+        Me.encapStatusPanel.Name = "encapStatusPanel"
+        Me.encapStatusPanel.Size = New System.Drawing.Size(389, 23)
+        Me.encapStatusPanel.TabIndex = 27
+        '
+        'encapCounterNote
+        '
+        Me.encapCounterNote.AutoSize = True
+        Me.encapCounterNote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.encapCounterNote.Location = New System.Drawing.Point(107, 5)
+        Me.encapCounterNote.Name = "encapCounterNote"
+        Me.encapCounterNote.Size = New System.Drawing.Size(178, 13)
+        Me.encapCounterNote.TabIndex = 6
+        Me.encapCounterNote.Text = "Encap SFP Counters Not Supported"
+        Me.encapCounterNote.Visible = False
+        '
+        'flow1SentCounterLabel
+        '
+        Me.flow1SentCounterLabel.AutoSize = True
+        Me.flow1SentCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SentCounterLabel.Location = New System.Drawing.Point(90, 5)
+        Me.flow1SentCounterLabel.Name = "flow1SentCounterLabel"
+        Me.flow1SentCounterLabel.Size = New System.Drawing.Size(13, 13)
+        Me.flow1SentCounterLabel.TabIndex = 5
+        Me.flow1SentCounterLabel.Text = "0"
+        Me.flow1SentCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
+        Me.flow1SentCounterLabel.Visible = False
+        '
+        'flow1SentLabel
+        '
+        Me.flow1SentLabel.AutoSize = True
+        Me.flow1SentLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1SentLabel.Location = New System.Drawing.Point(62, 5)
+        Me.flow1SentLabel.Name = "flow1SentLabel"
+        Me.flow1SentLabel.Size = New System.Drawing.Size(32, 13)
+        Me.flow1SentLabel.TabIndex = 2
+        Me.flow1SentLabel.Text = "Sent:"
+        Me.flow1SentLabel.Visible = False
+        '
+        'flow1LabelEncap
+        '
+        Me.flow1LabelEncap.AutoSize = True
+        Me.flow1LabelEncap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.flow1LabelEncap.Location = New System.Drawing.Point(3, 5)
+        Me.flow1LabelEncap.Name = "flow1LabelEncap"
+        Me.flow1LabelEncap.Size = New System.Drawing.Size(44, 13)
+        Me.flow1LabelEncap.TabIndex = 0
+        Me.flow1LabelEncap.Text = "Flow 1"
+        Me.flow1LabelEncap.Visible = False
+        '
         'flow1SeenCounterLabel
         '
         Me.flow1SeenCounterLabel.AutoSize = True
@@ -808,59 +864,6 @@ Partial Class MainForm
         Me.flow1LabelDecap.TabIndex = 0
         Me.flow1LabelDecap.Text = "Flow 1"
         '
-        'encapStatusPanel
-        '
-        Me.encapStatusPanel.Controls.Add(Me.encapCounterNote)
-        Me.encapStatusPanel.Controls.Add(Me.flow1SentCounterLabel)
-        Me.encapStatusPanel.Controls.Add(Me.flow1SentLabel)
-        Me.encapStatusPanel.Controls.Add(Me.flow1LabelEncap)
-        Me.encapStatusPanel.Location = New System.Drawing.Point(0, 0)
-        Me.encapStatusPanel.Name = "encapStatusPanel"
-        Me.encapStatusPanel.Size = New System.Drawing.Size(389, 23)
-        Me.encapStatusPanel.TabIndex = 27
-        '
-        'encapCounterNote
-        '
-        Me.encapCounterNote.AutoSize = True
-        Me.encapCounterNote.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.encapCounterNote.Location = New System.Drawing.Point(159, 5)
-        Me.encapCounterNote.Name = "encapCounterNote"
-        Me.encapCounterNote.Size = New System.Drawing.Size(179, 13)
-        Me.encapCounterNote.TabIndex = 6
-        Me.encapCounterNote.Text = "Counter on Encap SFPs not iterating"
-        Me.encapCounterNote.Visible = False
-        '
-        'flow1SentCounterLabel
-        '
-        Me.flow1SentCounterLabel.AutoSize = True
-        Me.flow1SentCounterLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1SentCounterLabel.Location = New System.Drawing.Point(122, 5)
-        Me.flow1SentCounterLabel.Name = "flow1SentCounterLabel"
-        Me.flow1SentCounterLabel.Size = New System.Drawing.Size(13, 13)
-        Me.flow1SentCounterLabel.TabIndex = 5
-        Me.flow1SentCounterLabel.Text = "0"
-        Me.flow1SentCounterLabel.TextAlign = System.Drawing.ContentAlignment.TopRight
-        '
-        'flow1SentLabel
-        '
-        Me.flow1SentLabel.AutoSize = True
-        Me.flow1SentLabel.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1SentLabel.Location = New System.Drawing.Point(94, 5)
-        Me.flow1SentLabel.Name = "flow1SentLabel"
-        Me.flow1SentLabel.Size = New System.Drawing.Size(32, 13)
-        Me.flow1SentLabel.TabIndex = 2
-        Me.flow1SentLabel.Text = "Sent:"
-        '
-        'flow1LabelEncap
-        '
-        Me.flow1LabelEncap.AutoSize = True
-        Me.flow1LabelEncap.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.flow1LabelEncap.Location = New System.Drawing.Point(3, 5)
-        Me.flow1LabelEncap.Name = "flow1LabelEncap"
-        Me.flow1LabelEncap.Size = New System.Drawing.Size(44, 13)
-        Me.flow1LabelEncap.TabIndex = 0
-        Me.flow1LabelEncap.Text = "Flow 1"
-        '
         'sfpConnectButton
         '
         Me.sfpConnectButton.BackColor = System.Drawing.SystemColors.Control
@@ -926,7 +929,7 @@ Partial Class MainForm
         Me.devicesPanel.Controls.Add(Me.devicesAccentPanel1)
         Me.devicesPanel.Controls.Add(Me.devicesAccentPanel3)
         Me.devicesPanel.Controls.Add(Me.devicesAccentPanel2)
-        Me.devicesPanel.Location = New System.Drawing.Point(-1, 0)
+        Me.devicesPanel.Location = New System.Drawing.Point(0, 0)
         Me.devicesPanel.Name = "devicesPanel"
         Me.devicesPanel.Size = New System.Drawing.Size(390, 501)
         Me.devicesPanel.TabIndex = 29
@@ -1086,7 +1089,7 @@ Partial Class MainForm
         Me.devicesAccentPanel3.BackColor = System.Drawing.Color.PeachPuff
         Me.devicesAccentPanel3.Location = New System.Drawing.Point(7, 62)
         Me.devicesAccentPanel3.Name = "devicesAccentPanel3"
-        Me.devicesAccentPanel3.Size = New System.Drawing.Size(195, 55)
+        Me.devicesAccentPanel3.Size = New System.Drawing.Size(222, 55)
         Me.devicesAccentPanel3.TabIndex = 39
         '
         'devicesAccentPanel2
@@ -1101,9 +1104,9 @@ Partial Class MainForm
         '
         Me.ComboBoxTimer.Interval = 1000
         '
-        'getResponseBusyTimer
+        'getResponseTimer
         '
-        Me.getResponseBusyTimer.Interval = 300
+        Me.getResponseTimer.Interval = 4000
         '
         'sfpAccentPanel
         '
@@ -1245,7 +1248,7 @@ Partial Class MainForm
     Friend WithEvents devicesIpTextBox As TextBox
     Friend WithEvents devicesIpLabel As Label
     Friend WithEvents ComboBoxTimer As Timer
-    Friend WithEvents getResponseBusyTimer As Timer
+    Friend WithEvents getResponseTimer As Timer
     Friend WithEvents devicesDoubleClickLabel As Label
     Friend WithEvents devicesAdaptersComboBox As ComboBox
     Friend WithEvents devicesAdaptersLabel As Label
