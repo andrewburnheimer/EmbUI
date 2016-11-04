@@ -1134,7 +1134,7 @@ Partial Class MainForm
         Me.MinimumSize = New System.Drawing.Size(407, 543)
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "EmbSFP Configurator v1.1.0"
+        Me.Text = "EmbSFP Configurator v1.1.1"
         Me.detailPanel.ResumeLayout(False)
         Me.detailPanel.PerformLayout()
         Me.sfpFilteringPanel.ResumeLayout(False)

@@ -741,8 +741,8 @@ Public Class MainForm
 
     Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim appDataPath As String = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
-        If File.Exists(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt") Then
-            Dim listString As String = File.ReadAllText(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt")
+        If File.Exists(appDataPath + "\" + Me.CompanyName + "\EmbUI" + "\EmbUIList_config.txt") Then
+            Dim listString As String = File.ReadAllText(appDataPath + "\" + Me.CompanyName + "\EmbUI" + "\EmbUIList_config.txt")
             If listString IsNot "" Then
                 Dim stringSplit As Array = listString.Split(",")
                 For Each item As String In stringSplit
@@ -764,7 +764,12 @@ Public Class MainForm
                     listString = listString + "," + item.ToString()
                 End If
             Next
-            File.WriteAllText(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt", listString)
+            If File.Exists(appDataPath + "\" + Me.CompanyName + "\EmbUI") Then
+                File.WriteAllText(appDataPath + "\" + Me.CompanyName + "\EmbUI" + "\EmbUIList_config.txt", listString)
+            Else
+                System.IO.Directory.CreateDirectory(appDataPath + "\" + Me.CompanyName + "\EmbUI")
+                File.WriteAllText(appDataPath + "\" + Me.CompanyName + "\EmbUI" + "\EmbUIList_config.txt", listString)
+            End If
         End If
     End Sub
 End Class
