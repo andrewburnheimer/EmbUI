@@ -713,7 +713,6 @@ Partial Class MainForm
         'sfpMgmtIpComboBox
         '
         Me.sfpMgmtIpComboBox.FormattingEnabled = True
-        Me.sfpMgmtIpComboBox.Items.AddRange(New Object() {"127.0.0.1:9912", "127.0.0.1:9913", "127.0.0.1:9914", "127.0.0.1:9991"})
         Me.sfpMgmtIpComboBox.Location = New System.Drawing.Point(181, 11)
         Me.sfpMgmtIpComboBox.MaxDropDownItems = 100
         Me.sfpMgmtIpComboBox.Name = "sfpMgmtIpComboBox"
@@ -995,7 +994,6 @@ Partial Class MainForm
         Me.devicesListBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.devicesListBox.FormattingEnabled = True
         Me.devicesListBox.ItemHeight = 16
-        Me.devicesListBox.Items.AddRange(New Object() {"127.0.0.1:9912", "127.0.0.1:9913", "127.0.0.1:9914", "127.0.0.1:9991"})
         Me.devicesListBox.Location = New System.Drawing.Point(222, 49)
         Me.devicesListBox.Name = "devicesListBox"
         Me.devicesListBox.Size = New System.Drawing.Size(142, 292)
@@ -1013,7 +1011,6 @@ Partial Class MainForm
         Me.devicesDHCPListBox.Font = New System.Drawing.Font("Microsoft Sans Serif", 10.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.devicesDHCPListBox.FormattingEnabled = True
         Me.devicesDHCPListBox.ItemHeight = 16
-        Me.devicesDHCPListBox.Items.AddRange(New Object() {"000.000.000.000:0000", "000.000.000.000:0000", "DHCP Box Test", "000.000.000.000:0000", "000.000.000.000:0000", "127.0.0.1:9912"})
         Me.devicesDHCPListBox.Location = New System.Drawing.Point(222, 194)
         Me.devicesDHCPListBox.Name = "devicesDHCPListBox"
         Me.devicesDHCPListBox.Size = New System.Drawing.Size(142, 148)
@@ -1137,7 +1134,7 @@ Partial Class MainForm
         Me.MinimumSize = New System.Drawing.Size(407, 543)
         Me.Name = "MainForm"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "EmbSFP Configurator"
+        Me.Text = "EmbSFP Configurator v1.1.0"
         Me.detailPanel.ResumeLayout(False)
         Me.detailPanel.PerformLayout()
         Me.sfpFilteringPanel.ResumeLayout(False)

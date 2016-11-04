@@ -30,6 +30,15 @@ Public Class MainForm
         Try
             If sfpMgmtIpComboBox.Text.Length > 0 Then
 
+                sfpFlowIPTextBox.Enabled = False
+                sfpFlowPortTextBox.Enabled = False
+                sfpNameTextBox.Enabled = False
+                sfpApplyButton.Enabled = False
+                CounterTimer.Enabled = False
+                sfpAdvancedPanel.Enabled = False
+                sfpFormattingPanel.Enabled = False
+                sfpFilteringPanel.Enabled = False
+
                 sfpMgmtIp = sfpMgmtIpComboBox.Text
                 Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
 
@@ -134,6 +143,14 @@ Public Class MainForm
                                                     encapStatusPanel.Visible = False
                                                 End If
 
+                                                sfpFlowIPTextBox.Enabled = True
+                                                sfpFlowPortTextBox.Enabled = True
+                                                sfpNameTextBox.Enabled = True
+                                                sfpApplyButton.Enabled = True
+                                                CounterTimer.Enabled = True
+                                                sfpAdvancedPanel.Enabled = True
+                                                sfpFormattingPanel.Enabled = True
+
                                                 Return 0
                                             Catch ex As Exception
                                                 MessageBox.Show("Connected IP Address might not belong to EmbSFP device.", "EmbSFP Configurator")
@@ -141,13 +158,7 @@ Public Class MainForm
                                             End Try
                                         End Function)
 
-                sfpFlowIPTextBox.Enabled = True
-                sfpFlowPortTextBox.Enabled = True
-                sfpNameTextBox.Enabled = True
-                sfpApplyButton.Enabled = True
-                CounterTimer.Enabled = True
-                sfpAdvancedPanel.Enabled = True
-                sfpFormattingPanel.Enabled = True
+
 
             Else
                 MessageBox.Show("Please enter a Control IP Address.", "EmbSFP Configurator")
@@ -421,14 +432,13 @@ Public Class MainForm
             devicesAdaptersComboBox.Enabled = False
             devicesListBox.Height = 292
         ElseIf devicesDHCPCheckBox.Checked = True Then
-            MessageBox.Show("Please select a Network Adapter that is on the EmbSFP LAN.", "EmbSFP Configurator")
+            MessageBox.Show("Please select a Network Adapter that is on the EmbSFP LAN." + Environment.NewLine + Environment.NewLine + "EmbSFPs might not send out DHCP requests immediately.", "EmbSFP Configurator")
 
             mycomputerconnections = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces
             devicesAdaptersComboBox.Items.Clear()
             For i = 0 To mycomputerconnections.Length - 1
                 devicesAdaptersComboBox.Items.Add(mycomputerconnections(i).Name)
             Next
-
             devicesAdaptersLabel.Enabled = True
             devicesAdaptersComboBox.Enabled = True
             devicesListBox.Height = 160
@@ -476,9 +486,6 @@ Public Class MainForm
         Else
             MessageBox.Show("Please fill in a valid IP Address below before adding it to the list.", "EmbSFP Configurator")
         End If
-
-        'Need to save it somewhere at load and close
-
     End Sub
 
     Private Sub devicesRemoveButton_Click(sender As Object, e As EventArgs) Handles devicesRemoveButton.Click
@@ -546,8 +553,6 @@ Public Class MainForm
     'End Sub
 
 
-
-
     'Private Sub MainForm_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
 
     'My.Settings.Device0 = devicesListBox.Items.Item(0)
@@ -559,6 +564,8 @@ Public Class MainForm
 
     'Obviously have to change this, just testing the Settings function-it's not working, might have to resort to txt file since it uses an xml anyway...
     'End Sub
+
+
 
     'Private Sub ComboBoxTimer_Tick(sender As Object, e As EventArgs) Handles ComboBoxTimer.Tick
 
@@ -596,12 +603,15 @@ Public Class MainForm
             devicesAdaptersComboBox.BackColor = SystemColors.Window
             sock.Bind(New IPEndPoint(myip, 0))
             sock.SetSocketOption(SocketOptionLevel.IP, SocketOptionName.HeaderIncluded, True)
+            'Might want to try socketoptionlevel.udp but not sure
             Dim bytrue() As Byte = {1, 0, 0, 0}
             Dim byout() As Byte = {1, 0, 0, 0}
+            'Look into IOControl paramters
             sock.IOControl(IOControlCode.ReceiveAll, bytrue, byout)
             sock.Blocking = False
             ReDim bytedata(sock.ReceiveBufferSize)
             sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+
 
         Catch ex As Exception
             devicesAdaptersComboBox.BackColor = Color.Red
@@ -617,24 +627,56 @@ Public Class MainForm
 
 
     Private Sub OnReceive(ByVal asyncresult As IAsyncResult)
-        'Get Protocol Type
-        If bytedata(9) = 6 Then
-            connType = "TCP"
-        ElseIf bytedata(9) = 17 Then
-            connType = "UDP"
-        ElseIf bytedata(9) = 68 Then
-            connType = "DHCP Client"
-            'Get IP from
-            ipFrom = New IPAddress(BitConverter.ToUInt32(bytedata, 12))
-            devicesDHCPListBox.Items.Add(ipFrom.ToString())
-        ElseIf bytedata(9) = 67 Then
-            connType = "DHCP Server"
-        Else
-            connType = "???"
-        End If
 
-        'Restart the Receiving
-        sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+        Dim sourceport As UInt16 = BitConverter.ToUInt16(Byteswap(bytedata, 20), 0)
+        Dim destinationport As UInt16 = BitConverter.ToUInt16(Byteswap(bytedata, 22), 0)
+        Dim ipto As IPAddress = New IPAddress(BitConverter.ToUInt32(bytedata, 16))
+
+        'If bytedata(9) = 6 Then
+        '    connType = "TCP"
+        'ElseIf bytedata(9) = 17 Then
+        '    connType = "UDP"
+        '    ipFrom = New IPAddress(BitConverter.ToUInt32(bytedata, 12))
+        '    devicesDHCPListBox.Items.Add(ipFrom.ToString())
+
+
+        'For If: Or ipto.ToString() = "255.255.255.255"
+        If sourceport = "68" Or destinationport = "68" Then
+            connType = "DHCP Client"
+            ipFrom = New IPAddress(BitConverter.ToUInt32(bytedata, 12))
+            If Not devicesDHCPListBox.Items.Contains(ipFrom.ToString()) Then
+                Me.SetDHCPListBox(ipFrom.ToString())
+            End If
+
+
+            'ElseIf sourceport = "67" Or destinationport = "67" Then
+            '    connType = "DHCP Server"
+            '    ipFrom = New IPAddress(BitConverter.ToUInt32(bytedata, 12))
+            '    If Not devicesDHCPListBox.Items.Contains(ipFrom.ToString()) Then
+            '        Me.SetDHCPListBox(ipFrom.ToString())
+            '    End If
+            'Else
+            '        connType = "???"
+
+        End If
+        Try
+            'Restart the Receiving
+            sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+        Catch ex As Exception
+            sock.Close()
+        End Try
+
+    End Sub
+
+    Delegate Sub SetDHCPCallback(text As String)
+
+    Private Sub SetDHCPListBox(ByVal text As String)
+        If Me.devicesDHCPListBox.InvokeRequired Then
+            Dim d As New SetDHCPCallback(AddressOf SetDHCPListBox)
+            Me.Invoke(d, New Object() {text})
+        Else
+            Me.devicesDHCPListBox.Items.Add(text)
+        End If
     End Sub
 
     Private Sub devicesApplyButton_Click(sender As Object, e As EventArgs) Handles devicesApplyButton.Click
@@ -643,6 +685,7 @@ Public Class MainForm
             Dim deviceToSend As New Device
 
             'If the JSON Object's parameter doesn't get set like if device.ip_addr is left blank, does it delete what was there or just send nothing and leave whatever it was???
+            'Answer: If you don't mention the parameter at all, it will stay the same, but if you send the parameter name with a blank value, it will change it to zero or "", so better to take whatever was there and put it again.
 
             If devicesIpTextBox.Text.Length > 0 Then
                 deviceToSend.ip_addr = devicesIpTextBox.Text
@@ -655,24 +698,24 @@ Public Class MainForm
             End If
 
             Dim bodyData As String
-                    bodyData = JsonConvert.SerializeObject(deviceToSend)
+            bodyData = JsonConvert.SerializeObject(deviceToSend)
 
-                    Dim deviceIP As String
-                    If devicesListBox.SelectedIndex.Equals(-1) Then
-                        deviceIP = devicesDHCPListBox.SelectedItem.ToString()
-                    ElseIf devicesDHCPListBox.SelectedIndex.Equals(-1) Then
-                        deviceIP = devicesListBox.SelectedItem.ToString()
-                    End If
+            Dim deviceIP As String
+            If devicesListBox.SelectedIndex.Equals(-1) Then
+                deviceIP = devicesDHCPListBox.SelectedItem.ToString()
+            ElseIf devicesDHCPListBox.SelectedIndex.Equals(-1) Then
+                deviceIP = devicesListBox.SelectedItem.ToString()
+            End If
 
             'wait(0.5)
             Dim sfpRequest As New Uri("http://" & deviceIP & "/emsfp/ipconfig")
-                    IssueHTTPRequest(sfpRequest, "PUT", bodyData)
+            IssueHTTPRequest(sfpRequest, "PUT", bodyData)
 
             IssueHTTPRequest(sfpRequest, "PUT", bodyData)
             MessageBox.Show("Reconnect to newly configured device in 1 minute to refresh IP, SNM, & DG." + Environment.NewLine + Environment.NewLine + "Before about 1 minute, the device won't respond with accurate addresses.", "EmbSFP Configurator")
 
         Else
-                    MessageBox.Show("Please connect to a device first, then use Apply to make careful changes." + Environment.NewLine + Environment.NewLine + Environment.NewLine + "To connect, add an IP to your Device List and double click it." + Environment.NewLine + "Or you can connect to an IP on the DHCP list by double clicking it as well.", "EmbSFP Configurator")
+            MessageBox.Show("Please connect to a device first, then use Apply to make careful changes." + Environment.NewLine + Environment.NewLine + Environment.NewLine + "To connect, add an IP to your Device List and double click it." + Environment.NewLine + "Or you can connect to an IP on the DHCP list by double clicking it as well.", "EmbSFP Configurator")
 
         End If
     End Sub
@@ -689,11 +732,40 @@ Public Class MainForm
         devicesDHCPListBox.SelectedIndex = -1
     End Sub
 
-    Private Sub wait(ByVal seconds As Integer)
-        For i As Integer = 0 To seconds * 100
-            System.Threading.Thread.Sleep(10)
-            Application.DoEvents()
-        Next
+    'Private Sub wait(ByVal seconds As Integer)
+    '    For i As Integer = 0 To seconds * 100
+    '        System.Threading.Thread.Sleep(10)
+    '        Application.DoEvents()
+    '    Next
+    'End Sub
+
+    Private Sub MainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim appDataPath As String = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        If File.Exists(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt") Then
+            Dim listString As String = File.ReadAllText(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt")
+            If listString IsNot "" Then
+                Dim stringSplit As Array = listString.Split(",")
+                For Each item As String In stringSplit
+                    devicesListBox.Items.Add(item)
+                    sfpMgmtIpComboBox.Items.Add(item)
+                Next
+            End If
+        End If
+    End Sub
+
+    Private Sub MainForm_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        Dim appDataPath As String = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData)
+        Dim listString As String = ""
+        If Not devicesListBox.Items.Count = 0 Then
+            For Each item As String In devicesListBox.Items
+                If listString = "" Then
+                    listString = item.ToString()
+                Else
+                    listString = listString + "," + item.ToString()
+                End If
+            Next
+            File.WriteAllText(appDataPath + "\" + Me.CompanyName + "\EmbUIList_config.txt", listString)
+        End If
     End Sub
 End Class
 
