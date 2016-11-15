@@ -166,6 +166,9 @@ Public Class MainForm
 
         Catch ex As TimeoutException
             MessageBox.Show("Attempted connection timed out.", "EmbSFP Configurator")
+
+        Catch ex As UriFormatException
+            MessageBox.Show("Please enter a valid address.", "EmbSFP Configurator")
         End Try
 
     End Sub
@@ -367,6 +370,8 @@ Public Class MainForm
         'To get updates on format codes and Multicast Address, but the valid flag takes a little while to update and SFPs need resends sometimes and they flip numbers
         Call sfpConnect_Button_Click(sender, e)
 
+        'wait(0.5)
+
         'To send twice or it sometimes doesn't take...
         IssueHTTPRequest(sfpRequest, "PUT", bodyData)
         Call sfpConnect_Button_Click(sender, e)
@@ -374,31 +379,43 @@ Public Class MainForm
     End Sub
 
     Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "GET", Optional ByVal data As String = "", Optional ByVal timeout As Integer = 0)
-        Dim req As HttpWebRequest = WebRequest.Create(uri)
-        req.KeepAlive = False
-        req.Method = method.ToUpper()
+        Try
+            'ServicePointManager.Expect100Continue = False
+            Dim req As HttpWebRequest = WebRequest.Create(uri)
+            req.KeepAlive = False 'Maybe make this true
+            req.Method = method.ToUpper()
+            req.Timeout = 3000
+            'req.ReadWriteTimeout = 2000
 
-        If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
-            Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
-            req.ContentLength = dataBuffer.Length
-            req.ContentType = "application/json"
-            Dim PostData As Stream = req.GetRequestStream()
-            PostData.Write(dataBuffer, 0, dataBuffer.Length)
-            PostData.Close()
-        End If
+            If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
+                'req.ServicePoint.Expect100Continue = False
+                'req.SendChunked = False
+                Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
+                req.ContentLength = dataBuffer.Length
+                req.ContentType = "application/json"
+                Dim PostData As Stream = req.GetRequestStream()
+                PostData.Write(dataBuffer, 0, dataBuffer.Length)
+                PostData.Close()
+            End If
 
-        If req.HaveResponse Then
-            Dim resp As HttpWebResponse = req.GetResponse()
-            Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(1252)
-            Dim loResponseStream As StreamReader = New StreamReader(resp.GetResponseStream(), enc)
-            Dim Response As String = loResponseStream.ReadToEnd()
+            If req.HaveResponse Then
+                Dim resp As HttpWebResponse = req.GetResponse()
+                Dim enc As System.Text.Encoding = System.Text.Encoding.GetEncoding(1252)
+                Dim loResponseStream As StreamReader = New StreamReader(resp.GetResponseStream(), enc)
+                Dim Response As String = loResponseStream.ReadToEnd()
 
-            loResponseStream.Close()
-            resp.Close()
-            Return Response
-        Else
-            Return 0
-        End If
+                loResponseStream.Close()
+                resp.Close()
+                Return Response
+            Else
+                Return 0
+            End If
+
+        Catch ex As WebException
+            validIP = False
+            MessageBox.Show("Problem reaching uri:  " & uri.ToString() & Environment.NewLine & Environment.NewLine & "Try reconnecting later.", "EmbSFP Configurator")
+            Return -1
+        End Try
 
     End Function
 
@@ -700,7 +717,7 @@ Public Class MainForm
             Dim bodyData As String
             bodyData = JsonConvert.SerializeObject(deviceToSend)
 
-            Dim deviceIP As String
+            Dim deviceIP As String = ""
             If devicesListBox.SelectedIndex.Equals(-1) Then
                 deviceIP = devicesDHCPListBox.SelectedItem.ToString()
             ElseIf devicesDHCPListBox.SelectedIndex.Equals(-1) Then
