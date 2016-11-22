@@ -365,6 +365,7 @@ Public Class MainForm
 
         Dim bodyData As String
         bodyData = JsonConvert.SerializeObject(flowToSend)
+        'bodyData = "{""network"": {""dst_ip_addr"": ""239.9.0.111""}}"
         Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
         IssueHTTPRequest(sfpRequest, "PUT", bodyData)
         'To get updates on format codes and Multicast Address, but the valid flag takes a little while to update and SFPs need resends sometimes and they flip numbers
@@ -388,13 +389,14 @@ Public Class MainForm
             'req.ReadWriteTimeout = 2000
 
             If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
-                'req.ServicePoint.Expect100Continue = False
+                req.ServicePoint.Expect100Continue = False
                 'req.SendChunked = False
                 Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
                 req.ContentLength = dataBuffer.Length
                 req.ContentType = "application/json"
                 Dim PostData As Stream = req.GetRequestStream()
                 PostData.Write(dataBuffer, 0, dataBuffer.Length)
+                'PostData.Flush()
                 PostData.Close()
             End If
 
@@ -628,6 +630,7 @@ Public Class MainForm
             sock.Blocking = False
             ReDim bytedata(sock.ReceiveBufferSize)
             sock.BeginReceive(bytedata, 0, bytedata.Length, SocketFlags.None, New AsyncCallback(AddressOf OnReceive), Nothing)
+
 
 
         Catch ex As Exception
