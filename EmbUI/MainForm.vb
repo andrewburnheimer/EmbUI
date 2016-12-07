@@ -153,7 +153,7 @@ Public Class MainForm
 
                                                 Return 0
                                             Catch ex As Exception
-                                                MessageBox.Show("Connected IP Address might not belong to EmbSFP device.", "EmbSFP Configurator")
+                                                MessageBox.Show("Connected IP Address might not belong to EmSFP device.", "EmSFP Configurator")
                                                 Return 0
                                             End Try
                                         End Function)
@@ -161,14 +161,14 @@ Public Class MainForm
 
 
             Else
-                MessageBox.Show("Please enter a Control IP Address.", "EmbSFP Configurator")
+                MessageBox.Show("Please enter a Control IP Address.", "EmSFP Configurator")
             End If
 
         Catch ex As TimeoutException
-            MessageBox.Show("Attempted connection timed out.", "EmbSFP Configurator")
+            MessageBox.Show("Attempted connection timed out.", "EmSFP Configurator")
 
         Catch ex As UriFormatException
-            MessageBox.Show("Please enter a valid address.", "EmbSFP Configurator")
+            MessageBox.Show("Please enter a valid address.", "EmSFP Configurator")
         End Try
 
     End Sub
@@ -239,7 +239,7 @@ Public Class MainForm
                     Return 0
                 Catch ex As Exception
                     validIP = False
-                    MessageBox.Show("Problem reaching uri:  " & uri.ToString(), "EmbSFP Configurator")
+                    MessageBox.Show("Problem reaching uri:  " & uri.ToString(), "EmSFP Configurator")
                     'sfpMgmtIpComboBox.Enabled = True
                     Return -1
                 End Try
@@ -367,46 +367,58 @@ Public Class MainForm
         bodyData = JsonConvert.SerializeObject(flowToSend)
         'bodyData = "{""network"": {""dst_ip_addr"": ""239.9.0.111""}}"
         Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
-        IssueHTTPRequest(sfpRequest, "PUT", bodyData)
+
+        Dim requestEnd As String = "/emsfp/node/v1/flows"
+        HTTPSocketPUT(requestEnd, sfpMgmtIp, bodyData)
+
+        'IssueHTTPRequest(sfpRequest, "PUT", bodyData)
         'To get updates on format codes and Multicast Address, but the valid flag takes a little while to update and SFPs need resends sometimes and they flip numbers
         Call sfpConnect_Button_Click(sender, e)
 
         'wait(0.5)
 
         'To send twice or it sometimes doesn't take...
-        IssueHTTPRequest(sfpRequest, "PUT", bodyData)
-        Call sfpConnect_Button_Click(sender, e)
+        'HTTPSocketPUT(requestEnd, sfpMgmtIp, bodyData)
+        'IssueHTTPRequest(sfpRequest, "PUT", bodyData)
+        'Call sfpConnect_Button_Click(sender, e)
 
     End Sub
 
-    
-    Private Function HTTPSocketPUT(ByVal uriEnd As String, ByVal sfpIP As String, Optional ByVal data As String = "")
-       Try
-           Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
-            Dim httpHeader As String = "PUT " & uriEnd & " HTTP/1.1\r\nContent-Type: application/json\r\nHost: " & sfpIP & "\r\nContent-Length: " & dataBuffer.Length.ToString() & "\r\nConnection: Close\r\n\r\n"
+
+    Private Function HTTPSocketPUT(ByVal uriEnd As String, ByVal sfpIP As String, ByVal data As String)
+        Try
+            Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
+            Dim httpHeader As String = "PUT " & uriEnd & " HTTP/1.1" & vbCrLf & "Content-Type: application/json" & vbCrLf & "Host: " & sfpIP & vbCrLf & "Content-Length: " & dataBuffer.Length.ToString() & vbCrLf & "Connection: Close" & vbCrLf & vbCrLf
             Dim fullReqString As String = httpHeader & data
 
             Dim fullReq As Byte() = System.Text.Encoding.ASCII.GetBytes(fullReqString)
 
 
+            Dim ip As New IPEndPoint(IPAddress.Parse(sfpIP), 80)
+            Dim socket As New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            'Might want a timeout for this too
 
+            socket.Connect(ip)
+            socket.Send(fullReq, SocketFlags.None)
 
+            'Might be closing too soon, never handle the response (200 OK)
+            socket.Close()
 
         Catch ex As Exception
+            MessageBox.Show("Problem with socket.", "EmSFP Configurator")
 
         End Try
     End Function
 
 
     Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "Get", Optional ByVal data As String = "", Optional ByVal timeout As Integer = 0)
-
         Try
             'ServicePointManager.Expect100Continue = False
             Dim req As HttpWebRequest = WebRequest.Create(uri)
             req.KeepAlive = False 'Maybe make this true
             req.Method = method.ToUpper()
             req.Timeout = 3000
-            'req.ProtocolVersion = HTTPVersion.Version10
+            'req.ProtocolVersion = HttpVersion.Version10
             'req.ReadWriteTimeout = 2000
 
             If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
@@ -436,7 +448,7 @@ Public Class MainForm
 
         Catch ex As WebException
             validIP = False
-            MessageBox.Show("Problem reaching uri:  " & uri.ToString() & Environment.NewLine & Environment.NewLine & "Try reconnecting later.", "EmbSFP Configurator")
+            MessageBox.Show("Problem reaching uri:  " & uri.ToString() & Environment.NewLine & Environment.NewLine & "Try reconnecting later.", "EmSFP Configurator")
             Return -1
         End Try
 
@@ -472,7 +484,7 @@ Public Class MainForm
             devicesAdaptersComboBox.Enabled = False
             devicesListBox.Height = 292
         ElseIf devicesDHCPCheckBox.Checked = True Then
-            MessageBox.Show("Please select a Network Adapter that is on the EmbSFP LAN." + Environment.NewLine + Environment.NewLine + "EmbSFPs might not send out DHCP requests immediately.", "EmbSFP Configurator")
+            MessageBox.Show("Please select a Network Adapter that is on the EmSFP LAN." + Environment.NewLine + Environment.NewLine + "EmSFPs might not send out DHCP requests immediately.", "EmSFP Configurator")
 
             mycomputerconnections = Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces
             devicesAdaptersComboBox.Items.Clear()
@@ -524,7 +536,7 @@ Public Class MainForm
             devicesListBox.Items.Add(devicesIpTextBox.Text)
             sfpMgmtIpComboBox.Items.Add(devicesIpTextBox.Text)
         Else
-            MessageBox.Show("Please fill in a valid IP Address below before adding it to the list.", "EmbSFP Configurator")
+            MessageBox.Show("Please fill in a valid IP Address below before adding it to the list.", "EmSFP Configurator")
         End If
     End Sub
 
@@ -542,7 +554,7 @@ Public Class MainForm
             End If
 
         Catch ex As Exception
-            MessageBox.Show("Please select an IP Address from your Device list to remove.", "EmbSFP Configurator")
+            MessageBox.Show("Please select an IP Address from your Device list to remove.", "EmSFP Configurator")
         End Try
 
     End Sub
@@ -753,10 +765,10 @@ Public Class MainForm
             IssueHTTPRequest(sfpRequest, "PUT", bodyData)
 
             IssueHTTPRequest(sfpRequest, "PUT", bodyData)
-            MessageBox.Show("Reconnect to newly configured device in 1 minute to refresh IP, SNM, & DG." + Environment.NewLine + Environment.NewLine + "Before about 1 minute, the device won't respond with accurate addresses.", "EmbSFP Configurator")
+            MessageBox.Show("Reconnect to newly configured device in 1 minute to refresh IP, SNM, & DG." + Environment.NewLine + Environment.NewLine + "Before about 1 minute, the device won't respond with accurate addresses.", "EmSFP Configurator")
 
         Else
-            MessageBox.Show("Please connect to a device first, then use Apply to make careful changes." + Environment.NewLine + Environment.NewLine + Environment.NewLine + "To connect, add an IP to your Device List and double click it." + Environment.NewLine + "Or you can connect to an IP on the DHCP list by double clicking it as well.", "EmbSFP Configurator")
+            MessageBox.Show("Please connect to a device first, then use Apply to make careful changes." + Environment.NewLine + Environment.NewLine + Environment.NewLine + "To connect, add an IP to your Device List and double click it." + Environment.NewLine + "Or you can connect to an IP on the DHCP list by double clicking it as well.", "EmSFP Configurator")
 
         End If
     End Sub
