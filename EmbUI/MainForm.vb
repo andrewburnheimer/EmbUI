@@ -379,17 +379,38 @@ Public Class MainForm
 
     End Sub
 
-    Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "GET", Optional ByVal data As String = "", Optional ByVal timeout As Integer = 0)
+    
+    Private Function HTTPSocketPUT(ByVal uriEnd As String, ByVal sfpIP As String, Optional ByVal data As String = "")
+       Try
+           Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
+            Dim httpHeader As String = "PUT " & uriEnd & " HTTP/1.1\r\nContent-Type: application/json\r\nHost: " & sfpIP & "\r\nContent-Length: " & dataBuffer.Length.ToString() & "\r\nConnection: Close\r\n\r\n"
+            Dim fullReqString As String = httpHeader & data
+
+            Dim fullReq As Byte() = System.Text.Encoding.ASCII.GetBytes(fullReqString)
+
+
+
+
+
+        Catch ex As Exception
+
+        End Try
+    End Function
+
+
+    Private Function IssueHTTPRequest(ByVal uri As Uri, Optional ByVal method As String = "Get", Optional ByVal data As String = "", Optional ByVal timeout As Integer = 0)
+
         Try
             'ServicePointManager.Expect100Continue = False
             Dim req As HttpWebRequest = WebRequest.Create(uri)
             req.KeepAlive = False 'Maybe make this true
             req.Method = method.ToUpper()
             req.Timeout = 3000
+            'req.ProtocolVersion = HTTPVersion.Version10
             'req.ReadWriteTimeout = 2000
 
             If ("POST,PUT").Split(",").Contains(method.ToUpper()) Then
-                req.ServicePoint.Expect100Continue = False
+                'req.ServicePoint.Expect100Continue = False
                 'req.SendChunked = False
                 Dim dataBuffer As Byte() = System.Text.Encoding.ASCII.GetBytes(data)
                 req.ContentLength = dataBuffer.Length
