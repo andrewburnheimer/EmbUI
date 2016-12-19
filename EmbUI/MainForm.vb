@@ -398,7 +398,7 @@ Public Class MainForm
         Dim bodyData As String
         bodyData = JsonConvert.SerializeObject(flowToSend)
         'bodyData = "{""network"": {""dst_ip_addr"": ""239.9.0.111""}}"
-        Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
+        'Dim sfpRequest As New Uri("http://" & sfpMgmtIp & "/emsfp/node/v1/flows")
 
         Dim requestEnd As String = "/emsfp/node/v1/flows"
         HTTPSocketPUT(requestEnd, sfpMgmtIp, bodyData)
@@ -425,13 +425,23 @@ Public Class MainForm
 
             Dim getReq As Byte() = System.Text.Encoding.ASCII.GetBytes(httpHeader)
 
+            Dim ip
+            If sfpIP.Contains(":") Then
+                Dim stringSplit As Array = sfpIP.Split(":")
+                ip = New IPEndPoint(IPAddress.Parse(stringSplit(0)), stringSplit(1))
+            Else
+                ip = New IPEndPoint(IPAddress.Parse(sfpIP), 80)
+            End If
 
-            Dim ip As New IPEndPoint(IPAddress.Parse(sfpIP), 80)
             Dim socket As New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             socket.SendTimeout = 2000
             socket.ReceiveTimeout = 3000
 
             socket.Connect(ip)
+            'Dim result = socket.BeginConnect(ip, New AsyncCallback(AddressOf socket.EndConnect), socket)
+            'Dim success = result.AsyncWaitHandle.WaitOne(2000, True)
+
+            'If success Then
             socket.Send(getReq, SocketFlags.None)
 
             socket.Receive(buffer, SocketFlags.None)
@@ -448,6 +458,12 @@ Public Class MainForm
             flowConnect = True
             validIP = True
             Return bufferNoHeader
+            'Else
+            'flowConnect = False
+            'validIP = False
+            'Dim fail(4056) As Byte
+            'Return fail
+            'End If
 
         Catch ex As Exception
             MessageBox.Show("Problem connecting to host, please make sure it is a reachable address.", "EmSFP Configurator")
@@ -467,8 +483,14 @@ Public Class MainForm
 
             Dim fullReq As Byte() = System.Text.Encoding.ASCII.GetBytes(fullReqString)
 
+            Dim ip
+            If sfpIP.Contains(":") Then
+                Dim stringSplit As Array = sfpIP.Split(":")
+                ip = New IPEndPoint(IPAddress.Parse(stringSplit(0)), stringSplit(1))
+            Else
+                ip = New IPEndPoint(IPAddress.Parse(sfpIP), 80)
+            End If
 
-            Dim ip As New IPEndPoint(IPAddress.Parse(sfpIP), 80)
             Dim socket As New Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             socket.SendTimeout = 2000
             socket.ReceiveTimeout = 3000
